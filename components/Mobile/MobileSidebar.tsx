@@ -2,7 +2,7 @@
 
 import { navItems } from "@/constants";
 import clsx from "clsx";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import MobNavLink from "./MobNavLink";
 
 type MobileSidebarProps = {
@@ -19,7 +19,7 @@ const MobileSidebar = ({ isVisible, setIsVisible }: MobileSidebarProps) => {
       )}
     >
       <div className="flex flex-col items-start gap-3 mt-5 w-full">
-        {navItems.map((item, index) => (
+        {navItems.map((item) => (
           <MobNavLink
             key={item.label}
             item={item}

@@ -38,7 +38,7 @@ const Sidebar = () => {
           </span>
         </Link>
 
-        {navItems.map((item, index) => (
+        {navItems.map((item) => (
           <NavLink
             key={item.label}
             item={item}
