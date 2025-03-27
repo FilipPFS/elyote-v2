@@ -15,7 +15,7 @@ const Sidebar = () => {
     <aside
       className={clsx(
         "hidden sticky z-20 top-0 remove-scrollbar h-screen bg-white transition-all px-4 py-3 overflow-y-auto duration-300 sm:flex flex-col",
-        expanded ? "min-w-[224px] max-w-[224px]" : "min-w-[80px] max-w-[80px]"
+        expanded ? "min-w-[230px] max-w-[230px]" : "min-w-[80px] max-w-[80px]"
       )}
     >
       <div className="flex flex-col items-start gap-3 mt-5 w-full">
@@ -39,7 +39,12 @@ const Sidebar = () => {
         </Link>
 
         {navItems.map((item, index) => (
-          <NavLink key={item.label} item={item} expanded={expanded} />
+          <NavLink
+            key={item.label}
+            item={item}
+            expanded={expanded}
+            setExpanded={setExpanded}
+          />
         ))}
 
         {/* Toggle button */}

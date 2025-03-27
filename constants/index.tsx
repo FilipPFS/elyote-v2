@@ -1,34 +1,40 @@
-import { FaBarcode, FaClipboardList } from "react-icons/fa6";
+import { FaBarcode } from "react-icons/fa6";
 import { FiSmartphone, FiTool } from "react-icons/fi";
 import { GiSpy } from "react-icons/gi";
 import { GrCubes } from "react-icons/gr";
-import { LuIdCard, LuPrinter } from "react-icons/lu";
+import { LuClipboardList, LuIdCard, LuPrinter } from "react-icons/lu";
 import { PiBag } from "react-icons/pi";
 import { RiComputerLine, RiGalleryLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
 
 export const navItems = [
   {
-    link: "#",
+    link: "/",
     label: "Dashboard",
     subLinks: [],
     icon: <RxDashboard />,
   },
   {
-    link: "#",
-    label: "Espace Services",
+    link: "/cartes-copies",
+    label: "Cartes Copies",
     subLinks: [
-      { label: "Liste des cartes", link: "#" },
+      { label: "Liste des cartes", link: "/cartes-copies/liste" },
       { label: "Ajouter une carte", link: "#" },
       { label: "Caisse de l’espace service", link: "#" },
       { label: "Simply Copie - Compteur des copies", link: "#" },
     ],
-    icon: <FaClipboardList />,
+    icon: <LuClipboardList />,
   },
   {
     link: "#",
     label: "Espace BMI",
-    subLinks: [],
+    subLinks: [
+      { label: "Rachat Livre de police", link: "#" },
+      { label: "Rachat Cartouche", link: "#" },
+      { label: "Retour Produit", link: "#" },
+      { label: "Comparatif d’imprimantes et conso", link: "#" },
+      { label: "Assistant à la commande d’articles BI", link: "#" },
+    ],
     icon: <RiComputerLine />,
   },
   {
@@ -40,19 +46,30 @@ export const navItems = [
   {
     link: "#",
     label: "Contact Client",
-    subLinks: [],
+    subLinks: [
+      { label: "Gestion Contact", link: "#" },
+      { label: "SMS", link: "#" },
+      { label: "Tel", link: "#" },
+      { label: "Email", link: "#" },
+    ],
     icon: <FiSmartphone />,
   },
   {
     link: "#",
     label: "Identifiants",
-    subLinks: [],
+    subLinks: [
+      { label: "Liste des identifiants", link: "#" },
+      { label: "Ajouter un identifiant", link: "#" },
+    ],
     icon: <GiSpy />,
   },
   {
     link: "#",
     label: "Répertoire",
-    subLinks: [],
+    subLinks: [
+      { label: "Liste des contacts", link: "#" },
+      { label: "Ajouter un contact", link: "#" },
+    ],
     icon: <LuIdCard />,
   },
   {
@@ -64,7 +81,10 @@ export const navItems = [
   {
     link: "#",
     label: "Parc Matériel",
-    subLinks: [],
+    subLinks: [
+      { label: "Liste du matériel", link: "#" },
+      { label: "Ajouter un matériel", link: "#" },
+    ],
     icon: <LuPrinter />,
   },
   {
@@ -79,12 +99,18 @@ export const navItems = [
   {
     link: "#",
     label: "Commandes",
-    subLinks: [],
+    subLinks: [
+      { label: "Cahier des commandes", link: "#" },
+      { label: "Commandes Listes Scolaires", link: "#" },
+      { label: "Commandes Click & Collect", link: "#" },
+      { label: "Commandes Espaces Services", link: "#" },
+      { label: "Colis & Expéditions", link: "#" },
+    ],
     icon: <FaBarcode />,
   },
   {
     link: "#",
-    label: "Outil",
+    label: "Outils",
     subLinks: [],
     icon: <PiBag />,
   },

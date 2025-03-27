@@ -4,8 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { GoBell } from "react-icons/go";
 import { HiBars3 } from "react-icons/hi2";
-import MobileSidebar from "./MobileSidebar";
 import Link from "next/link";
+import MobileSidebar from "./MobileSidebar";
 
 const MobileHeader = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -28,7 +28,7 @@ const MobileHeader = () => {
           <GoBell size={35} />
         </button>
       </div>
-      <MobileSidebar isVisible={isVisible} />
+      <MobileSidebar isVisible={isVisible} setIsVisible={setIsVisible} />
     </>
   );
 };
