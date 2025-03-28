@@ -115,3 +115,26 @@ export const navItems = [
     icon: <PiBag />,
   },
 ];
+
+export const accountLinks = [
+  {
+    link: "#",
+    label: "Mes Factures",
+  },
+  {
+    link: "#",
+    label: "Statistiques",
+  },
+  {
+    link: "#",
+    label: "Réglage de mon profil",
+  },
+  {
+    link: "#",
+    label: "Mes envois vers sdp",
+  },
+  {
+    link: "#",
+    label: "Aide",
+  },
+];

@@ -50,7 +50,7 @@ const Sidebar = () => {
         {/* Toggle button */}
         <button
           className={clsx(
-            "flex w-full group transition-all duration-500",
+            "hidden lg:flex w-full group transition-all duration-500",
             expanded ? "justify-start items-center gap-4" : "justify-center"
           )}
           onClick={() => setExpanded(!expanded)}
