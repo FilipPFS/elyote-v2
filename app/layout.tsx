@@ -31,7 +31,7 @@ export default function RootLayout({
           <div className="flex relative min-h-screen sm:flex-row flex-col gap-4">
             <MobileHeader />
             <Sidebar />
-            <main className="flex-1">
+            <main className="flex-1 pb-48">
               <Header />
               {children}
             </main>
