@@ -10,29 +10,33 @@ type Props = {
   item: {
     link: string;
     label: string;
-    subLinks: {
-      label: string;
-      link: string;
-    }[];
+    subLinks: { label: string; link: string }[];
     icon: JSX.Element;
   };
   setIsVisible: Dispatch<SetStateAction<boolean>>;
+  activeSubmenu: string | null;
+  setActiveSubmenu: Dispatch<SetStateAction<string | null>>;
 };
 
-const MobNavLink = ({ item, setIsVisible }: Props) => {
-  const [subLinkVisible, setSubLinkVisible] = useState(false);
-  const [activeIcon, setActiveIcon] = useState(false);
+const MobNavLink = ({
+  item,
+  setIsVisible,
+  activeSubmenu,
+  setActiveSubmenu,
+}: Props) => {
   const pathname = usePathname();
   const firstSegment = `/${pathname.split("/")[1]}`;
   const activePath = pathname === item.link || firstSegment === item.link;
 
+  const isOpen = activeSubmenu === item.label;
+
   const handleSetLink = () => {
-    setSubLinkVisible((prev) => !prev);
-    setActiveIcon((prev) => !prev);
+    setActiveSubmenu(isOpen ? null : item.label);
   };
 
   const handleVisibility = () => {
     setIsVisible(false);
+    setActiveSubmenu(null);
   };
 
   return item.subLinks.length > 0 ? (
@@ -47,7 +51,7 @@ const MobNavLink = ({ item, setIsVisible }: Props) => {
         <span
           className={clsx(
             "p-1.5 rounded-lg text-3xl transition-all duration-300 group-hover:bg-blue-800 group-hover:text-white",
-            activeIcon && "bg-blue-800 text-white",
+            isOpen && "bg-blue-800 text-white",
             activePath && "bg-blue-800 text-white"
           )}
         >
@@ -56,17 +60,19 @@ const MobNavLink = ({ item, setIsVisible }: Props) => {
         <span
           className={clsx(
             "transition-all duration-300 text-lg font-semibold group-hover:text-blue-800",
-            activeIcon && "text-blue-800",
+            isOpen && "text-blue-800",
             activePath && "text-blue-800"
           )}
         >
           {item.label}
         </span>
         <span>
-          <IoIosArrowDown />
+          <IoIosArrowDown
+            className={clsx("transition-transform", isOpen && "rotate-180")}
+          />
         </span>
       </div>
-      {subLinkVisible && (
+      {isOpen && (
         <div className="flex flex-col items-start w-full gap-2 mt-5">
           {item.subLinks.map((subLink) => (
             <Link

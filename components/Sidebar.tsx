@@ -10,6 +10,7 @@ import NavLink from "./NavLink";
 
 const Sidebar = () => {
   const [expanded, setExpanded] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   return (
     <aside
@@ -44,6 +45,8 @@ const Sidebar = () => {
             item={item}
             expanded={expanded}
             setExpanded={setExpanded}
+            activeDropdown={activeDropdown}
+            setActiveDropdown={setActiveDropdown}
           />
         ))}
 

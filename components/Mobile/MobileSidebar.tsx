@@ -1,33 +1,43 @@
 "use client";
 
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { navItems } from "@/constants";
-import clsx from "clsx";
-import { Dispatch, SetStateAction } from "react";
+import { JSX, useState } from "react";
 import MobNavLink from "./MobNavLink";
+import { HiBars3 } from "react-icons/hi2";
 
-type MobileSidebarProps = {
-  isVisible: boolean;
-  setIsVisible: Dispatch<SetStateAction<boolean>>;
-};
+const MobileSidebar = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
-const MobileSidebar = ({ isVisible, setIsVisible }: MobileSidebarProps) => {
   return (
-    <aside
-      className={clsx(
-        "fixed sm:hidden top-[100px] left-0 z-50 h-screen bg-white px-4 py-3 overflow-y-scroll overflow-x-hidden w-2/3 duration-500 ease-in-out flex flex-col shadow-lg",
-        isVisible ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
-      )}
-    >
-      <div className="flex flex-col items-start gap-3 mt-5 w-full">
+    <Sheet open={isVisible} onOpenChange={setIsVisible}>
+      <SheetTrigger>
+        <HiBars3 size={35} />
+      </SheetTrigger>
+      <SheetContent side="left" className="p-4 pt-6">
+        <SheetTitle hidden>Mobile Navigation Sidebar</SheetTitle>
+        <SheetDescription hidden>
+          Mobile Sidebar Navigation with Links
+        </SheetDescription>
         {navItems.map((item) => (
           <MobNavLink
             key={item.label}
             item={item}
             setIsVisible={setIsVisible}
+            activeSubmenu={activeSubmenu}
+            setActiveSubmenu={setActiveSubmenu}
           />
         ))}
-      </div>
-    </aside>
+      </SheetContent>
+    </Sheet>
   );
 };
 

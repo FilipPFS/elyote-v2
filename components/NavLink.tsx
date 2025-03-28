@@ -2,7 +2,6 @@ import clsx from "clsx";
 import Link from "next/link";
 import React, { Dispatch, JSX, SetStateAction, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,31 +13,33 @@ type Props = {
   item: {
     link: string;
     label: string;
-    subLinks: {
-      label: string;
-      link: string;
-    }[];
+    subLinks: { label: string; link: string }[];
     icon: JSX.Element;
   };
   expanded: boolean;
   setExpanded: Dispatch<SetStateAction<boolean>>;
+  activeDropdown: string | null;
+  setActiveDropdown: Dispatch<SetStateAction<string | null>>;
 };
 
-const NavLink = ({ item, expanded, setExpanded }: Props) => {
-  const [subLinkVisible, setSubLinkVisible] = useState(false);
-  const [active, setActive] = useState(false);
-  const [activeIcon, setActiveIcon] = useState(false);
+const NavLink = ({
+  item,
+  expanded,
+  setExpanded,
+  activeDropdown,
+  setActiveDropdown,
+}: Props) => {
   const pathname = usePathname();
   const firstSegment = `/${pathname.split("/")[1]}`;
   const activePath = pathname === item.link || firstSegment === item.link;
+  const isDropdownOpen = activeDropdown === item.label;
 
   const handleSetLink = () => {
-    setSubLinkVisible((prev) => !prev);
-    setActiveIcon((prev) => !prev);
+    setActiveDropdown(isDropdownOpen ? null : item.label); // Close if already open
   };
 
   const handleVisibility = () => {
-    setSubLinkVisible(false);
+    setActiveDropdown(null);
     setExpanded(false);
   };
 
@@ -53,11 +54,11 @@ const NavLink = ({ item, expanded, setExpanded }: Props) => {
         onClick={handleSetLink}
       >
         {!expanded ? (
-          <DropdownMenu open={active} onOpenChange={setActive}>
+          <DropdownMenu open={isDropdownOpen} onOpenChange={handleSetLink}>
             <DropdownMenuTrigger
               className={clsx(
                 "p-1.5 hidden sm:block flex-shrink-0 rounded-lg text-xl transition-all duration-300 group-hover:bg-blue-800 group-hover:text-white",
-                active ? "bg-blue-800 text-white" : "",
+                isDropdownOpen && "bg-blue-800 text-white",
                 activePath && "bg-blue-800 text-white"
               )}
             >
@@ -84,7 +85,7 @@ const NavLink = ({ item, expanded, setExpanded }: Props) => {
           <span
             className={clsx(
               "p-1.5 flex-shrink-0 rounded-lg text-xl transition-all duration-300 group-hover:bg-blue-800 group-hover:text-white",
-              activeIcon ? "bg-blue-800 text-white" : "",
+              isDropdownOpen && "bg-blue-800 text-white",
               activePath && "bg-blue-800 text-white"
             )}
           >
@@ -95,7 +96,7 @@ const NavLink = ({ item, expanded, setExpanded }: Props) => {
           className={clsx(
             "transition-all duration-300 text-sm whitespace-nowrap overflow-hidden",
             expanded ? "opacity-100 w-auto" : "opacity-0 w-0",
-            activeIcon ? "text-blue-800 font-semibold" : "",
+            isDropdownOpen && "text-blue-800 font-semibold",
             activePath && "text-blue-800 font-semibold",
             "group-hover:text-blue-800 group-hover:font-semibold"
           )}
@@ -103,12 +104,15 @@ const NavLink = ({ item, expanded, setExpanded }: Props) => {
           {item.label}
         </span>
         {expanded && (
-          <span>
-            <IoIosArrowDown />
-          </span>
+          <IoIosArrowDown
+            className={clsx(
+              "transition-transform",
+              isDropdownOpen && "rotate-180"
+            )}
+          />
         )}
       </div>
-      {subLinkVisible && expanded && (
+      {isDropdownOpen && expanded && (
         <div className="flex flex-col items-start w-full gap-2 mt-5">
           {item.subLinks.map((subLink) => (
             <Link
