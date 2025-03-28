@@ -4,12 +4,11 @@ import {
   Sheet,
   SheetContent,
   SheetDescription,
-  SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { navItems } from "@/constants";
-import { JSX, useState } from "react";
+import { useState } from "react";
 import MobNavLink from "./MobNavLink";
 import { HiBars3 } from "react-icons/hi2";
 

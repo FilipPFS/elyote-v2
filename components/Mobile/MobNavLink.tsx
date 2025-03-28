@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { Dispatch, JSX, SetStateAction, useState } from "react";
+import React, { Dispatch, JSX, SetStateAction } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
 type Props = {
