@@ -63,7 +63,10 @@ const NavLink = ({ item, expanded, setExpanded }: Props) => {
             >
               {item.icon}
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-white border-none ml-20 p-3">
+            <DropdownMenuContent
+              sideOffset={-36}
+              className="bg-white border-none ml-20 p-3"
+            >
               <div className="flex flex-col gap-3">
                 {item.subLinks.map((subLink) => (
                   <Link
