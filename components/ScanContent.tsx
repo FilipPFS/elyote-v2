@@ -10,16 +10,18 @@ const ScanContent = () => {
   const [action, setAction] = useState("");
 
   return (
-    <div className="sm:p-4 p-8 flex flex-col gap-7">
+    <div className="sm:p-4 p-8 flex flex-col gap-7 sm:gap-4">
       <Image
         src={scanData.img}
         alt={scanData.title}
         width={200}
-        className="self-center"
+        className="self-center w-[200px] h-auto sm:w-[150px] sm:h-auto"
         height={200}
       />
-      <div className="flex flex-col gap-3">
-        <h2 className="text-lg font-semibold">{scanData.title}</h2>
+      <div className="flex flex-col gap-3 sm:gap-2 text-sm">
+        <h2 className="text-lg sm:text-[15px] font-semibold">
+          {scanData.title}
+        </h2>
         <span>
           Code bv: <span className="font-semibold">{scanData.bvCode}</span>
         </span>
@@ -40,7 +42,7 @@ const ScanContent = () => {
         </span>
       </div>
       <Link href={"#"} className="self-center">
-        <button className="bg-blue-700 px-5 py-1.5 rounded-lg text-white">
+        <button className="bg-blue-700 cursor-pointer transition-all duration-500 hover:bg-blue-900 px-5 py-1.5 rounded-lg text-white">
           Voir Plus
         </button>
       </Link>
@@ -66,7 +68,7 @@ const ScanContent = () => {
             className="focus:outline-none focus:ring-0 w-full text-black text-sm"
           />
         </div>
-        <button className="self-center bg-blue-700 px-5 py-1.5 rounded-lg text-white">
+        <button className="self-center bg-blue-700 cursor-pointer transition-all duration-500 hover:bg-blue-900 px-5 py-1.5 rounded-lg text-white">
           Rechercher
         </button>
       </form>

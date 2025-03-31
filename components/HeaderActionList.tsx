@@ -7,6 +7,7 @@ import { FaCircleQuestion } from "react-icons/fa6";
 import { LuScanLine } from "react-icons/lu";
 import CartContent from "./CartContent";
 import AccountContent from "./AccountContent";
+import ScanContent from "./ScanContent";
 
 const HeaderActionList = () => {
   return (
@@ -30,11 +31,7 @@ const HeaderActionList = () => {
       />
       <HeaderIcon
         icon={<LuScanLine size={25} />}
-        customContent={
-          <div>
-            <h1>Scan</h1>
-          </div>
-        }
+        customContent={<ScanContent />}
       />
       <HeaderIcon
         icon={<FiBell size={25} />}

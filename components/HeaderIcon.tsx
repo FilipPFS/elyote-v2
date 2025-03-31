@@ -18,7 +18,11 @@ const HeaderIcon = ({ icon, customContent }: Props) => {
       <DropdownMenuTrigger className="cursor-pointer">
         {icon}
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-white p-4" sideOffset={14}>
+      <DropdownMenuContent
+        className="bg-white p-4"
+        side="bottom"
+        sideOffset={14}
+      >
         {customContent}
       </DropdownMenuContent>
     </DropdownMenu>
