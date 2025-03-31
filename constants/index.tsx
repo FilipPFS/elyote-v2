@@ -138,3 +138,15 @@ export const accountLinks = [
     label: "Aide",
   },
 ];
+
+export const scanData = {
+  id: 1,
+  img: "/hp.jpg",
+  bvCode: 1979,
+  title: "HP 56 - noir - cartouche d'encre originale",
+  ttcPrice: "N/A",
+  htPrice: "N/A",
+  ecoTaxe: "N/A",
+  tvaPrice: "N/A",
+  quantity: 2,
+};
