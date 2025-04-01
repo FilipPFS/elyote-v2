@@ -4,7 +4,7 @@ import MobileFooterNavigation from "./MobileFooterNavigation";
 
 const MobileFooter = () => {
   return (
-    <div className="fixed bottom-0 flex flex-col gap-4 items-center justify-between sm:hidden h-36 px-6 text-white bg-[#8554C5] w-full">
+    <div className="fixed z-[20] bottom-0 flex flex-col gap-4 items-center justify-between sm:hidden h-36 px-6 text-white bg-[#8554C5] w-full">
       <div
         className="absolute  h-[40%] w-[140%] bg-[#8554C5] top-[-25px]"
         style={{
