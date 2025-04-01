@@ -12,9 +12,9 @@ const PickAndCollect = () => {
     <HomeBlock
       title="Pick & Collect"
       jsx={
-        <section className="mt-5 flex flex-col gap-5">
+        <section className="mt-2 flex flex-col gap-2">
           {pickCollectData.map((item) => (
-            <div key={item.date} className="flex flex-col gap-3">
+            <div key={item.date} className="flex flex-col gap-2">
               <span className="text-gray-400">{item.date}</span>
               <div>
                 {item.items.length > 0 &&
@@ -23,7 +23,7 @@ const PickAndCollect = () => {
                       key={el.id}
                       className="flex items-center justify-between"
                     >
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center w-[50%] gap-4">
                         {el.type === "Livraison" && (
                           <FiTruck className="text-xl sm:text-2xl" />
                         )}
@@ -31,7 +31,7 @@ const PickAndCollect = () => {
                           <IoCartOutline className="text-xl sm:text-2xl" />
                         )}
                         <div>
-                          <h2 className="text-sm sm:text-lg font-semibold">
+                          <h2 className="text-sm sm:text-[15px] font-semibold">
                             {el.type}
                           </h2>
                           <small className="text-gray-400 text-[11px] sm:text-sm">
@@ -39,7 +39,7 @@ const PickAndCollect = () => {
                           </small>
                         </div>
                       </div>
-                      <small className="flex items-center gap-2">
+                      <small className="flex items-center w-32 gap-2">
                         <span
                           className={clsx(
                             "block w-2 h-2 rounded-full",
@@ -52,7 +52,7 @@ const PickAndCollect = () => {
                       </small>
                       <Link
                         href={"#"}
-                        className="transition-all duration-300 hover:text-blue-600"
+                        className="transition-all duration-300 hover:rotate-45 hover:text-blue-600"
                       >
                         <MdArrowOutward size={25} />
                       </Link>

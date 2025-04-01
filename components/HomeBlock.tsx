@@ -7,8 +7,8 @@ type Props = {
 
 const HomeBlock = ({ title, jsx }: Props) => {
   return (
-    <div className="rounded-md p-4 sm:p-8 bg-white">
-      <h1 className="font-semibold text-xl">{title}</h1>
+    <div className="rounded-md h-full flex flex-col min-h-[330px] p-5 sm:p-4 sm:px-6 bg-white">
+      <h1 className="font-semibold text-lg">{title}</h1>
       {jsx}
     </div>
   );

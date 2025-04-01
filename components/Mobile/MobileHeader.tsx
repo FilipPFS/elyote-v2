@@ -7,7 +7,7 @@ import MobileSidebar from "./MobileSidebar";
 
 const MobileHeader = () => {
   return (
-    <div className="sticky top-0 flex items-center bg-white justify-between sm:hidden h-[100px] px-7">
+    <div className="sticky z-[100] top-0 flex items-center bg-white justify-between sm:hidden h-[100px] px-7">
       <MobileSidebar />
       <Link href={"/"}>
         <Image

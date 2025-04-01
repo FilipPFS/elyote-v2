@@ -1,19 +1,32 @@
 "use client";
 
+import clsx from "clsx";
 import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaSearch } from "react-icons/fa";
 
-const Search = () => {
+type Props = {
+  component: string;
+  placeholder: string;
+};
+
+const Search = ({ placeholder, component }: Props) => {
   const [query, setQuery] = useState("");
 
   return (
-    <form action="" className="flex items-center gap-2 h-10 w-[45%]">
+    <form
+      action=""
+      className={clsx(
+        "flex items-center gap-2 h-10",
+        component === "header" && "w-[45%]",
+        component === "contact_client" && "w-full"
+      )}
+    >
       <div className="p-3 px-4 h-full w-[calc(100%-40px)] flex items-center gap-3 border-[1px] border-black rounded-lg">
         <CiSearch size={24} />
         <input
           type="text"
-          placeholder="Recherchez..."
+          placeholder={placeholder}
           className="focus:outline-none focus:ring-0"
           value={query}
           onChange={(e) => setQuery(e.target.value)}

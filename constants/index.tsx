@@ -1,7 +1,8 @@
 import { FaBarcode } from "react-icons/fa6";
-import { FiSmartphone, FiTool } from "react-icons/fi";
+import { FiPhone, FiSmartphone, FiTool } from "react-icons/fi";
 import { GiSpy } from "react-icons/gi";
 import { GrCubes } from "react-icons/gr";
+import { IoMailOutline } from "react-icons/io5";
 import { LuClipboardList, LuIdCard, LuPrinter } from "react-icons/lu";
 import { PiBag } from "react-icons/pi";
 import { RiComputerLine, RiGalleryLine } from "react-icons/ri";
@@ -156,3 +157,27 @@ export const scanData = {
   tvaPrice: "N/A",
   quantity: 2,
 };
+
+export const contactList = [
+  {
+    label: "Envoyer un SMS",
+    link: "/communication/sms",
+    icon: <FiSmartphone />,
+  },
+  {
+    label: "Envoyer un mail",
+    link: "/communication/email",
+    icon: <IoMailOutline />,
+  },
+  {
+    label: "Enregistrer un appel",
+    link: "/communication/tel",
+    icon: <FiPhone />,
+  },
+];
+
+export const markingCards = Array.from({ length: 12 }, (_, i) => ({
+  title: `Affiche Numéro ${i + 1}`,
+  link: "/balisage",
+  img: "/affiche_1.png",
+}));

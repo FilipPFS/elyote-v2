@@ -15,35 +15,76 @@ export const cartData = [
 
 export const pickCollectData = [
   {
-    date: "12 Juillet 2022",
+    date: "12 Juil. 2022",
     items: [
       {
         type: "Retrait",
         status: "En cours",
-        fullDate: "12 Juillet 2022 à 11h30",
+        fullDate: "12 Juil. 2022 à 11h30",
         id: 1,
       },
       {
         type: "Livraison",
         status: "Préparée",
-        fullDate: "12 Juillet 2022 à 10h30",
+        fullDate: "12 Juil. 2022 à 10h30",
         id: 2,
       },
     ],
   },
   {
-    date: "11 Juillet 2022",
+    date: "11 Juil. 2022",
     items: [
       {
         type: "Livraison",
         status: "En cours",
-        fullDate: "11 Juillet 2022 à 17h00",
+        fullDate: "11 Juil. 2022 à 17h00",
         id: 3,
       },
       {
         type: "Retrait",
         status: "En cours",
-        fullDate: "12 Juillet 2022 à 12h30",
+        fullDate: "12 Juil. 2022 à 12h30",
+        id: 4,
+      },
+    ],
+  },
+];
+
+export const savData = [
+  {
+    date: "12 Juil. 2022",
+    items: [
+      {
+        type: "Imprimante",
+        name: "Imprimante",
+        status: "En attente",
+        fullDate: "12 Juil. 2022 à 11h30",
+        id: 1,
+      },
+      {
+        type: "Camera",
+        name: "Canon",
+        status: "A faire",
+        fullDate: "12 Juil. 2022 à 10h30",
+        id: 2,
+      },
+    ],
+  },
+  {
+    date: "11 Juil. 2022",
+    items: [
+      {
+        type: "Imprimante",
+        name: "Epson",
+        status: "A faire",
+        fullDate: "11 Juil. 2022 à 17h00",
+        id: 3,
+      },
+      {
+        type: "Imprimante",
+        name: "HP 56",
+        status: "En attente",
+        fullDate: "12 Juil. 2022 à 12h30",
         id: 4,
       },
     ],
