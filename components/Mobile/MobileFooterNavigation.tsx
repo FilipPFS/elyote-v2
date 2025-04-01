@@ -17,18 +17,18 @@ const MobileFooterNavigation = () => {
       <MobileFooterAction
         open={accountLinksOpen}
         setOpen={setAccountLinksOpen}
-        icon={<FiUser size={37} />}
+        icon={<FiUser size={25} />}
         customContent={<AccountContent setOpen={setAccountLinksOpen} />}
         label="Profil"
       />
       <Link href={"/"} className="flex flex-col gap-1 items-center">
-        <LuHouse size={37} />
+        <LuHouse size={25} />
         <small>Accueil</small>
       </Link>
       <MobileFooterAction
         open={cartOpen}
         setOpen={setCartOpen}
-        icon={<BsCart3 size={37} />}
+        icon={<BsCart3 size={25} />}
         customContent={<CartContent setOpen={setCartOpen} />}
         label="Panier"
       />

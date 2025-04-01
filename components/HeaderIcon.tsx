@@ -10,13 +10,15 @@ import {
 type Props = {
   icon: JSX.Element;
   customContent: React.ReactNode;
+  notification?: React.ReactNode;
 };
 
-const HeaderIcon = ({ icon, customContent }: Props) => {
+const HeaderIcon = ({ icon, customContent, notification }: Props) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="cursor-pointer">
+      <DropdownMenuTrigger className="relative cursor-pointer">
         {icon}
+        {notification && notification}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="bg-white p-4"

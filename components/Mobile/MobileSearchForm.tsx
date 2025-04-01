@@ -11,7 +11,7 @@ const MobileSearchForm = () => {
   const [query, setQuery] = useState("");
   const [scanOpen, setScanOpen] = useState(false);
   return (
-    <form className="bg-white w-full mt-10 h-12 flex px-5 items-center justify-between gap-3 border-[1px] rounded-full">
+    <form className="bg-white w-full mt-6 h-12 flex px-5 items-center justify-between gap-3 border-[1px] rounded-full">
       <div className="flex items-center gap-4 w-[70%]">
         <span>
           <CiSearch size={24} className="block text-black" />

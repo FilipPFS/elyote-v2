@@ -8,12 +8,13 @@ import { LuScanLine } from "react-icons/lu";
 import CartContent from "./CartContent";
 import AccountContent from "./AccountContent";
 import ScanContent from "./ScanContent";
+import { cartData } from "@/constants/data";
 
 const HeaderActionList = () => {
   return (
     <div className="flex items-center gap-10">
       <CustomModal
-        icon={<FaCircleQuestion size={25} />}
+        icon={<FaCircleQuestion size={25} className="text-blue-700" />}
         title="Alerte"
         customContent={
           <div>
@@ -28,6 +29,15 @@ const HeaderActionList = () => {
       <HeaderIcon
         icon={<BsCart3 size={25} />}
         customContent={<CartContent />}
+        notification={
+          cartData.length > 0 ? (
+            <div className="absolute top-[-9px] text-sm right-[-9px] flex items-center justify-center bg-blue-700 h-5 w-5 text-white rounded-full">
+              {cartData.length}
+            </div>
+          ) : (
+            ""
+          )
+        }
       />
       <HeaderIcon
         icon={<LuScanLine size={25} />}
