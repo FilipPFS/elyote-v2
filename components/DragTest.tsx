@@ -44,7 +44,7 @@ const DragTest = () => {
         console.log("Swapped:", event);
         setFirstChange(true);
         orderRef.current = event.newSlotItemMap.asArray.map(
-          (item: any) => item.item
+          (item) => item.item
         );
       });
     }
