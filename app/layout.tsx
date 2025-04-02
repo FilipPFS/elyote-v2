@@ -6,6 +6,7 @@ import MobileHeader from "@/components/Mobile/MobileHeader";
 import MobileFooter from "@/components/Mobile/MobileFooter";
 import Header from "@/components/Header";
 import { UserProvider } from "@/context/UserContext";
+import { Toaster } from "@/components/ui/sonner";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
               {children}
             </main>
             <MobileFooter />
+            <Toaster />
           </div>
         </UserProvider>
       </body>
