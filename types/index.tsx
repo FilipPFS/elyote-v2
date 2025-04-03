@@ -32,3 +32,8 @@ export type tableHeader = {
   icon: JSX.Element;
   classNames?: string;
 };
+
+export interface UserSettings {
+  selection_cards_accueil?: string[];
+  [key: string]: any;
+}

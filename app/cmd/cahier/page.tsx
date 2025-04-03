@@ -1,4 +1,5 @@
 import FilterButton from "@/components/FilterButton";
+import MainPage from "@/components/Mobile/MainPage";
 import OrderCard from "@/components/Mobile/OrderCard";
 import TableExample from "@/components/TableExample";
 import TableFilters from "@/components/TableFilters";
@@ -27,8 +28,7 @@ const CommandesCahier = async ({ searchParams }: SearchParamProps) => {
       : orders.filter((order) => order.status === selectedStatus);
 
   return (
-    <div className="p-4 md:p-6 flex flex-col gap-4">
-      <h1 className="hidden sm:block text-xl font-semibold">Commandes</h1>
+    <MainPage title="Commandes">
       <div className="flex flex-col gap-4 md:gap-0 md:flex-row justify-between items-center">
         <div className="max-sm:order-1 flex border-b border-gray-300">
           {STATUS_OPTIONS.map(({ label, value }) => (
@@ -105,7 +105,7 @@ const CommandesCahier = async ({ searchParams }: SearchParamProps) => {
           tableHeaders={orderTableHeaders}
         />
       </div>
-    </div>
+    </MainPage>
   );
 };
 
