@@ -13,7 +13,7 @@ export interface BlockCardData {
 }
 
 export type SearchParamProps = {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 export type UrlQueryParams = {
