@@ -1,4 +1,3 @@
-import { FaBarcode } from "react-icons/fa6";
 import { FiPhone, FiSmartphone, FiTool } from "react-icons/fi";
 import { GiSpy } from "react-icons/gi";
 import { GrCubes } from "react-icons/gr";
@@ -7,6 +6,10 @@ import { LuClipboardList, LuIdCard, LuPrinter } from "react-icons/lu";
 import { PiBag } from "react-icons/pi";
 import { RiComputerLine, RiGalleryLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
+import { FaBarcode, FaRegCalendar } from "react-icons/fa6";
+import { FiSearch, FiTruck, FiUser } from "react-icons/fi";
+import { BiCube } from "react-icons/bi";
+import { tableHeader } from "@/types";
 
 export const navItems = [
   {
@@ -181,3 +184,117 @@ export const markingCards = Array.from({ length: 12 }, (_, i) => ({
   link: "/balisage",
   img: "/affiche_1.png",
 }));
+
+export const orderTableHeaders: tableHeader[] = [
+  { label: "Numéro", icon: <FaBarcode /> },
+  { label: "Client", icon: <FiUser /> },
+  { label: "Date de commande", icon: <FaRegCalendar /> },
+  { label: "Nombre de colis", icon: <BiCube /> },
+  { label: "Statut", icon: <FiTruck /> },
+  { label: "Action", icon: <FiSearch />, classNames: "justify-end" }, // Align right for Action
+];
+
+export const orderTableFilters = [
+  {
+    label: "Numéro",
+    options: [
+      {
+        label: "Item 1",
+        value: "item_1",
+      },
+      {
+        label: "Item 2",
+        value: "item_2",
+      },
+      {
+        label: "Item 3",
+        value: "item_3",
+      },
+    ],
+  },
+  {
+    label: "Client",
+    options: [
+      {
+        label: "Item 1",
+        value: "item_1",
+      },
+      {
+        label: "Item 2",
+        value: "item_2",
+      },
+      {
+        label: "Item 3",
+        value: "item_3",
+      },
+    ],
+  },
+  {
+    label: "Date de la commande",
+    options: [
+      {
+        label: "Item 1",
+        value: "item_1",
+      },
+      {
+        label: "Item 2",
+        value: "item_2",
+      },
+      {
+        label: "Item 3",
+        value: "item_3",
+      },
+    ],
+  },
+  {
+    label: "Nombre d'articles différents",
+    options: [
+      {
+        label: "Item 1",
+        value: "item_1",
+      },
+      {
+        label: "Item 2",
+        value: "item_2",
+      },
+      {
+        label: "Item 3",
+        value: "item_3",
+      },
+    ],
+  },
+  {
+    label: "Statut",
+    options: [
+      {
+        label: "Item 1",
+        value: "item_1",
+      },
+      {
+        label: "Item 2",
+        value: "item_2",
+      },
+      {
+        label: "Item 3",
+        value: "item_3",
+      },
+    ],
+  },
+  {
+    label: "Action",
+    options: [
+      {
+        label: "Item 1",
+        value: "item_1",
+      },
+      {
+        label: "Item 2",
+        value: "item_2",
+      },
+      {
+        label: "Item 3",
+        value: "item_3",
+      },
+    ],
+  },
+];

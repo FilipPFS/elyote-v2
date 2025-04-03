@@ -1,3 +1,5 @@
+import { JSX } from "react";
+
 export interface BlockCardData {
   object: string;
   date: string;
@@ -9,3 +11,25 @@ export interface BlockCardData {
     id: number;
   }[];
 }
+
+export type SearchParamProps = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export type UrlQueryParams = {
+  params: string;
+  key: string;
+  value: string | null;
+};
+
+export type RemoveUrlQueryParams = {
+  params: string;
+  keysToRemove: string[];
+};
+
+export type tableHeader = {
+  label: string;
+  icon: JSX.Element;
+  classNames?: string;
+};
