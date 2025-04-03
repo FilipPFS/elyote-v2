@@ -13,7 +13,7 @@ export interface BlockCardData {
 }
 
 export type SearchParamProps = {
-  params: { id: string };
+  params: Record<string, string>;
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
