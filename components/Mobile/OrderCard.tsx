@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { FiUser } from "react-icons/fi";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import MobileCard from "./MobileCard";
 
 type Props = {
   item: {
@@ -15,7 +16,7 @@ type Props = {
 
 const OrderCard = ({ item }: Props) => {
   return (
-    <div key={item.number} className="bg-white p-3">
+    <MobileCard>
       <section className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span>
@@ -61,7 +62,7 @@ const OrderCard = ({ item }: Props) => {
           <span className="font-semibold">{item.itemCount}</span>
         </span>
       </section>
-    </div>
+    </MobileCard>
   );
 };
 

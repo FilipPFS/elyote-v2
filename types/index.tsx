@@ -37,3 +37,15 @@ export interface UserSettings {
   selection_cards_accueil?: string[];
   [key: string]: any;
 }
+
+export type PasswordData = {
+  id: number;
+  customer_id: string;
+  site: string;
+  url: string;
+  login: string;
+  password: string;
+  access_level: number;
+  client_type: string;
+  additional_data: string;
+};

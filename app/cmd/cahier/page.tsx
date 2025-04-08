@@ -57,54 +57,51 @@ const CommandesCahier = async ({ searchParams }: SearchParamProps) => {
           <OrderCard key={item.number} item={item} />
         ))}
       </div>
-      <div className="hidden lg:block bg-white p-3">
-        <TableExample
-          tableBody={
-            <>
-              {filteredOrders.map((item) => (
-                <TableRow key={item.number}>
-                  <TableCell className="font-medium">{item.number}</TableCell>
-                  <TableCell>{item.client}</TableCell>
-                  <TableCell>{item.orderDate}</TableCell>
-                  <TableCell>{item.itemCount}</TableCell>
-                  <TableCell>
-                    {item.status === "recu" && (
-                      <div className="flex gap-3 items-center">
-                        <span
-                          className={"block w-2 h-2 rounded-full bg-blue-400"}
-                        />
-                        Recu
-                      </div>
-                    )}
-                    {item.status === "a_commander" && (
-                      <div className="flex gap-3 items-center">
-                        <span
-                          className={"block w-2 h-2 rounded-full bg-red-400"}
-                        />
-                        A commander
-                      </div>
-                    )}
-                    {item.status === "commande" && (
-                      <div className="flex gap-3 items-center">
-                        <span
-                          className={"block w-2 h-2 rounded-full bg-yellow-500"}
-                        />
-                        Commandé
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Link href={`/cmd/cahier/${item.number}`}>
-                      Voir Détails
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </>
-          }
-          tableHeaders={orderTableHeaders}
-        />
-      </div>
+      <TableExample
+        tableBody={
+          <>
+            {filteredOrders.map((item) => (
+              <TableRow key={item.number}>
+                <TableCell className="font-medium">{item.number}</TableCell>
+                <TableCell>{item.client}</TableCell>
+                <TableCell>{item.orderDate}</TableCell>
+                <TableCell>{item.itemCount}</TableCell>
+                <TableCell>
+                  {item.status === "recu" && (
+                    <div className="flex gap-3 items-center">
+                      <span
+                        className={"block w-2 h-2 rounded-full bg-blue-400"}
+                      />
+                      Recu
+                    </div>
+                  )}
+                  {item.status === "a_commander" && (
+                    <div className="flex gap-3 items-center">
+                      <span
+                        className={"block w-2 h-2 rounded-full bg-red-400"}
+                      />
+                      A commander
+                    </div>
+                  )}
+                  {item.status === "commande" && (
+                    <div className="flex gap-3 items-center">
+                      <span
+                        className={"block w-2 h-2 rounded-full bg-yellow-500"}
+                      />
+                      Commandé
+                    </div>
+                  )}
+                </TableCell>
+                <TableCell className="text-right">
+                  <Link href={`/cmd/cahier/${item.number}`}>Voir Détails</Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </>
+        }
+        tableHeaders={orderTableHeaders}
+        headerClassnames="first:w-[150px]"
+      />
     </MainPage>
   );
 };

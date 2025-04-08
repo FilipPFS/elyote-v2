@@ -14,18 +14,19 @@ import { tableHeader } from "@/types";
 type Props = {
   tableBody: React.ReactNode;
   tableHeaders: tableHeader[];
+  headerClassnames?: string;
 };
 
-const TableExample = ({ tableBody, tableHeaders }: Props) => {
+const TableExample = ({ tableBody, tableHeaders, headerClassnames }: Props) => {
   return (
-    <div>
+    <div className="hidden lg:block bg-white p-3">
       <Table className="bg-white rounded-md">
         <TableHeader>
           <TableRow>
             {tableHeaders.map((header, index) => (
               <TableHead
                 key={index}
-                className={"font-semibold first:w-[150px] last:text-right"}
+                className={clsx("font-semibold", headerClassnames)}
               >
                 <div
                   className={clsx("flex items-center gap-2", header.classNames)}

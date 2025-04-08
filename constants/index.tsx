@@ -194,6 +194,13 @@ export const orderTableHeaders: tableHeader[] = [
   { label: "Action", icon: <FiSearch />, classNames: "justify-end" }, // Align right for Action
 ];
 
+export const passwordTableHeaders: tableHeader[] = [
+  { label: "Site/Outil", icon: <FaBarcode /> },
+  { label: "Login", icon: <FiUser /> },
+  { label: "Niveau d'accès", icon: <FaRegCalendar /> },
+  { label: "Action", icon: <FiSearch /> }, // Align right for Action
+];
+
 export const orderTableFilters = [
   {
     label: "Numéro",

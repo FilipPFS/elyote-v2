@@ -47,3 +47,14 @@ export function removeKeysFromQuery({
     { skipNull: true }
   );
 }
+
+export const accessLevel = (level: number): string => {
+  let item = "";
+
+  if (level === 0) item = "Tout Public";
+  else if (level === 1) item = "Manager";
+  else if (level === 2) item = "Direction";
+  else item = "Inconnu";
+
+  return item;
+};
