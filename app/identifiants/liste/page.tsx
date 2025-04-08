@@ -3,7 +3,7 @@ import MobileCard from "@/components/Mobile/MobileCard";
 import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { passwordTableHeaders } from "@/constants";
-import { getPasswords } from "@/lib/actions";
+import { getPasswords } from "@/lib/actions/actions.password";
 import { accessLevel } from "@/lib/utils";
 import { PasswordData } from "@/types";
 import Link from "next/link";
@@ -29,7 +29,9 @@ const IdentifiantsListe = async () => {
                     <TableCell>{item.login}</TableCell>
                     <TableCell>{accessLevel(item.access_level)}</TableCell>
                     <TableCell>
-                      <Link href={`/cmd/cahier/${item.id}`}>Voir Détails</Link>
+                      <Link href={`/identifiants/liste/${item.id}`}>
+                        Voir Détails
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))}

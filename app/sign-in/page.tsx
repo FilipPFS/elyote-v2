@@ -1,6 +1,6 @@
 import ElButton from "@/components/custom/ElButton";
 import ElInput from "@/components/custom/ElInput";
-import { getToken, signIn } from "@/lib/actions";
+import { getToken, signIn } from "@/lib/actions/actions.global";
 import { redirect } from "next/navigation";
 
 import React from "react";
