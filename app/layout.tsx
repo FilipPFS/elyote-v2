@@ -6,7 +6,7 @@ import MobileHeader from "@/components/Mobile/MobileHeader";
 import MobileFooter from "@/components/Mobile/MobileFooter";
 import Header from "@/components/Header";
 import { UserProvider } from "@/context/UserContext";
-import { Toaster } from "@/components/ui/sonner";
+import { ToastContainer } from "react-toastify";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -37,7 +37,11 @@ export default function RootLayout({
               {children}
             </main>
             <MobileFooter />
-            <Toaster />
+            <ToastContainer
+              position="bottom-right"
+              autoClose={4000}
+              theme="colored"
+            />
           </div>
         </UserProvider>
       </body>

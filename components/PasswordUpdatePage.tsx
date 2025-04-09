@@ -5,7 +5,7 @@ import React, { useActionState, useEffect } from "react";
 import PasswordForm from "./PasswordForm";
 import { useRouter } from "next/navigation";
 import { updatePassword } from "@/lib/actions/actions.password";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 
 type Props = {
   passwordData?: PasswordData;
@@ -25,11 +25,16 @@ const PasswordUpdatePage = ({ passwordData }: Props) => {
       toast.error(`Erreur: ${state.error.toString()}`);
     }
     if (errors) {
-      Object.entries(errors).forEach(([messages]) => {
+      for (const key in errors) {
+        const messages = errors[key];
         if (Array.isArray(messages)) {
-          messages.forEach((msg) => toast.error(msg));
+          messages.forEach((msg) =>
+            toast.error(msg, {
+              className: "bg-amber-700 text-white",
+            })
+          );
         }
-      });
+      }
     }
   }, [state, router]);
 

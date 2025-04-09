@@ -4,7 +4,7 @@ import PasswordForm from "@/components/PasswordForm";
 import { addNewPassword } from "@/lib/actions/actions.password";
 import { useRouter } from "next/navigation";
 import React, { useActionState, useEffect } from "react";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 
 const IdentifiantsAjout = () => {
   const [state, action, isPending] = useActionState(addNewPassword, {});
@@ -12,19 +12,27 @@ const IdentifiantsAjout = () => {
 
   useEffect(() => {
     const { errors } = state;
+
     if (state.success) {
       router.push("/identifiants/liste");
       toast.success("Votre identifiant a été ajouté avec succès.");
     }
     if (state.error) {
-      toast.error(`Erreur: ${state.error.toString()}`);
+      toast.error(`Erreur: ${state.error.toString()}`, {
+        className: "bg-amber-700 text-white",
+      });
     }
     if (errors) {
-      Object.entries(errors).forEach(([messages]) => {
+      for (const key in errors) {
+        const messages = errors[key];
         if (Array.isArray(messages)) {
-          messages.forEach((msg) => toast.error(msg));
+          messages.forEach((msg) =>
+            toast.error(msg, {
+              className: "bg-amber-700 text-white",
+            })
+          );
         }
-      });
+      }
     }
   }, [state, router]);
 

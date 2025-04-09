@@ -217,6 +217,45 @@ export const getPasswords = async () => {
   }
 };
 
+export const getPasswordsFromQuery = async (query: string) => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.log("Token expiré.");
+      return;
+    }
+
+    const res = await axios.get(
+      `${process.env.base_url}/api/password/127/search?keywords=${query}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "api-key": process.env.api_key,
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => {
+          return status >= 200 && status < 500;
+        },
+      }
+    );
+
+    console.log("status", res.status);
+
+    if (res.status === 200) {
+      return res.data;
+    } else if (res.status === 404) {
+      console.log("Query not found");
+    } else {
+      console.log("Unexpected status:", res.status);
+      return null;
+    }
+  } catch (error: unknown) {
+    console.error("Unexpected error:", error);
+    return null;
+  }
+};
+
 export const getSinglePassword = async (id: string) => {
   try {
     const token = await getToken();

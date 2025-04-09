@@ -1,21 +1,35 @@
 import MainPage from "@/components/Mobile/MainPage";
 import MobileCard from "@/components/Mobile/MobileCard";
+import Search from "@/components/Search";
 import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { passwordTableHeaders } from "@/constants";
-import { getPasswords } from "@/lib/actions/actions.password";
+import { getPasswordsFromQuery } from "@/lib/actions/actions.password";
 import { accessLevel } from "@/lib/utils";
-import { PasswordData } from "@/types";
+import { PasswordData, SearchParamProps } from "@/types";
 import Link from "next/link";
 import React from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
-const IdentifiantsListe = async () => {
-  const data: { passwords: PasswordData[] } = await getPasswords();
+const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
+  const awaitedSearchParams = await searchParams;
+  const query = (awaitedSearchParams.query as string) || "";
+  const data: { passwords: PasswordData[] } = await getPasswordsFromQuery(
+    query
+  );
   const passwords = data?.passwords;
 
   return (
-    <MainPage title="Gestion D'identifiants">
+    <MainPage
+      title="Gestion D'identifiants"
+      headerElement={
+        <Search
+          component="identifiants"
+          placeholder="Rechercher sur les identifiants..."
+          classNames="w-2/4"
+        />
+      }
+    >
       <TableExample
         tableHeaders={passwordTableHeaders}
         headerClassnames="w-1/4"

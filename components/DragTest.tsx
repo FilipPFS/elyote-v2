@@ -8,7 +8,7 @@ import Sav from "./Sav";
 import BalisageBlock from "./BalisageBlock";
 import { SlCursorMove } from "react-icons/sl";
 import { FaCheck } from "react-icons/fa6";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 import { UserSettings } from "@/types";
 
 const DragTest = () => {
@@ -100,7 +100,7 @@ const DragTest = () => {
       );
       console.log("parametres_utilisateurs saved:", updatedParametres);
 
-      toast("La sélection a été modifiée avec succès.");
+      toast.success("La sélection a été modifiée avec succès.");
       setFirstChange(false);
     }
   };

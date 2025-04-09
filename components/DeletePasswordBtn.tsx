@@ -3,7 +3,7 @@
 import { deleteSinglePassword } from "@/lib/actions/actions.password";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 import CustomSpinner from "./custom/Spinner";
 
 type Props = {
