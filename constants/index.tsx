@@ -14,22 +14,22 @@ import { tableHeader } from "@/types";
 export const navItems = [
   {
     link: "/",
-    label: "Dashboard",
+    labelKey: "dashboard", // Use a key instead of "Dashboard"
     subLinks: [],
     icon: <RxDashboard />,
   },
   {
     link: "/cartes-copies",
-    label: "Cartes Copies",
+    labelKey: "cartesCopies",
     subLinks: [
-      { label: "Liste des cartes", link: "/cartes-copies/liste" },
-      { label: "Ajouter une carte", link: "/cartes-copies/ajout" },
+      { labelKey: "cartesCopies_list", link: "/cartes-copies/liste" },
+      { labelKey: "cartesCopies_add", link: "/cartes-copies/ajout" },
       {
-        label: "Caisse de l’espace service",
+        labelKey: "cartesCopies_serviceDesk",
         link: "/cartes-copies/espaces-service",
       },
       {
-        label: "Simply Copie - Compteur des copies",
+        labelKey: "cartesCopies_simplyCopy",
         link: "/cartes-copies/simplycopy",
       },
     ],
@@ -37,90 +37,93 @@ export const navItems = [
   },
   {
     link: "/bmi",
-    label: "Espace BMI",
+    labelKey: "bmi",
     subLinks: [
-      { label: "Rachat Livre de police", link: "/bmi/livre-de-police" },
-      { label: "Rachat Cartouche", link: "/bmi/retour/cartouche" },
-      { label: "Retour Produit", link: "/bmi/retour/produit" },
-      { label: "Comparatif d’imprimantes et conso", link: "/bmi/comparatif" },
-      { label: "Assistant à la commande d’articles BI", link: "/bmi/cmd-bi" },
+      { labelKey: "bmi_policeBook", link: "/bmi/livre-de-police" },
+      { labelKey: "bmi_cartridgeReturn", link: "/bmi/retour/cartouche" },
+      { labelKey: "bmi_productReturn", link: "/bmi/retour/produit" },
+      { labelKey: "bmi_printerComparison", link: "/bmi/comparatif" },
+      { labelKey: "bmi_biOrderAssistant", link: "/bmi/cmd-bi" },
     ],
     icon: <RiComputerLine />,
   },
   {
     link: "/balisage",
-    label: "Balisage",
+    labelKey: "balisage",
     subLinks: [],
     icon: <RiGalleryLine />,
   },
   {
     link: "/communication",
-    label: "Contact Client",
+    labelKey: "communication",
     subLinks: [
-      { label: "Gestion Contact", link: "/communication/liste" },
-      { label: "SMS", link: "/communication/sms" },
-      { label: "Tel", link: "/communication/tel" },
-      { label: "Email", link: "/communication/email" },
+      { labelKey: "communication_manage", link: "/communication/liste" },
+      { labelKey: "communication_sms", link: "/communication/sms" },
+      { labelKey: "communication_phone", link: "/communication/tel" },
+      { labelKey: "communication_email", link: "/communication/email" },
     ],
     icon: <FiSmartphone />,
   },
   {
     link: "/identifiants",
-    label: "Identifiants",
+    labelKey: "identifiants",
     subLinks: [
-      { label: "Liste des identifiants", link: "/identifiants/liste" },
-      { label: "Ajouter un identifiant", link: "/identifiants/ajout" },
+      { labelKey: "identifiants_list", link: "/identifiants/liste" },
+      { labelKey: "identifiants_add", link: "/identifiants/ajout" },
     ],
     icon: <GiSpy />,
   },
   {
     link: "/repertoire",
-    label: "Répertoire",
+    labelKey: "repertoire",
     subLinks: [
-      { label: "Liste des contacts", link: "/repertoire/liste" },
-      { label: "Ajouter un contact", link: "/repertoire/ajout" },
+      { labelKey: "repertoire_list", link: "/repertoire/liste" },
+      { labelKey: "repertoire_add", link: "/repertoire/ajout" },
     ],
     icon: <LuIdCard />,
   },
   {
     link: "/sav",
-    label: "SAV",
+    labelKey: "sav",
     subLinks: [],
     icon: <FiTool />,
   },
   {
     link: "/parc-materiel",
-    label: "Parc Matériel",
+    labelKey: "parcMateriel",
     subLinks: [
-      { label: "Liste du matériel", link: "/parc-materiel/liste" },
-      { label: "Ajouter un matériel", link: "/parc-materiel/ajout" },
+      { labelKey: "parcMateriel_list", link: "/parc-materiel/liste" },
+      { labelKey: "parcMateriel_add", link: "/parc-materiel/ajout" },
     ],
     icon: <LuPrinter />,
   },
   {
     link: "/locations",
-    label: "Location",
+    labelKey: "locations",
     subLinks: [
-      { label: "Liste des locations", link: "/locations/liste" },
-      { label: "Ajouter une location", link: "/locations/ajout" },
+      { labelKey: "locations_list", link: "/locations/liste" },
+      { labelKey: "locations_add", link: "/locations/ajout" },
     ],
     icon: <GrCubes />,
   },
   {
     link: "/cmd",
-    label: "Commandes",
+    labelKey: "commandes",
     subLinks: [
-      { label: "Cahier des commandes", link: "/cmd/cahier" },
-      { label: "Commandes Listes Scolaires", link: "/cmd/rdc-liste" },
-      { label: "Commandes Click & Collect", link: "/cmd/click-collect-liste" },
-      { label: "Commandes Espaces Services", link: "/cmd/print-liste" },
-      { label: "Colis & Expéditions", link: "/cmd/colis" },
+      { labelKey: "commandes_orderBook", link: "/cmd/cahier" },
+      { labelKey: "commandes_schoolLists", link: "/cmd/rdc-liste" },
+      {
+        labelKey: "commandes_clickCollect",
+        link: "/cmd/click-collect-liste",
+      },
+      { labelKey: "commandes_serviceSpaces", link: "/cmd/print-liste" },
+      { labelKey: "commandes_shipping", link: "/cmd/colis" },
     ],
     icon: <FaBarcode />,
   },
   {
     link: "/outils",
-    label: "Outils",
+    labelKey: "outils",
     subLinks: [],
     icon: <PiBag />,
   },
@@ -195,10 +198,10 @@ export const orderTableHeaders: tableHeader[] = [
 ];
 
 export const passwordTableHeaders: tableHeader[] = [
-  { label: "Site/Outil", icon: <FaBarcode /> },
-  { label: "Login", icon: <FiUser /> },
-  { label: "Niveau d'accès", icon: <FaRegCalendar /> },
-  { label: "Action", icon: <FiSearch /> }, // Align right for Action
+  { label: "site", icon: <FaBarcode /> },
+  { label: "login", icon: <FiUser /> },
+  { label: "access", icon: <FaRegCalendar /> },
+  { label: "action", icon: <FiSearch /> }, // Align right for Action
 ];
 
 export const orderTableFilters = [

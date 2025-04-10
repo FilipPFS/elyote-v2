@@ -1,0 +1,21 @@
+{
+  "credentials": {
+    "title": "Gestionnaire d'identifiants",
+    "searchPlaceholder": "Rechercher sur les identifiants...",
+    "seeDetails": "Voir Détails",
+    "noData": "Données non disponible.",
+    "login": "Login",
+    "access": "Accès",
+    "headers": {
+      "site": "Site/Outil",
+      "login": "Login",
+      "access": "Niveau d'accès",
+      "action": "Action"
+    },
+    "accessLevel": {
+      "public": "Tout Public",
+      "manager": "Manager",
+      "direction": "Direction"
+    }
+  }
+}

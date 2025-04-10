@@ -4,6 +4,7 @@ import Image from "next/image";
 import { GoBell } from "react-icons/go";
 import Link from "next/link";
 import MobileSidebar from "./MobileSidebar";
+import LanguageSwitcher from "../LanguageSwitcher";
 
 const MobileHeader = () => {
   return (
@@ -13,13 +14,16 @@ const MobileHeader = () => {
         <Image
           src={"/logo_mobile.png"}
           alt="mobile logo"
-          width={150}
-          height={150}
+          width={120}
+          height={120}
         />
       </Link>
-      <button>
-        <GoBell size={35} />
-      </button>
+      <div className="flex gap-3 items-center">
+        <button>
+          <GoBell size={30} />
+        </button>
+        <LanguageSwitcher />
+      </div>
     </div>
   );
 };

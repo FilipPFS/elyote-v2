@@ -9,6 +9,7 @@ import CartContent from "./CartContent";
 import AccountContent from "./AccountContent";
 import ScanContent from "./ScanContent";
 import { cartData } from "@/constants/data";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const HeaderActionList = () => {
   return (
@@ -55,6 +56,7 @@ const HeaderActionList = () => {
         icon={<FiUser size={25} />}
         customContent={<AccountContent />}
       />
+      <LanguageSwitcher />
     </div>
   );
 };

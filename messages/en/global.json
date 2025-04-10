@@ -1,0 +1,21 @@
+{
+  "credentials": {
+    "title": "Credentials Manager",
+    "searchPlaceholder": "Search through credentials...",
+    "seeDetails": "View Details",
+    "noData": "No data available.",
+    "login": "Login",
+    "access": "Access",
+    "headers": {
+      "site": "Site/Tool",
+      "login": "Login",
+      "access": "Access Level",
+      "action": "Action"
+    },
+    "accessLevel": {
+      "public": "Public",
+      "manager": "Manager",
+      "direction": "Executive"
+    }
+  }
+}

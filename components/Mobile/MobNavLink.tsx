@@ -1,6 +1,7 @@
 "use client";
 
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { Dispatch, JSX, SetStateAction } from "react";
@@ -9,8 +10,11 @@ import { IoIosArrowDown } from "react-icons/io";
 type Props = {
   item: {
     link: string;
-    label: string;
-    subLinks: { label: string; link: string }[];
+    labelKey: string;
+    subLinks: {
+      labelKey: string;
+      link: string;
+    }[];
     icon: JSX.Element;
   };
   setIsVisible: Dispatch<SetStateAction<boolean>>;
@@ -28,10 +32,10 @@ const MobNavLink = ({
   const firstSegment = `/${pathname.split("/")[1]}`;
   const activePath = pathname === item.link || firstSegment === item.link;
 
-  const isOpen = activeSubmenu === item.label;
+  const isOpen = activeSubmenu === item.labelKey;
 
   const handleSetLink = () => {
-    setActiveSubmenu(isOpen ? null : item.label);
+    setActiveSubmenu(isOpen ? null : item.labelKey);
   };
 
   const handleVisibility = () => {
@@ -39,10 +43,12 @@ const MobNavLink = ({
     setActiveSubmenu(null);
   };
 
+  const t = useTranslations("sidebar");
+
   return item.subLinks.length > 0 ? (
     <div className="relative w-full flex flex-col items-center">
       <div
-        key={item.label}
+        key={item.labelKey}
         className={clsx(
           "flex items-center w-full rounded-md group transition-all duration-500 cursor-pointer justify-start gap-4"
         )}
@@ -64,7 +70,7 @@ const MobNavLink = ({
             activePath && "text-blue-800"
           )}
         >
-          {item.label}
+          {t(item.labelKey)}
         </span>
         <span>
           <IoIosArrowDown
@@ -77,11 +83,11 @@ const MobNavLink = ({
           {item.subLinks.map((subLink) => (
             <Link
               className="text-[15px] ml-2.5 font-semibold hover:text-blue-800"
-              key={subLink.label}
+              key={subLink.labelKey}
               href={subLink.link}
               onClick={handleVisibility}
             >
-              {subLink.label}
+              {t(subLink.labelKey)}
             </Link>
           ))}
         </div>
@@ -89,7 +95,7 @@ const MobNavLink = ({
     </div>
   ) : (
     <Link
-      key={item.label}
+      key={item.labelKey}
       href={item.link}
       onClick={handleVisibility}
       className={clsx(
@@ -110,7 +116,7 @@ const MobNavLink = ({
           activePath && "text-blue-800 font-semibold"
         )}
       >
-        {item.label}
+        {t(item.labelKey)}
       </span>
     </Link>
   );

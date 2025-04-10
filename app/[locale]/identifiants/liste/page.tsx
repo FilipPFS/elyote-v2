@@ -7,8 +7,9 @@ import { passwordTableHeaders } from "@/constants";
 import { getPasswordsFromQuery } from "@/lib/actions/actions.password";
 import { accessLevel } from "@/lib/utils";
 import { PasswordData, SearchParamProps } from "@/types";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
@@ -19,15 +20,19 @@ const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
   );
   const passwords = data?.passwords;
 
+  const t = await getTranslations("global.credentials");
+
   return (
     <MainPage
-      title="Gestion D'identifiants"
+      title={t("title")}
       headerElement={
-        <Search
-          component="identifiants"
-          placeholder="Rechercher sur les identifiants..."
-          classNames="w-2/4"
-        />
+        <Suspense fallback={null}>
+          <Search
+            component="identifiants"
+            placeholder={t("searchPlaceholder")}
+            classNames="w-full sm:w-2/4"
+          />
+        </Suspense>
       }
     >
       <TableExample
@@ -41,10 +46,13 @@ const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{item.site}</TableCell>
                     <TableCell>{item.login}</TableCell>
-                    <TableCell>{accessLevel(item.access_level)}</TableCell>
+                    <TableCell>
+                      {" "}
+                      {t(`accessLevel.${accessLevel(item.access_level)}`)}
+                    </TableCell>
                     <TableCell>
                       <Link href={`/identifiants/liste/${item.id}`}>
-                        Voir Détails
+                        {t("seeDetails")}
                       </Link>
                     </TableCell>
                   </TableRow>
@@ -53,7 +61,7 @@ const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
             ) : (
               <>
                 <TableRow>
-                  <TableCell>Données non disponible.</TableCell>
+                  <TableCell>{t("noData")}</TableCell>
                 </TableRow>
               </>
             )}
@@ -74,12 +82,13 @@ const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
                   </section>
                   <section className="flex justify-between items-center">
                     <span>
-                      Login: <span className="font-semibold">{item.login}</span>
+                      {t("login")}:{" "}
+                      <span className="font-semibold">{item.login}</span>
                     </span>
                     <span>
-                      Accès:{" "}
+                      {t("access")}:{" "}
                       <span className="font-semibold">
-                        {accessLevel(item.access_level)}
+                        {t(`accessLevel.${accessLevel(item.access_level)}`)}
                       </span>
                     </span>
                   </section>
@@ -89,7 +98,7 @@ const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
           </>
         ) : (
           <>
-            <p>Données non disponible.</p>
+            <p>{t("noData")}</p>
           </>
         )}
       </div>

@@ -8,12 +8,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type Props = {
   item: {
     link: string;
-    label: string;
-    subLinks: { label: string; link: string }[];
+    labelKey: string;
+    subLinks: {
+      labelKey: string;
+      link: string;
+    }[];
     icon: JSX.Element;
   };
   expanded: boolean;
@@ -32,10 +36,11 @@ const NavLink = ({
   const pathname = usePathname();
   const firstSegment = `/${pathname.split("/")[1]}`;
   const activePath = pathname === item.link || firstSegment === item.link;
-  const isDropdownOpen = activeDropdown === item.label;
+  const isDropdownOpen = activeDropdown === item.labelKey;
+  const t = useTranslations("sidebar");
 
   const handleSetLink = () => {
-    setActiveDropdown(isDropdownOpen ? null : item.label); // Close if already open
+    setActiveDropdown(isDropdownOpen ? null : item.labelKey); // Close if already open
   };
 
   const handleVisibility = () => {
@@ -46,7 +51,7 @@ const NavLink = ({
   return item.subLinks.length > 0 ? (
     <div className="relative w-full flex flex-col items-center">
       <div
-        key={item.label}
+        key={item.labelKey}
         className={clsx(
           "flex items-center w-full rounded-md group transition-all duration-500 cursor-pointer",
           expanded ? "justify-start gap-4" : "justify-center"
@@ -72,10 +77,10 @@ const NavLink = ({
                 {item.subLinks.map((subLink) => (
                   <Link
                     className="text-[11px] font-bold transition-all duration-500 hover:text-blue-800"
-                    key={subLink.label}
+                    key={subLink.labelKey}
                     href={subLink.link}
                   >
-                    {subLink.label}
+                    {t(subLink.labelKey)}
                   </Link>
                 ))}
               </div>
@@ -101,7 +106,7 @@ const NavLink = ({
             "group-hover:text-blue-800 group-hover:font-semibold"
           )}
         >
-          {item.label}
+          {t(item.labelKey)}
         </span>
         {expanded && (
           <IoIosArrowDown
@@ -117,11 +122,11 @@ const NavLink = ({
           {item.subLinks.map((subLink) => (
             <Link
               className="text-[12px] ml-2.5 font-semibold hover:text-blue-800"
-              key={subLink.label}
+              key={subLink.labelKey}
               href={subLink.link}
               onClick={handleVisibility}
             >
-              {subLink.label}
+              {t(subLink.labelKey)}
             </Link>
           ))}
         </div>
@@ -129,7 +134,7 @@ const NavLink = ({
     </div>
   ) : (
     <Link
-      key={item.label}
+      key={item.labelKey}
       href={item.link}
       onClick={handleVisibility}
       className={clsx(
@@ -153,7 +158,7 @@ const NavLink = ({
           "group-hover:text-blue-800"
         )}
       >
-        {item.label}
+        {t(item.labelKey)}
       </span>
     </Link>
   );

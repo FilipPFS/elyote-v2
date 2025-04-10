@@ -19,7 +19,7 @@ const MobileSidebar = () => {
   return (
     <Sheet open={isVisible} onOpenChange={setIsVisible}>
       <SheetTrigger>
-        <HiBars3 size={35} />
+        <HiBars3 size={30} />
       </SheetTrigger>
       <SheetContent side="left" className="p-4 pt-6">
         <SheetTitle hidden>Mobile Navigation Sidebar</SheetTitle>
@@ -28,7 +28,7 @@ const MobileSidebar = () => {
         </SheetDescription>
         {navItems.map((item) => (
           <MobNavLink
-            key={item.label}
+            key={item.labelKey}
             item={item}
             setIsVisible={setIsVisible}
             activeSubmenu={activeSubmenu}

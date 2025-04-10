@@ -49,12 +49,12 @@ export function removeKeysFromQuery({
 }
 
 export const accessLevel = (level: number): string => {
-  let item = "";
+  let key = "";
 
-  if (level === 0) item = "Tout Public";
-  else if (level === 1) item = "Manager";
-  else if (level === 2) item = "Direction";
-  else item = "Inconnu";
+  if (level === 0) key = "public";
+  else if (level === 1) key = "manager";
+  else if (level === 2) key = "direction";
+  else key = "Inconnu";
 
-  return item;
+  return key;
 };

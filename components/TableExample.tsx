@@ -10,6 +10,7 @@ import {
 
 import clsx from "clsx";
 import { tableHeader } from "@/types";
+import { useTranslations } from "next-intl";
 
 type Props = {
   tableBody: React.ReactNode;
@@ -18,6 +19,8 @@ type Props = {
 };
 
 const TableExample = ({ tableBody, tableHeaders, headerClassnames }: Props) => {
+  const t = useTranslations("global.credentials");
+
   return (
     <div className="hidden lg:block bg-white p-3">
       <Table className="bg-white rounded-md">
@@ -32,7 +35,7 @@ const TableExample = ({ tableBody, tableHeaders, headerClassnames }: Props) => {
                   className={clsx("flex items-center gap-2", header.classNames)}
                 >
                   {header.icon}
-                  {header.label}
+                  {t(`headers.${header.label}`)}
                 </div>
               </TableHead>
             ))}

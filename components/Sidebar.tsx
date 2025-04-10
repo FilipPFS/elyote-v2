@@ -41,7 +41,7 @@ const Sidebar = () => {
 
         {navItems.map((item) => (
           <NavLink
-            key={item.label}
+            key={item.labelKey}
             item={item}
             expanded={expanded}
             setExpanded={setExpanded}
