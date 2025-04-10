@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import Link from "next/link";
 import React, { Dispatch, JSX, SetStateAction } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import {
@@ -7,8 +6,9 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 type Props = {
   item: {

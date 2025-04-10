@@ -4,7 +4,7 @@ import Search from "@/components/Search";
 import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { passwordTableHeaders } from "@/constants";
-import { getPasswordsFromQuery } from "@/lib/actions/actions.password";
+import { getCredentialsFromQuery } from "@/lib/actions/actions.credentials";
 import { accessLevel } from "@/lib/utils";
 import { PasswordData, SearchParamProps } from "@/types";
 import { getTranslations } from "next-intl/server";
@@ -15,7 +15,7 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
   const awaitedSearchParams = await searchParams;
   const query = (awaitedSearchParams.query as string) || "";
-  const data: { passwords: PasswordData[] } = await getPasswordsFromQuery(
+  const data: { passwords: PasswordData[] } = await getCredentialsFromQuery(
     query
   );
   const passwords = data?.passwords;

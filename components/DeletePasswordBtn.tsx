@@ -1,10 +1,10 @@
 "use client";
 
-import { deleteSinglePassword } from "@/lib/actions/actions.password";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import CustomSpinner from "./custom/Spinner";
+import { deleteSingleCredential } from "@/lib/actions/actions.credentials";
+import { useRouter } from "next/navigation";
 
 type Props = {
   id: string;
@@ -18,7 +18,7 @@ const DeletePasswordBtn = ({ id }: Props) => {
   const handleSubmit = async (id: string) => {
     setIsSubmitting(true);
 
-    const res = await deleteSinglePassword(id);
+    const res = await deleteSingleCredential(id);
 
     if (res?.success) {
       router.push("/identifiants/liste");

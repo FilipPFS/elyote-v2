@@ -1,13 +1,13 @@
 "use client";
 
 import PasswordForm from "@/components/PasswordForm";
-import { addNewPassword } from "@/lib/actions/actions.password";
+import { addNewCredential } from "@/lib/actions/actions.credentials";
 import { useRouter } from "next/navigation";
 import React, { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 const IdentifiantsAjout = () => {
-  const [state, action, isPending] = useActionState(addNewPassword, {});
+  const [state, action, isPending] = useActionState(addNewCredential, {});
   const router = useRouter();
 
   useEffect(() => {

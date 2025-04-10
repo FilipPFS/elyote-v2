@@ -1,5 +1,5 @@
 import PasswordUpdatePage from "@/components/PasswordUpdatePage";
-import { getSinglePassword } from "@/lib/actions/actions.password";
+import { getSingleCredential } from "@/lib/actions/actions.credentials";
 import { PasswordData } from "@/types";
 import Link from "next/link";
 import React from "react";
@@ -10,7 +10,7 @@ type Props = {
 const IdentifiantsListeItem = async ({ params }: Props) => {
   const { id } = await params;
 
-  const singlePasswordData: PasswordData | null = await getSinglePassword(id);
+  const singlePasswordData: PasswordData | null = await getSingleCredential(id);
 
   if (!singlePasswordData) {
     return (

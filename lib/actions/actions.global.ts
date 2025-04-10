@@ -1,9 +1,14 @@
 "use server";
 
-import axios from "axios";
 import { cookies } from "next/headers";
+import { apiClient } from "../axios";
 
-export const signIn = async (formData: FormData) => {
+type SignInType = { success: boolean; error?: string };
+
+export const signIn = async (
+  prevState: SignInType,
+  formData: FormData
+): Promise<SignInType> => {
   try {
     const data = {
       username: formData.get("username"),
@@ -11,34 +16,30 @@ export const signIn = async (formData: FormData) => {
       password: formData.get("password"),
     };
 
-    const res = await axios.post(`${process.env.base_url}/api/token`, data, {
-      headers: {
-        "Content-Type": "application/json",
-        "api-key": process.env.api_key,
-      },
-    });
+    const res = await apiClient.post("/api/token", data);
 
     if (res.status === 200) {
       const accessToken = res.data.access_token;
 
       const cookieStore = await cookies();
-
       cookieStore.set("token", accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        maxAge: 60 * 60 * 24,
+        maxAge: 60 * 60, // 1 hour
+        sameSite: "strict",
         path: "/",
       });
 
-      cookieStore.set("id_bv", String(data.user_id), {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 60 * 60,
-        path: "/",
-      });
+      return { success: true };
+    } else {
+      return { success: false, error: "Invalid response status" };
     }
   } catch (error) {
-    console.log(error);
+    console.error("Error during sign in:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Sign-in failed",
+    };
   }
 };
 

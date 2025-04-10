@@ -1,6 +1,6 @@
 "use client";
 import { formUrlQuery } from "@/lib/utils";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const FilterButton = ({
   label,

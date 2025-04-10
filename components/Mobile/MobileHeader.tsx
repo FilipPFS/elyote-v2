@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { GoBell } from "react-icons/go";
-import Link from "next/link";
 import MobileSidebar from "./MobileSidebar";
 import LanguageSwitcher from "../LanguageSwitcher";
+import Link from "next/link";
 
 const MobileHeader = () => {
   return (

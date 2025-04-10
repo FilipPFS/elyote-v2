@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { newPasswordValidation } from "../validation";
 import { getToken } from "./actions.global";
 import axios from "axios";
+import { apiClient } from "../axios";
 
 export interface PostResponse {
   success?: boolean;
@@ -11,7 +12,7 @@ export interface PostResponse {
   message?: string;
 }
 
-export const addNewPassword = async (
+export const addNewCredential = async (
   state: PostResponse,
   formData: FormData
 ): Promise<PostResponse> => {
@@ -42,13 +43,11 @@ export const addNewPassword = async (
       client_type: "bv",
     };
 
-    const res = await axios.post(
-      `${process.env.base_url}/api/password/create/127`,
+    const res = await apiClient.post(
+      `/api/password/create/127`,
       { data: postData },
       {
         headers: {
-          "Content-Type": "application/json",
-          "api-key": process.env.api_key,
           Authorization: `Bearer ${token}`,
         },
       }
@@ -88,7 +87,7 @@ export const addNewPassword = async (
   }
 };
 
-export const updatePassword = async (
+export const updateCredential = async (
   state: PostResponse,
   formData: FormData
 ): Promise<PostResponse> => {
@@ -135,13 +134,11 @@ export const updatePassword = async (
       `${process.env.base_url}/api/password/update/127/${id}`
     );
 
-    const res = await axios.post(
-      `${process.env.base_url}/api/password/update/127/${id}`,
+    const res = await apiClient.post(
+      `/api/password/update/127/${id}`,
       postData,
       {
         headers: {
-          "Content-Type": "application/json",
-          "api-key": process.env.api_key,
           Authorization: `Bearer ${token}`,
         },
       }
@@ -181,7 +178,7 @@ export const updatePassword = async (
   }
 };
 
-export const getPasswords = async () => {
+export const getCredentials = async () => {
   try {
     const token = await getToken();
 
@@ -217,7 +214,7 @@ export const getPasswords = async () => {
   }
 };
 
-export const getPasswordsFromQuery = async (query: string) => {
+export const getCredentialsFromQuery = async (query: string) => {
   try {
     const token = await getToken();
 
@@ -226,17 +223,13 @@ export const getPasswordsFromQuery = async (query: string) => {
       return;
     }
 
-    const res = await axios.get(
-      `${process.env.base_url}/api/password/127/search?keywords=${query}`,
+    const res = await apiClient.get(
+      `/api/password/127/search?keywords=${query}`,
       {
         headers: {
-          "Content-Type": "application/json",
-          "api-key": process.env.api_key,
           Authorization: `Bearer ${token}`,
         },
-        validateStatus: (status) => {
-          return status >= 200 && status < 500;
-        },
+        validateStatus: (status) => status >= 200 && status < 500,
       }
     );
 
@@ -256,7 +249,7 @@ export const getPasswordsFromQuery = async (query: string) => {
   }
 };
 
-export const getSinglePassword = async (id: string) => {
+export const getSingleCredential = async (id: string) => {
   try {
     const token = await getToken();
 
@@ -265,19 +258,12 @@ export const getSinglePassword = async (id: string) => {
       return null; // Return null or handle as needed
     }
 
-    const res = await axios.get(
-      `${process.env.base_url}/api/password/read-one/127/${id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "api-key": process.env.api_key,
-          Authorization: `Bearer ${token}`,
-        },
-        validateStatus: (status) => {
-          return status >= 200 && status < 500;
-        },
-      }
-    );
+    const res = await apiClient.get(`/api/password/read-one/127/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      validateStatus: (status) => status >= 200 && status < 500,
+    });
 
     console.log("status", res.status);
 
@@ -295,7 +281,7 @@ export const getSinglePassword = async (id: string) => {
   }
 };
 
-export const deleteSinglePassword = async (id: string) => {
+export const deleteSingleCredential = async (id: string) => {
   try {
     const token = await getToken();
 
@@ -304,13 +290,11 @@ export const deleteSinglePassword = async (id: string) => {
       return;
     }
 
-    const res = await axios.post(
-      `${process.env.base_url}/api/password/delete/127`,
+    const res = await apiClient.post(
+      `/api/password/delete/127`,
       { id },
       {
         headers: {
-          "Content-Type": "application/json",
-          "api-key": process.env.api_key,
           Authorization: `Bearer ${token}`,
         },
       }

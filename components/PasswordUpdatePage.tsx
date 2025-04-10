@@ -3,16 +3,16 @@
 import { PasswordData } from "@/types";
 import React, { useActionState, useEffect } from "react";
 import PasswordForm from "./PasswordForm";
-import { useRouter } from "next/navigation";
-import { updatePassword } from "@/lib/actions/actions.password";
 import { toast } from "react-toastify";
+import { updateCredential } from "@/lib/actions/actions.credentials";
+import { useRouter } from "next/navigation";
 
 type Props = {
   passwordData?: PasswordData;
 };
 
 const PasswordUpdatePage = ({ passwordData }: Props) => {
-  const [state, action, isPending] = useActionState(updatePassword, {});
+  const [state, action, isPending] = useActionState(updateCredential, {});
   const router = useRouter();
 
   useEffect(() => {
