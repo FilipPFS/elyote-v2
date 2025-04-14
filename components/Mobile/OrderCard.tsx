@@ -1,8 +1,8 @@
-import Link from "next/link";
 import React from "react";
 import { FiUser } from "react-icons/fi";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import MobileCard from "./MobileCard";
+import { Link } from "@/i18n/navigation";
 
 type Props = {
   item: {

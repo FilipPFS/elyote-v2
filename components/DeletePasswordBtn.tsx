@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import CustomSpinner from "./custom/Spinner";
 import { deleteSingleCredential } from "@/lib/actions/actions.credentials";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 
 type Props = {
   id: string;

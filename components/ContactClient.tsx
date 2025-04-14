@@ -2,7 +2,7 @@ import React from "react";
 import HomeBlock from "./HomeBlock";
 import Search from "./Search";
 import { contactList } from "@/constants";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 const ContactClient = () => {
   return (

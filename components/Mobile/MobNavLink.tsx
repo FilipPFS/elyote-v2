@@ -1,8 +1,8 @@
 "use client";
 
+import { Link } from "@/i18n/navigation";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { Dispatch, JSX, SetStateAction } from "react";
 import { IoIosArrowDown } from "react-icons/io";
@@ -34,6 +34,9 @@ const MobNavLink = ({
 
   const isOpen = activeSubmenu === item.labelKey;
 
+  const tGlobal = useTranslations("global");
+  const t = (key: string) => tGlobal(`sidebar.${key}`);
+
   const handleSetLink = () => {
     setActiveSubmenu(isOpen ? null : item.labelKey);
   };
@@ -42,8 +45,6 @@ const MobNavLink = ({
     setIsVisible(false);
     setActiveSubmenu(null);
   };
-
-  const t = useTranslations("sidebar");
 
   return item.subLinks.length > 0 ? (
     <div className="relative w-full flex flex-col items-center">

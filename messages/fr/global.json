@@ -1,21 +1,42 @@
 {
-  "credentials": {
-    "title": "Gestionnaire d'identifiants",
-    "searchPlaceholder": "Rechercher sur les identifiants...",
-    "seeDetails": "Voir Détails",
-    "noData": "Données non disponible.",
-    "login": "Login",
-    "access": "Accès",
-    "headers": {
-      "site": "Site/Outil",
-      "login": "Login",
-      "access": "Niveau d'accès",
-      "action": "Action"
-    },
-    "accessLevel": {
-      "public": "Tout Public",
-      "manager": "Manager",
-      "direction": "Direction"
-    }
+  "sidebar": {
+    "dashboard": "Tableau de bord",
+    "cartesCopies": "Cartes Copies",
+    "cartesCopies_list": "Liste des cartes",
+    "cartesCopies_add": "Ajouter une carte",
+    "cartesCopies_serviceDesk": "Caisse de l’espace service",
+    "cartesCopies_simplyCopy": "Simply Copie - Compteur des copies",
+    "bmi": "Espace BMI",
+    "bmi_policeBook": "Rachat Livre de police",
+    "bmi_cartridgeReturn": "Rachat Cartouche",
+    "bmi_productReturn": "Retour Produit",
+    "bmi_printerComparison": "Comparatif d’imprimantes et conso",
+    "bmi_biOrderAssistant": "Assistant à la commande d’articles BI",
+    "balisage": "Balisage",
+    "communication": "Contact Client",
+    "communication_manage": "Gestion Contact",
+    "communication_sms": "SMS",
+    "communication_phone": "Tel",
+    "communication_email": "Email",
+    "identifiants": "Identifiants",
+    "identifiants_list": "Liste des identifiants",
+    "identifiants_add": "Ajouter un identifiant",
+    "repertoire": "Répertoire",
+    "repertoire_list": "Liste des contacts",
+    "repertoire_add": "Ajouter un contact",
+    "sav": "SAV",
+    "parcMateriel": "Parc Matériel",
+    "parcMateriel_list": "Liste du matériel",
+    "parcMateriel_add": "Ajouter un matériel",
+    "locations": "Location",
+    "locations_list": "Liste des locations",
+    "locations_add": "Ajouter une location",
+    "commandes": "Commandes",
+    "commandes_orderBook": "Cahier des commandes",
+    "commandes_schoolLists": "Commandes Listes Scolaires",
+    "commandes_clickCollect": "Commandes Click & Collect",
+    "commandes_serviceSpaces": "Commandes Espaces Services",
+    "commandes_shipping": "Colis & Expéditions",
+    "outils": "Outils"
   }
 }

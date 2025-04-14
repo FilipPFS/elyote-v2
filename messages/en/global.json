@@ -1,21 +1,42 @@
 {
-  "credentials": {
-    "title": "Credentials Manager",
-    "searchPlaceholder": "Search through credentials...",
-    "seeDetails": "View Details",
-    "noData": "No data available.",
-    "login": "Login",
-    "access": "Access",
-    "headers": {
-      "site": "Site/Tool",
-      "login": "Login",
-      "access": "Access Level",
-      "action": "Action"
-    },
-    "accessLevel": {
-      "public": "Public",
-      "manager": "Manager",
-      "direction": "Executive"
-    }
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "cartesCopies": "Copy Cards",
+    "cartesCopies_list": "List of Cards",
+    "cartesCopies_add": "Add a Card",
+    "cartesCopies_serviceDesk": "Service Desk Cashier",
+    "cartesCopies_simplyCopy": "Simply Copy - Copy Counter",
+    "bmi": "BMI Space",
+    "bmi_policeBook": "Police Book Buyback",
+    "bmi_cartridgeReturn": "Cartridge Buyback",
+    "bmi_productReturn": "Product Return",
+    "bmi_printerComparison": "Printer and Consumables Comparison",
+    "bmi_biOrderAssistant": "BI Items Order Assistant",
+    "balisage": "Signage",
+    "communication": "Customer Contact",
+    "communication_manage": "Contact Management",
+    "communication_sms": "SMS",
+    "communication_phone": "Phone",
+    "communication_email": "Email",
+    "identifiants": "Identifiers",
+    "identifiants_list": "List of Identifiers",
+    "identifiants_add": "Add an Identifier",
+    "repertoire": "Directory",
+    "repertoire_list": "List of Contacts",
+    "repertoire_add": "Add a Contact",
+    "sav": "After-Sales Service",
+    "parcMateriel": "Equipment Park",
+    "parcMateriel_list": "List of Equipment",
+    "parcMateriel_add": "Add Equipment",
+    "locations": "Rentals",
+    "locations_list": "List of Rentals",
+    "locations_add": "Add a Rental",
+    "commandes": "Orders",
+    "commandes_orderBook": "Order Book",
+    "commandes_schoolLists": "School Supply Orders",
+    "commandes_clickCollect": "Click & Collect Orders",
+    "commandes_serviceSpaces": "Service Space Orders",
+    "commandes_shipping": "Packages & Shipments",
+    "outils": "Tools"
   }
 }

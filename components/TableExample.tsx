@@ -16,10 +16,16 @@ type Props = {
   tableBody: React.ReactNode;
   tableHeaders: tableHeader[];
   headerClassnames?: string;
+  translationsKey: string;
 };
 
-const TableExample = ({ tableBody, tableHeaders, headerClassnames }: Props) => {
-  const t = useTranslations("global.credentials");
+const TableExample = ({
+  tableBody,
+  tableHeaders,
+  headerClassnames,
+  translationsKey,
+}: Props) => {
+  const t = useTranslations(translationsKey);
 
   return (
     <div className="hidden lg:block bg-white p-3">
@@ -35,7 +41,7 @@ const TableExample = ({ tableBody, tableHeaders, headerClassnames }: Props) => {
                   className={clsx("flex items-center gap-2", header.classNames)}
                 >
                   {header.icon}
-                  {t(`headers.${header.label}`)}
+                  {t(`${header.label}`)}
                 </div>
               </TableHead>
             ))}

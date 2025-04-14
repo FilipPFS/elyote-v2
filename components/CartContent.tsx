@@ -1,8 +1,7 @@
 import { cartData } from "@/constants/data";
 import { calculateCartTotal } from "@/lib/utils";
-import Link from "next/link";
-import React from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { Link } from "@/i18n/navigation";
 
 type Props = {
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;

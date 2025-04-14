@@ -1,0 +1,10 @@
+{
+  "tableHeaders": {
+    "number": "Numéro",
+    "client": "Client",
+    "orderDate": "Date de commande",
+    "packageCount": "Nombre de colis",
+    "status": "Statut",
+    "action": "Action"
+  }
+}

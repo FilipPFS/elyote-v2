@@ -1,8 +1,8 @@
 "use client";
 
 import { scanData } from "@/constants";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 

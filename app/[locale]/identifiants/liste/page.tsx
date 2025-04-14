@@ -4,11 +4,11 @@ import Search from "@/components/Search";
 import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { passwordTableHeaders } from "@/constants";
+import { Link } from "@/i18n/navigation";
 import { getCredentialsFromQuery } from "@/lib/actions/actions.credentials";
 import { accessLevel } from "@/lib/utils";
 import { PasswordData, SearchParamProps } from "@/types";
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
 import React, { Suspense } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
@@ -20,7 +20,7 @@ const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
   );
   const passwords = data?.passwords;
 
-  const t = await getTranslations("global.credentials");
+  const t = await getTranslations("credentials");
 
   return (
     <MainPage
@@ -37,6 +37,7 @@ const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
     >
       <TableExample
         tableHeaders={passwordTableHeaders}
+        translationsKey="credentials.headers"
         headerClassnames="w-1/4"
         tableBody={
           <>

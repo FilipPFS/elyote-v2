@@ -37,7 +37,8 @@ const NavLink = ({
   const firstSegment = `/${pathname.split("/")[1]}`;
   const activePath = pathname === item.link || firstSegment === item.link;
   const isDropdownOpen = activeDropdown === item.labelKey;
-  const t = useTranslations("sidebar");
+  const tGlobal = useTranslations("global");
+  const t = (key: string) => tGlobal(`sidebar.${key}`);
 
   const handleSetLink = () => {
     setActiveDropdown(isDropdownOpen ? null : item.labelKey); // Close if already open

@@ -10,7 +10,9 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   const messages = {
     global: (await import(`@/messages/${locale}/global.json`)).default,
-    sidebar: (await import(`@/messages/${locale}/sidebar.json`)).default,
+    commandes: (await import(`@/messages/${locale}/commandes.json`)).default,
+    credentials: (await import(`@/messages/${locale}/credentials.json`))
+      .default,
   };
 
   return {

@@ -189,12 +189,12 @@ export const markingCards = Array.from({ length: 12 }, (_, i) => ({
 }));
 
 export const orderTableHeaders: tableHeader[] = [
-  { label: "Numéro", icon: <FaBarcode /> },
-  { label: "Client", icon: <FiUser /> },
-  { label: "Date de commande", icon: <FaRegCalendar /> },
-  { label: "Nombre de colis", icon: <BiCube /> },
-  { label: "Statut", icon: <FiTruck /> },
-  { label: "Action", icon: <FiSearch />, classNames: "justify-end" }, // Align right for Action
+  { label: "number", icon: <FaBarcode /> },
+  { label: "client", icon: <FiUser /> },
+  { label: "orderDate", icon: <FaRegCalendar /> },
+  { label: "packageCount", icon: <BiCube /> },
+  { label: "status", icon: <FiTruck /> },
+  { label: "action", icon: <FiSearch />, classNames: "justify-end" },
 ];
 
 export const passwordTableHeaders: tableHeader[] = [

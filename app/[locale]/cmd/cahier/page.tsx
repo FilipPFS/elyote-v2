@@ -6,8 +6,8 @@ import TableFilters from "@/components/TableFilters";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { orderTableHeaders } from "@/constants";
 import { orders } from "@/constants/data";
+import { Link } from "@/i18n/navigation";
 import { SearchParamProps } from "@/types";
-import Link from "next/link";
 import React from "react";
 import { FiPlus } from "react-icons/fi";
 import { RiFilterLine } from "react-icons/ri";
@@ -100,6 +100,7 @@ const CommandesCahier = async ({ searchParams }: SearchParamProps) => {
           </>
         }
         tableHeaders={orderTableHeaders}
+        translationsKey="commandes.tableHeaders"
         headerClassnames="first:w-[150px]"
       />
     </MainPage>
