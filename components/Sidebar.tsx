@@ -3,10 +3,10 @@
 import { navItems } from "@/constants";
 import clsx from "clsx";
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import NavLink from "./NavLink";
+import { Link } from "@/i18n/navigation";
 
 const Sidebar = () => {
   const [expanded, setExpanded] = useState(false);
