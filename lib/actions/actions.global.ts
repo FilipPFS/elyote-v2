@@ -11,10 +11,14 @@ export const signIn = async (
 ): Promise<SignInType> => {
   try {
     const data = {
-      username: formData.get("username"),
+      username: process.env.API_ELYOTE_USERNAME,
       user_id: formData.get("user_id"),
-      password: formData.get("password"),
+      password: process.env.API_ELYOTE_PASSWORD,
     };
+
+    if (data.user_id !== "666") {
+      return { success: false, error: "Identifiants invalides." };
+    }
 
     const res = await apiClient.post("/api/token", data);
 
