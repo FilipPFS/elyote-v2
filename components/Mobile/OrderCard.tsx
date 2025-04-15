@@ -2,8 +2,7 @@ import React from "react";
 import { FiUser } from "react-icons/fi";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import MobileCard from "./MobileCard";
-import { Link } from "@/i18n/navigation";
-
+import Link from "next/link";
 type Props = {
   item: {
     number: string;

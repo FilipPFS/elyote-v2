@@ -1,12 +1,11 @@
 import { getRequestConfig } from "next-intl/server";
-import { hasLocale } from "next-intl";
-import { routing } from "./routing";
+import { cookies } from "next/headers";
 
-export default getRequestConfig(async ({ requestLocale }) => {
-  const requested = await requestLocale;
-  const locale = hasLocale(routing.locales, requested)
-    ? requested
-    : routing.defaultLocale;
+export default getRequestConfig(async () => {
+  const supportedLocales = ["fr", "en"];
+  const cookieLocale = (await cookies()).get("ELYOTE_LANG")?.value || "fr";
+
+  const locale = supportedLocales.includes(cookieLocale) ? cookieLocale : "fr";
 
   const messages = {
     global: (await import(`@/messages/${locale}/global.json`)).default,

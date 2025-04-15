@@ -1,6 +1,4 @@
-import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
-import { routing } from "./i18n/routing";
 
 async function getToken(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
@@ -9,17 +7,10 @@ async function getToken(req: NextRequest) {
 
 export default async function middleware(req: NextRequest) {
   const publicPaths = ["/sign-in", "/sign-up"];
-  const locales = ["en", "fr"];
-
   const pathname = req.nextUrl.pathname;
-  const normalizedPath = locales.reduce(
-    (path, locale) =>
-      path.replace(`/${locale}/`, "/").replace(`/${locale}`, "/"),
-    pathname
-  );
 
   const isPublicPath = publicPaths.some(
-    (path) => normalizedPath.startsWith(path) || normalizedPath === path
+    (path) => pathname.startsWith(path) || pathname === path
   );
 
   if (!isPublicPath) {
@@ -30,8 +21,7 @@ export default async function middleware(req: NextRequest) {
     }
   }
 
-  const intlMiddleware = createMiddleware(routing);
-  return intlMiddleware(req);
+  return NextResponse.next();
 }
 
 export const config = {

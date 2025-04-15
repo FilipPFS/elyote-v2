@@ -8,8 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
-import { Link } from "@/i18n/navigation";
-
+import Link from "next/link";
 type Props = {
   item: {
     link: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";

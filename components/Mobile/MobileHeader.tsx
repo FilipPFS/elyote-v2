@@ -4,8 +4,7 @@ import Image from "next/image";
 import { GoBell } from "react-icons/go";
 import MobileSidebar from "./MobileSidebar";
 import LanguageSwitcher from "../LanguageSwitcher";
-import { Link } from "@/i18n/navigation";
-
+import Link from "next/link";
 const MobileHeader = () => {
   return (
     <div className="sticky z-[20] top-0 flex items-center bg-white justify-between sm:hidden h-[100px] px-7">

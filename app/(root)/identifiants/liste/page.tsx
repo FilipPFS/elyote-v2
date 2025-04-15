@@ -4,7 +4,7 @@ import Search from "@/components/Search";
 import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { passwordTableHeaders } from "@/constants";
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
 import { getCredentialsFromQuery } from "@/lib/actions/actions.credentials";
 import { accessLevel } from "@/lib/utils";
 import { PasswordData, SearchParamProps } from "@/types";

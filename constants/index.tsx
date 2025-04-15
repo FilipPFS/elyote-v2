@@ -132,23 +132,23 @@ export const navItems = [
 export const accountLinks = [
   {
     link: "#",
-    label: "Mes Factures",
+    key: "invoices",
   },
   {
     link: "#",
-    label: "Statistiques",
+    key: "statistics",
   },
   {
     link: "#",
-    label: "Réglage de mon profil",
+    key: "profileSettings",
   },
   {
     link: "#",
-    label: "Mes envois vers sdp",
+    key: "sdpShipments",
   },
   {
     link: "#",
-    label: "Aide",
+    key: "help",
   },
 ];
 
@@ -166,17 +166,17 @@ export const scanData = {
 
 export const contactList = [
   {
-    label: "Envoyer un SMS",
+    label: "sms",
     link: "/communication/sms",
     icon: <FiSmartphone />,
   },
   {
-    label: "Envoyer un mail",
+    label: "mail",
     link: "/communication/email",
     icon: <IoMailOutline />,
   },
   {
-    label: "Enregistrer un appel",
+    label: "call",
     link: "/communication/tel",
     icon: <FiPhone />,
   },

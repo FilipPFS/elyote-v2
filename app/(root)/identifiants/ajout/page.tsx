@@ -1,7 +1,7 @@
 "use client";
 
 import PasswordForm from "@/components/PasswordForm";
-import { useRouter } from "@/i18n/navigation";
+import { useRouter } from "next/navigation";
 import { addNewCredential } from "@/lib/actions/actions.credentials";
 import React, { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";

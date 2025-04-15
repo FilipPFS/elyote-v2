@@ -6,8 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import NavLink from "./NavLink";
-import { Link } from "@/i18n/navigation";
-
+import Link from "next/link";
 const Sidebar = () => {
   const [expanded, setExpanded] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);

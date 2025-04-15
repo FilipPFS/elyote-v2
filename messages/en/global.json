@@ -42,5 +42,32 @@
   "drag": {
     "save": "Save changes",
     "success": "The selection has been successfully changed."
+  },
+  "contactBlock": {
+    "title": "Customer Contact",
+    "placeholder": "Search for a customer...",
+    "sms": "Send an SMS",
+    "mail": "Send an email",
+    "call": "Record a call",
+    "btn": "View history"
+  },
+  "globalSearch": {
+    "title": "Search",
+    "placeholder": "Search the entire page...",
+    "closeBtn": "Close"
+  },
+  "cartModal": {
+    "title": "My Cart",
+    "total": "Total",
+    "printBtn": "Print",
+    "viewBtn": "View"
+  },
+  "accountLinks": {
+    "logout": "Log Out",
+    "invoices": "My Invoices",
+    "statistics": "Statistics",
+    "profileSettings": "Profile Settings",
+    "sdpShipments": "My shipments to SDP",
+    "help": "Help"
   }
 }

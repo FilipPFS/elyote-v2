@@ -57,3 +57,19 @@ export async function getToken() {
     return null;
   }
 }
+
+export async function signOut() {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.delete("token");
+
+    if (token) {
+      return {
+        succes: true,
+      };
+    }
+  } catch (error) {
+    console.error("Error retrieving token from cookies:", error);
+    return null;
+  }
+}

@@ -12,8 +12,11 @@ import { cartData } from "@/constants/data";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { IoSearch } from "react-icons/io5";
 import Search from "./Search";
+import { useTranslations } from "next-intl";
 
 const HeaderActionList = () => {
+  const tSearch = useTranslations("global.globalSearch");
+
   return (
     <div className="flex items-center gap-10">
       <CustomModal
@@ -31,10 +34,8 @@ const HeaderActionList = () => {
       />
       <CustomModal
         icon={<IoSearch size={25} />}
-        title="Recherche"
-        customContent={
-          <Search placeholder="Rechercher sur l'ensemble de la page..." />
-        }
+        title={tSearch("title")}
+        customContent={<Search placeholder={tSearch("placeholder")} />}
       />
       <HeaderIcon
         icon={<BsCart3 size={25} />}

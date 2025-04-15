@@ -1,17 +1,18 @@
 import { cartData } from "@/constants/data";
 import { calculateCartTotal } from "@/lib/utils";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { Link } from "@/i18n/navigation";
-
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 type Props = {
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const CartContent = ({ setOpen }: Props) => {
+  const tCart = useTranslations("global.cartModal");
   return (
     <div className="flex flex-col max-sm:p-5 gap-3">
       <section className="flex gap-3 items-center">
-        <h1 className="text-lg font-semibold">Mon Panier</h1>
+        <h1 className="text-lg font-semibold">{tCart("title")}</h1>
         <span>[{cartData.length}]</span>
       </section>
       <section className="w-fit">
@@ -45,7 +46,7 @@ const CartContent = ({ setOpen }: Props) => {
       </section>
       <section className="self-center flex sm:flex-row flex-col gap-2 sm:gap-4 w-full">
         <button className="bg-blue-700 w-full text-sm cursor-pointer transition-all duration-500 hover:bg-blue-800 text-white sm:w-[45%] rounded-md py-1">
-          Imprimer
+          {tCart("printBtn")}
         </button>
         <Link
           href={"/panier"}
@@ -53,7 +54,7 @@ const CartContent = ({ setOpen }: Props) => {
           className="w-full sm:w-[45%]"
         >
           <button className="bg-blue-700 text-sm cursor-pointer transition-all duration-500 hover:bg-blue-800 text-white w-full rounded-md py-1">
-            Voir
+            {tCart("viewBtn")}
           </button>
         </Link>
       </section>

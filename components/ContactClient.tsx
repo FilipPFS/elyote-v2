@@ -2,18 +2,18 @@ import React from "react";
 import HomeBlock from "./HomeBlock";
 import Search from "./Search";
 import { contactList } from "@/constants";
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const ContactClient = () => {
+  const t = useTranslations("global.contactBlock");
+
   return (
     <HomeBlock
-      title="Contact Client"
+      title={t("title")}
       jsx={
         <section className="mt-2 flex-grow flex flex-col justify-between h-full">
-          <Search
-            placeholder="Recherchez un client..."
-            component="contact_client"
-          />
+          <Search placeholder={t("placeholder")} component="contact_client" />
           <div className="flex justify-between w-full xl:px-10">
             {contactList.map((item) => (
               <Link
@@ -23,14 +23,14 @@ const ContactClient = () => {
               >
                 <span className="text-lg sm:text-2xl">{item.icon}</span>
                 <span className="max-sm:text-sm leading-none font-semibold">
-                  {item.label}
+                  {t(item.label)}
                 </span>
               </Link>
             ))}
           </div>
           <Link href={"#"} className="self-center">
             <button className="bg-blue-700 cursor-pointer transition-all duration-500 hover:bg-blue-900 px-5 py-1.5 rounded-lg text-white">
-              Voir l'historique
+              {t("btn")}
             </button>
           </Link>
         </section>

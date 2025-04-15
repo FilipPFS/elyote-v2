@@ -7,8 +7,7 @@ import { LuHouse } from "react-icons/lu";
 import { FiUser } from "react-icons/fi";
 import CartContent from "../CartContent";
 import AccountContent from "../AccountContent";
-import { Link } from "@/i18n/navigation";
-
+import Link from "next/link";
 const MobileFooterNavigation = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [accountLinksOpen, setAccountLinksOpen] = useState(false);

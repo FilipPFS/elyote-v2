@@ -6,7 +6,7 @@ import TableFilters from "@/components/TableFilters";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { orderTableHeaders } from "@/constants";
 import { orders } from "@/constants/data";
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
 import { SearchParamProps } from "@/types";
 import React from "react";
 import { FiPlus } from "react-icons/fi";

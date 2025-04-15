@@ -42,5 +42,32 @@
   "drag": {
     "save": "Enregistrer les changements",
     "success": "La sélection a été modifiée avec succès."
+  },
+  "contactBlock": {
+    "title": "Contact Client",
+    "placeholder": "Rechercher un client...",
+    "sms": "Envoyer un SMS",
+    "mail": "Envoyer un mail",
+    "call": "Enregistrer un appel",
+    "btn": "Voir l'historique"
+  },
+  "globalSearch": {
+    "title": "Recherche",
+    "placeholder": "Rechercher sur l'ensemble de la page...",
+    "closeBtn": "Fermer"
+  },
+  "cartModal": {
+    "title": "Mon Panier",
+    "total": "Total",
+    "printBtn": "Imprimer",
+    "viewBtn": "Voir"
+  },
+  "accountLinks": {
+    "logout": "Déconnexion",
+    "invoices": "Mes Factures",
+    "statistics": "Statistiques",
+    "profileSettings": "Réglage de mon profil",
+    "sdpShipments": "Mes envois vers sdp",
+    "help": "Aide"
   }
 }

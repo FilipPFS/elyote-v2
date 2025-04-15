@@ -5,7 +5,7 @@ import React, { useActionState, useEffect } from "react";
 import PasswordForm from "./PasswordForm";
 import { toast } from "react-toastify";
 import { updateCredential } from "@/lib/actions/actions.credentials";
-import { useRouter } from "@/i18n/navigation";
+import { useRouter } from "next/navigation";
 
 type Props = {
   passwordData?: PasswordData;
