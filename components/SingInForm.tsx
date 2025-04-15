@@ -6,6 +6,9 @@ import ElButton from "./custom/ElButton";
 import { signIn } from "@/lib/actions/actions.global";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { FiUser } from "react-icons/fi";
+import { MdStorefront } from "react-icons/md";
+import { IoMdKey } from "react-icons/io";
 
 const SingInForm = () => {
   const [state, action, isPending] = useActionState(signIn, {
@@ -26,10 +29,25 @@ const SingInForm = () => {
   }, [state, router]);
 
   return (
-    <form action={action}>
-      <ElInput type="text" placeholder="Username" name="username" />
-      <ElInput type="text" placeholder="User ID" name="user_id" />
-      <ElInput type="password" placeholder="Password" name="password" />
+    <form action={action} className="flex flex-col gap-3 w-full">
+      <ElInput
+        type="text"
+        placeholder="Identifiant"
+        name="username"
+        icon={<FiUser />}
+      />
+      <ElInput
+        type="text"
+        placeholder="Code magasin"
+        name="user_id"
+        icon={<MdStorefront />}
+      />
+      <ElInput
+        type="password"
+        placeholder="Mot de passe"
+        name="password"
+        icon={<IoMdKey />}
+      />
       <ElButton label="Submit" type="submit" disabled={isPending} />
     </form>
   );

@@ -10,6 +10,8 @@ import AccountContent from "./AccountContent";
 import ScanContent from "./ScanContent";
 import { cartData } from "@/constants/data";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { IoSearch } from "react-icons/io5";
+import Search from "./Search";
 
 const HeaderActionList = () => {
   return (
@@ -25,6 +27,13 @@ const HeaderActionList = () => {
               rendez-vous sur l'adresse suivante: https://meet.google.com/zvd
             </p>
           </div>
+        }
+      />
+      <CustomModal
+        icon={<IoSearch size={25} />}
+        title="Recherche"
+        customContent={
+          <Search placeholder="Rechercher sur l'ensemble de la page..." />
         }
       />
       <HeaderIcon

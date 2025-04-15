@@ -8,9 +8,12 @@ const SignIn = async () => {
 
   if (token) redirect("/");
   return (
-    <>
-      <SingInForm />
-    </>
+    <div className="flex min-h-screen justify-center items-center">
+      <div className="flex flex-col gap-6 items-center bg-white p-7 lg:px-14 rounded-md sm:w-1/2 lg:w-1/3">
+        <h1 className="text-2xl font-semibold">Connexion</h1>
+        <SingInForm />
+      </div>
+    </div>
   );
 };
 

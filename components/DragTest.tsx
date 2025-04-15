@@ -10,6 +10,7 @@ import { SlCursorMove } from "react-icons/sl";
 import { FaCheck } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import { UserSettings } from "@/types";
+import { useTranslations } from "next-intl";
 
 const DragTest = () => {
   const swapy = useRef<Swapy | null>(null);
@@ -18,6 +19,7 @@ const DragTest = () => {
   const orderRef = useRef<string[]>(order);
   const [firstChange, setFirstChange] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const t = useTranslations("global.drag");
 
   useEffect(() => {
     setIsMounted(true);
@@ -100,7 +102,7 @@ const DragTest = () => {
       );
       console.log("parametres_utilisateurs saved:", updatedParametres);
 
-      toast.success("La sélection a été modifiée avec succès.");
+      toast.success(t("success"));
       setFirstChange(false);
     }
   };
@@ -115,7 +117,7 @@ const DragTest = () => {
             type="submit"
             className="bg-blue-600 text-sm transition-all duration-500 cursor-pointer hover:bg-blue-800 active:bg-blue-950 px-5 py-1 text-white font-semibold rounded-md flex items-center gap-3 mb-3"
           >
-            Enregistrer les modifications <FaCheck />
+            {t("save")} <FaCheck />
           </button>
         </form>
       )}

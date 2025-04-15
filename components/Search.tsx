@@ -8,7 +8,7 @@ import { CiSearch } from "react-icons/ci";
 import { FaSearch } from "react-icons/fa";
 
 type Props = {
-  component: string;
+  component?: string;
   placeholder: string;
   classNames?: string;
 };
@@ -45,7 +45,6 @@ const Search = ({ placeholder, component, classNames }: Props) => {
     <form
       className={clsx(
         "flex items-center gap-2 h-10",
-        component === "header" && "w-[45%]",
         component === "contact_client" && "w-full",
         classNames
       )}

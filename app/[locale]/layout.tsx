@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import Sidebar from "@/components/Sidebar";
-import MobileHeader from "@/components/Mobile/MobileHeader";
-import MobileFooter from "@/components/Mobile/MobileFooter";
-import Header from "@/components/Header";
-import { UserProvider } from "@/context/UserContext";
 import { ToastContainer } from "react-toastify";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -40,23 +35,12 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={`${poppins.variable}`}>
         <NextIntlClientProvider>
-          {" "}
-          <UserProvider>
-            <div className="flex relative min-h-screen sm:flex-row flex-col gap-4">
-              <MobileHeader />
-              <Sidebar />
-              <main className="flex-1 flex flex-col max-sm:pb-48">
-                <Header />
-                {children}
-              </main>
-              <MobileFooter />
-              <ToastContainer
-                position="bottom-right"
-                autoClose={4000}
-                theme="colored"
-              />
-            </div>
-          </UserProvider>
+          {children}
+          <ToastContainer
+            position="bottom-right"
+            autoClose={4000}
+            theme="colored"
+          />
         </NextIntlClientProvider>
       </body>
     </html>

@@ -63,7 +63,7 @@ const NavLink = ({
           <DropdownMenu open={isDropdownOpen} onOpenChange={handleSetLink}>
             <DropdownMenuTrigger
               className={clsx(
-                "p-1.5 hidden sm:block flex-shrink-0 rounded-lg text-xl transition-all duration-300 group-hover:bg-blue-800 group-hover:text-white",
+                "p-1.5 hidden sm:block cursor-pointer flex-shrink-0 rounded-lg text-xl transition-all duration-300 group-hover:bg-blue-800 group-hover:text-white",
                 isDropdownOpen && "bg-blue-800 text-white",
                 activePath && "bg-blue-800 text-white"
               )}

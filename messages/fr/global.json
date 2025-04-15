@@ -38,5 +38,9 @@
     "commandes_serviceSpaces": "Commandes Espaces Services",
     "commandes_shipping": "Colis & Expéditions",
     "outils": "Outils"
+  },
+  "drag": {
+    "save": "Enregistrer les changements",
+    "success": "La sélection a été modifiée avec succès."
   }
 }

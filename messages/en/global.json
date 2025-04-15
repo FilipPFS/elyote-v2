@@ -38,5 +38,9 @@
     "commandes_serviceSpaces": "Service Space Orders",
     "commandes_shipping": "Packages & Shipments",
     "outils": "Tools"
+  },
+  "drag": {
+    "save": "Save changes",
+    "success": "The selection has been successfully changed."
   }
 }
