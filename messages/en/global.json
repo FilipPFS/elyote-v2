@@ -88,5 +88,8 @@
     "credentials": {
       "invalid": "Invalid credentials. Please check your information and try again."
     }
+  },
+  "search": {
+    "result": "Results for"
   }
 }

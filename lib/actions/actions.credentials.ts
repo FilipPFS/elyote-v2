@@ -1,9 +1,10 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import { newPasswordValidation } from "../validation";
 import { getToken } from "./actions.global";
 import axios from "axios";
 import { apiClient } from "../axios";
+import { createNewPasswordValidation } from "../validation";
+import { getTranslations } from "next-intl/server";
 
 export interface PostResponse {
   success?: boolean;
@@ -17,7 +18,9 @@ export const addNewCredential = async (
   formData: FormData
 ): Promise<PostResponse> => {
   try {
+    const t = await getTranslations("credentials.form");
     const token = await getToken();
+    const newPasswordValidation = createNewPasswordValidation(t);
 
     if (!token)
       return {
@@ -92,7 +95,9 @@ export const updateCredential = async (
   formData: FormData
 ): Promise<PostResponse> => {
   try {
+    const t = await getTranslations("credentials.form");
     const token = await getToken();
+    const newPasswordValidation = createNewPasswordValidation(t);
 
     if (!token)
       return {

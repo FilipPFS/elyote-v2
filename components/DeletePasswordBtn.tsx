@@ -24,7 +24,7 @@ const DeletePasswordBtn = ({ id }: Props) => {
 
     if (res?.success) {
       router.push("/identifiants/liste");
-      toast.success("L'identifiant a été supprimé avec succès.");
+      toast.success(t("successDelete"));
     }
   };
 

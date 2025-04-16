@@ -6,6 +6,7 @@ import PasswordForm from "./PasswordForm";
 import { toast } from "react-toastify";
 import { updateCredential } from "@/lib/actions/actions.credentials";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type Props = {
   passwordData?: PasswordData;
@@ -14,15 +15,16 @@ type Props = {
 const PasswordUpdatePage = ({ passwordData }: Props) => {
   const [state, action, isPending] = useActionState(updateCredential, {});
   const router = useRouter();
+  const t = useTranslations("credentials.form");
 
   useEffect(() => {
     const { errors } = state;
     if (state.success) {
       router.push("/identifiants/liste");
-      toast.success("Votre identifiant a été modifié avec succès.");
+      toast.success(t("successUpdate"));
     }
     if (state.error) {
-      toast.error(`Erreur: ${state.error.toString()}`);
+      toast.error(`${state.error.toString()}`);
     }
     if (errors) {
       for (const key in errors) {
@@ -36,7 +38,7 @@ const PasswordUpdatePage = ({ passwordData }: Props) => {
         }
       }
     }
-  }, [state, router]);
+  }, [state, router, t]);
 
   return (
     <PasswordForm

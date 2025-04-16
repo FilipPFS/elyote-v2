@@ -88,5 +88,8 @@
     "credentials": {
       "invalid": "Identifiants invalides. Veuillez vérifier vos informations et réessayer."
     }
+  },
+  "search": {
+    "result": "Résultats pour"
   }
 }
