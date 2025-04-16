@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { apiClient } from "../axios";
+import { getTranslations } from "next-intl/server";
 
 type SignInType = { success: boolean; error?: string };
 
@@ -10,6 +11,7 @@ export const signIn = async (
   formData: FormData
 ): Promise<SignInType> => {
   try {
+    const t = await getTranslations("global.signInForm");
     const data = {
       username: process.env.API_ELYOTE_USERNAME,
       user_id: formData.get("user_id"),
@@ -17,7 +19,7 @@ export const signIn = async (
     };
 
     if (data.user_id !== "666") {
-      return { success: false, error: "Identifiants invalides." };
+      return { success: false, error: t("credentials.invalid") };
     }
 
     const res = await apiClient.post("/api/token", data);

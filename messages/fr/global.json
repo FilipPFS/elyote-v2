@@ -69,5 +69,24 @@
     "profileSettings": "Réglage de mon profil",
     "sdpShipments": "Mes envois vers sdp",
     "help": "Aide"
+  },
+  "afterSaleServiceBlock": {
+    "title": "SAV"
+  },
+  "markup": {
+    "title": "Balisage"
+  },
+  "notifications": {
+    "title": "Mes notifications"
+  },
+  "signInForm": {
+    "title": "Connexion",
+    "usernamePlaceholder": "Identifiant",
+    "storeCodePlaceholder": "Code magasin",
+    "passwordPlaceholder": "Mot de passe",
+    "submitBtn": "Se connecter",
+    "credentials": {
+      "invalid": "Identifiants invalides. Veuillez vérifier vos informations et réessayer."
+    }
   }
 }

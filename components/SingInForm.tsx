@@ -9,12 +9,15 @@ import { useRouter } from "next/navigation";
 import { FiUser } from "react-icons/fi";
 import { MdStorefront } from "react-icons/md";
 import { IoMdKey } from "react-icons/io";
+import { useTranslations } from "next-intl";
 
 const SingInForm = () => {
   const [state, action, isPending] = useActionState(signIn, {
     success: false,
     error: "",
   });
+
+  const t = useTranslations("global.signInForm");
 
   const router = useRouter();
 
@@ -24,7 +27,7 @@ const SingInForm = () => {
       toast.success("Connexion réussi.");
     }
     if (state.error) {
-      toast.error(`Erreur: ${state.error.toString()}`);
+      toast.error(`${state.error.toString()}`);
     }
   }, [state, router]);
 
@@ -32,23 +35,23 @@ const SingInForm = () => {
     <form action={action} className="flex flex-col gap-3 w-full">
       <ElInput
         type="text"
-        placeholder="Identifiant"
+        placeholder={t("usernamePlaceholder")}
         name="username"
         icon={<FiUser />}
       />
       <ElInput
         type="text"
-        placeholder="Code magasin"
+        placeholder={t("storeCodePlaceholder")}
         name="user_id"
         icon={<MdStorefront />}
       />
       <ElInput
         type="password"
-        placeholder="Mot de passe"
+        placeholder={t("passwordPlaceholder")}
         name="password"
         icon={<IoMdKey />}
       />
-      <ElButton label="Submit" type="submit" disabled={isPending} />
+      <ElButton label={t("submitBtn")} type="submit" disabled={isPending} />
     </form>
   );
 };

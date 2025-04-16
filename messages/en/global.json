@@ -69,5 +69,24 @@
     "profileSettings": "Profile Settings",
     "sdpShipments": "My shipments to SDP",
     "help": "Help"
+  },
+  "afterSaleServiceBlock": {
+    "title": "After-Sales Service"
+  },
+  "markup": {
+    "title": "Markup"
+  },
+  "notifications": {
+    "title": "My notifications"
+  },
+  "signInForm": {
+    "title": "Sign In",
+    "usernamePlaceholder": "Username",
+    "storeCodePlaceholder": "Store Code",
+    "passwordPlaceholder": "Password",
+    "submitBtn": "Log In",
+    "credentials": {
+      "invalid": "Invalid credentials. Please check your information and try again."
+    }
   }
 }

@@ -12,6 +12,7 @@ import ElButton from "./custom/ElButton";
 import { PasswordData } from "@/types";
 import DeletePasswordBtn from "./DeletePasswordBtn";
 import CustomSpinner from "./custom/Spinner";
+import { useTranslations } from "next-intl";
 
 type Props = {
   isPending?: boolean;
@@ -28,6 +29,7 @@ const PasswordForm = ({
   passwordData,
   id,
 }: Props) => {
+  const t = useTranslations("credentials.form");
   return (
     <form
       action={action}
@@ -35,29 +37,27 @@ const PasswordForm = ({
     >
       <div className="flex flex-col gap-4 ">
         <h1 className="text-xl font-semibold">
-          {updatePage
-            ? "Modifier ou Supprimer l'identifiant"
-            : "Ajouter un identifiant"}
+          {updatePage ? t("titleUpdate") : t("titleAdd")}
         </h1>
         <ElSelect
           name="access_level"
           defaultValue={passwordData?.access_level}
           icon={<GoShieldLock className="text-blue-700" />}
         >
-          <option value={0}>Tout Public</option>
-          <option value={1}>Manager</option>
-          <option value={2}>Direction</option>
+          <option value={0}>{t("select.one")}</option>
+          <option value={1}>{t("select.two")}</option>
+          <option value={2}>{t("select.three")}</option>
         </ElSelect>
         <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-7">
           <ElInput
-            placeholder="Plateforme (site, logiciel, etc.)"
+            placeholder={t("platformPlaceholder")}
             icon={<MdOutlinePhonelinkRing className="text-blue-700" />}
             name="site"
             defaultValue={updatePage ? passwordData?.site : ""}
           />
           {updatePage && <input name="id" defaultValue={id} type="hidden" />}
           <ElInput
-            placeholder="Url du site internet"
+            placeholder={t("urlPlaceholder")}
             icon={<IoIosLink className="text-blue-700" />}
             name="url"
             defaultValue={updatePage ? passwordData?.url : ""}
@@ -65,13 +65,13 @@ const PasswordForm = ({
         </div>
         <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-7">
           <ElInput
-            placeholder="Nom d'utilisateur"
+            placeholder={t("usernamePlaceholder")}
             icon={<FiUser className="text-blue-700" />}
             name="login"
             defaultValue={updatePage ? passwordData?.login : ""}
           />
           <ElInput
-            placeholder="Mot de passe"
+            placeholder={t("passwordPlaceholder")}
             icon={<RiLockPasswordLine className="text-blue-700" />}
             name="password"
             defaultValue={updatePage ? passwordData?.password : ""}
@@ -79,14 +79,14 @@ const PasswordForm = ({
         </div>
         <ElTextarea
           icon={<LuInfo className="text-blue-700" />}
-          placeholder="Informations complémentaires..."
+          placeholder={t("description")}
           name="additional_data"
           defaultValue={updatePage ? passwordData?.additional_data : ""}
         />
       </div>
       <div className="flex justify-center gap-5">
         <ElButton
-          label={updatePage ? "Modifier" : "Ajouter"}
+          label={updatePage ? t("btnUpdate") : t("btnAdd")}
           icon={isPending ? <CustomSpinner /> : undefined}
           disabled={isPending}
           type="submit"

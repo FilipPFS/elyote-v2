@@ -6,11 +6,13 @@ import { IoCameraOutline } from "react-icons/io5";
 import Link from "next/link";
 import { MdArrowOutward } from "react-icons/md";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 
 const Sav = () => {
+  const t = useTranslations("global.afterSaleServiceBlock");
   return (
     <HomeBlock
-      title="SAV"
+      title={t("title")}
       jsx={
         <section className="mt-2 flex flex-col gap-2">
           {savData.map((item) => (

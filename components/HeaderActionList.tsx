@@ -16,6 +16,7 @@ import { useTranslations } from "next-intl";
 
 const HeaderActionList = () => {
   const tSearch = useTranslations("global.globalSearch");
+  const tNotifications = useTranslations("global.notifications");
 
   return (
     <div className="flex items-center gap-10">
@@ -58,7 +59,7 @@ const HeaderActionList = () => {
         icon={<FiBell size={25} />}
         customContent={
           <div>
-            <h1>Mes notifications</h1>
+            <h1>{tNotifications("title")}</h1>
           </div>
         }
       />
