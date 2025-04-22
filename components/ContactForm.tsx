@@ -10,6 +10,9 @@ import ElTextarea from "./custom/ElTextarea";
 import { LuInfo } from "react-icons/lu";
 import ElButton from "./custom/ElButton";
 import { ContactData } from "@/types";
+import DeletePasswordBtn from "./DeletePasswordBtn";
+import { deleteSingleContact } from "@/lib/actions/actions.contacts";
+import { useTranslations } from "next-intl";
 
 type Props = {
   isPending?: boolean;
@@ -26,6 +29,7 @@ const ContactForm = ({
   contactData,
   id,
 }: Props) => {
+  const t = useTranslations("contacts.form");
   return (
     <form
       action={action}
@@ -33,23 +37,23 @@ const ContactForm = ({
     >
       <div className="flex flex-col gap-4 ">
         <h1 className="text-xl font-semibold">
-          {updatePage ? "Modifier" : "Ajouter"} un contact
+          {updatePage ? t("titleUpdate") : t("titleAdd")}
         </h1>
         <ElSelect
           name="access_level"
           defaultValue={updatePage ? contactData?.access_level : ""}
           icon={<GoShieldLock className="text-blue-700" />}
         >
-          <option value={0}>Tout Public</option>
-          <option value={1}>Manager</option>
-          <option value={2}>Direction</option>
+          <option value={0}>{t("select.one")}</option>
+          <option value={1}>{t("select.two")}</option>
+          <option value={2}>{t("select.three")}</option>
         </ElSelect>
         <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-7">
           {updatePage && <input name="id" defaultValue={id} type="hidden" />}
           <ElInput
             name="corporate_name"
             defaultValue={updatePage ? contactData?.corporate_name : ""}
-            placeholder="Société"
+            placeholder={t("corporateNamePlaceholder")}
             icon={<HiOutlineBuildingOffice className="text-blue-700" />}
           />
           <ElInput
@@ -62,13 +66,13 @@ const ContactForm = ({
         <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-7">
           <ElInput
             name="firstname"
-            placeholder="Prénom"
+            placeholder={t("firstNamePlaceholder")}
             defaultValue={updatePage ? contactData?.firstname : ""}
             icon={<PiIdentificationBadge className="text-blue-700" />}
           />
           <ElInput
             name="lastname"
-            placeholder="Nom"
+            placeholder={t("lastNamePlaceholder")}
             defaultValue={updatePage ? contactData?.lastname : ""}
             icon={<PiIdentificationBadge className="text-blue-700" />}
           />
@@ -76,7 +80,7 @@ const ContactForm = ({
         <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-7">
           <ElInput
             name="landline"
-            placeholder="Tel"
+            placeholder={t("phonePlaceholder")}
             defaultValue={updatePage ? contactData?.landline : ""}
             icon={<MdOutlinePhone className="text-blue-700" />}
           />
@@ -89,18 +93,25 @@ const ContactForm = ({
         </div>
         <ElTextarea
           icon={<LuInfo className="text-blue-700" />}
-          placeholder={"Infomations complétemantaires"}
+          placeholder={t("description")}
           defaultValue={updatePage ? contactData?.additional_data : ""}
           name="additional_data"
         />
       </div>
       <div className="flex justify-center gap-5">
         <ElButton
-          label={updatePage ? "Modifier" : "Ajouter"}
+          label={updatePage ? t("btnUpdate") : t("btnAdd")}
           type="submit"
           disabled={isPending}
           classNames="self-center w-2/3 lg:w-1/4"
         />
+        {updatePage && id && (
+          <DeletePasswordBtn
+            id={id}
+            customAction={deleteSingleContact}
+            pushLink="/repertoire/liste"
+          />
+        )}
       </div>
     </form>
   );

@@ -1,3 +1,4 @@
+import FilterContact from "@/components/FilterContact";
 import MainPage from "@/components/Mobile/MainPage";
 import MobileCard from "@/components/Mobile/MobileCard";
 import Search from "@/components/Search";
@@ -5,6 +6,7 @@ import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { contactsTableHeaders } from "@/constants";
 import {
+  getContactByFilter,
   getContacts,
   getContactsFromQuery,
 } from "@/lib/actions/actions.contacts";
@@ -18,12 +20,18 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
   const awaitedSearchParams = await searchParams;
   const query = (awaitedSearchParams.query as string) || "";
+  const category = (awaitedSearchParams.category as string) || "";
   let contacts: ContactData[] = [];
 
   if (query) {
     const queryData = await getContactsFromQuery(query);
     if (queryData) {
       contacts = queryData.contacts;
+    }
+  } else if (category) {
+    const filteredData = await getContactByFilter(category);
+    if (filteredData) {
+      contacts = filteredData.contacts;
     }
   } else {
     const data = await getContacts();
@@ -32,6 +40,7 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
 
   const tCredentials = await getTranslations("credentials");
   const tContacts = await getTranslations("contacts");
+  const tGlobal = await getTranslations("global.search");
 
   return (
     <MainPage
@@ -46,9 +55,13 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
         </Suspense>
       }
     >
+      <div className="flex items-center gap-2">
+        <h2 className="text-lg font-semibold">Filtres:</h2>
+        <FilterContact />
+      </div>
       {query.length > 1 && (
         <span className="text-gray-500 font-semibold">
-          Résultat pour : {query}
+          {tGlobal("result")} : {query}
         </span>
       )}
       <TableExample

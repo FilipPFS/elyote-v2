@@ -318,3 +318,26 @@ export const orderTableFilters = [
     ],
   },
 ];
+
+export const filterContactOptions = [
+  {
+    label: "all",
+    filterKey: "all",
+  },
+  {
+    label: "corporateName",
+    filterKey: "corporate_name",
+  },
+  {
+    label: "firstName",
+    filterKey: "firstname",
+  },
+  {
+    label: "lastName",
+    filterKey: "lastname",
+  },
+  {
+    label: "access",
+    filterKey: "access_level",
+  },
+];

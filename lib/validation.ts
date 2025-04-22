@@ -18,13 +18,22 @@ export type NewPasswordValidationType = z.infer<
   ReturnType<typeof createNewPasswordValidation>
 >;
 
-export const newContactValidation = z.object({
-  firstname: z.string().min(2, "Le champ Prénom est obligatoire."),
-  lastname: z.string().min(2, "Le champ Nom est obligatoire."),
-  email: z.string().email("Invalid type of email").or(z.literal("")).optional(),
-  corporate_name: z.string().optional(),
-  mobile: z.string().optional(),
-  landline: z.string().optional(),
-  additional_data: z.string().optional(),
-  access_level: z.string(),
-});
+export const createNewContactValidation = (t: (key: string) => string) =>
+  z.object({
+    firstname: z.string().min(2, t("validation.firstNameMin")),
+    lastname: z.string().min(2, t("validation.lastNameMin")),
+    email: z
+      .string()
+      .email(t("validation.emailInvalid"))
+      .or(z.literal(""))
+      .optional(),
+    corporate_name: z.string().optional(),
+    mobile: z.string().optional(),
+    landline: z.string().optional(),
+    additional_data: z.string().optional(),
+    access_level: z.string(),
+  });
+
+export type NewContactValidationType = z.infer<
+  ReturnType<typeof createNewContactValidation>
+>;

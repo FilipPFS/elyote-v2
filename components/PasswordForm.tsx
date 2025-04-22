@@ -13,6 +13,7 @@ import { PasswordData } from "@/types";
 import DeletePasswordBtn from "./DeletePasswordBtn";
 import CustomSpinner from "./custom/Spinner";
 import { useTranslations } from "next-intl";
+import { deleteSingleCredential } from "@/lib/actions/actions.credentials";
 
 type Props = {
   isPending?: boolean;
@@ -92,7 +93,13 @@ const PasswordForm = ({
           type="submit"
           classNames="self-center w-2/3 lg:w-1/4"
         />
-        {updatePage && id && <DeletePasswordBtn id={id} />}
+        {updatePage && id && (
+          <DeletePasswordBtn
+            id={id}
+            customAction={deleteSingleCredential}
+            pushLink="/identifiants/liste"
+          />
+        )}
       </div>
     </form>
   );

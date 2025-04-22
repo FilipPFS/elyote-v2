@@ -7,5 +7,44 @@
     "firstName": "First Name",
     "access": "Access Level",
     "action": "Action"
+  },
+  "filterKeys": {
+    "all": "All",
+    "corporateName": "Corporate Name",
+    "lastName": "Last Name",
+    "firstName": "First Name",
+    "access": "Access Level"
+  },
+  "form": {
+    "titleAdd": "Add a contact",
+    "titleUpdate": "Edit or Delete a contact",
+    "btnAdd": "Add",
+    "btnUpdate": "Edit",
+    "btnDelete": "Delete",
+    "select": {
+      "one": "Public",
+      "two": "Manager",
+      "three": "Director"
+    },
+    "deleteModal": {
+      "title": "Confirmation",
+      "question": "Are you sure you want to perform this action?",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "pending": "Deleting..."
+    },
+    "corporateNamePlaceholder": "Company",
+    "firstNamePlaceholder": "First Name",
+    "lastNamePlaceholder": "Last Name",
+    "phonePlaceholder": "Phone",
+    "description": "Additional Information",
+    "validation": {
+      "firstNameMin": "First name must be at least 2 characters long.",
+      "lastNameMin": "Last name must be at least 2 characters long.",
+      "emailInvalid": "Invalid email address."
+    },
+    "successAdd": "Your contact has been successfully added.",
+    "successUpdate": "Your contact has been successfully updated.",
+    "successDelete": "The contact has been successfully deleted."
   }
 }

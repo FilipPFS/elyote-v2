@@ -3,15 +3,21 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import CustomSpinner from "./custom/Spinner";
-import { deleteSingleCredential } from "@/lib/actions/actions.credentials";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 type Props = {
   id: string;
+  customAction(id: string): Promise<
+    | {
+        success: boolean;
+      }
+    | undefined
+  >;
+  pushLink: string;
 };
 
-const DeletePasswordBtn = ({ id }: Props) => {
+const DeletePasswordBtn = ({ id, customAction, pushLink }: Props) => {
   const t = useTranslations("credentials.form");
   const [visible, setVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,10 +26,10 @@ const DeletePasswordBtn = ({ id }: Props) => {
   const handleSubmit = async (id: string) => {
     setIsSubmitting(true);
 
-    const res = await deleteSingleCredential(id);
+    const res = await customAction(id);
 
     if (res?.success) {
-      router.push("/identifiants/liste");
+      router.push(pushLink);
       toast.success(t("successDelete"));
     }
   };

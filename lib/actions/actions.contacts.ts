@@ -5,14 +5,17 @@ import { apiClient } from "../axios";
 import { PostResponse } from "./actions.credentials";
 import { getToken } from "./actions.global";
 import axios from "axios";
-import { newContactValidation } from "../validation";
+import { getTranslations } from "next-intl/server";
+import { createNewContactValidation } from "../validation";
 
 export const addNewContact = async (
   state: PostResponse,
   formData: FormData
 ): Promise<PostResponse> => {
   try {
+    const t = await getTranslations("contacts.form");
     const token = await getToken();
+    const newContactValidation = createNewContactValidation(t);
 
     if (!token)
       return {
@@ -87,7 +90,9 @@ export const updateContact = async (
   formData: FormData
 ): Promise<PostResponse> => {
   try {
+    const t = await getTranslations("contacts.form");
     const token = await getToken();
+    const newContactValidation = createNewContactValidation(t);
 
     if (!token)
       return {
@@ -229,6 +234,41 @@ export const getContactsFromQuery = async (query: string) => {
   }
 };
 
+export const getContactByFilter = async (category: string) => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.log("Token expiré.");
+      return;
+    }
+
+    const res = await apiClient.get(
+      `/api/contacts/126/filter?filters=${category}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => status >= 200 && status < 500,
+      }
+    );
+
+    console.log("status", res.status);
+
+    if (res.status === 200) {
+      return res.data;
+    } else if (res.status === 404) {
+      console.log("Query not found");
+    } else {
+      console.log("Unexpected status:", res.status);
+      return null;
+    }
+  } catch (error: unknown) {
+    console.error("Unexpected error:", error);
+    return null;
+  }
+};
+
 export const getContactById = async (id: string) => {
   try {
     const token = await getToken();
@@ -255,5 +295,41 @@ export const getContactById = async (id: string) => {
   } catch (error: unknown) {
     console.error("Unexpected error:", error);
     return null;
+  }
+};
+
+export const deleteSingleContact = async (id: string) => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.log("Token expiré.");
+      return;
+    }
+
+    const res = await apiClient.post(
+      `/api/contact/delete/126`,
+      { id },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (res.status === 200) {
+      revalidatePath("/repertoire/liste");
+      return { success: true };
+    }
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+    } else {
+      console.error("Unknown error:", error);
+    }
   }
 };
