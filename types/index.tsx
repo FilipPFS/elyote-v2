@@ -49,3 +49,17 @@ export type PasswordData = {
   client_type: string;
   additional_data: string;
 };
+
+export type ContactData = {
+  id: number;
+  customer_id: string;
+  corporate_name: string;
+  lastname: string;
+  firstname: string;
+  email: string;
+  landline: string;
+  mobile: string;
+  access_level: number;
+  client_type: string;
+  additional_data: string;
+};

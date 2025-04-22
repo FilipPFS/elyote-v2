@@ -1,0 +1,11 @@
+{
+  "title": "Directory Manager",
+  "searchPlaceholder": "Search through your directory...",
+  "tableHeaders": {
+    "corporateName": "Corporate Name",
+    "lastName": "Last Name",
+    "firstName": "First Name",
+    "access": "Access Level",
+    "action": "Action"
+  }
+}

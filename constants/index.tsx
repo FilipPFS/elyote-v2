@@ -3,13 +3,15 @@ import { GiSpy } from "react-icons/gi";
 import { GrCubes } from "react-icons/gr";
 import { IoMailOutline } from "react-icons/io5";
 import { LuClipboardList, LuIdCard, LuPrinter } from "react-icons/lu";
-import { PiBag } from "react-icons/pi";
+import { PiBag, PiIdentificationBadge } from "react-icons/pi";
 import { RiComputerLine, RiGalleryLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
 import { FaBarcode, FaRegCalendar } from "react-icons/fa6";
 import { FiSearch, FiTruck, FiUser } from "react-icons/fi";
 import { BiCube } from "react-icons/bi";
 import { tableHeader } from "@/types";
+import { MdOutlineLock, MdOutlineLockClock } from "react-icons/md";
+import { HiOutlineBuildingOffice } from "react-icons/hi2";
 
 export const navItems = [
   {
@@ -200,7 +202,15 @@ export const orderTableHeaders: tableHeader[] = [
 export const passwordTableHeaders: tableHeader[] = [
   { label: "site", icon: <FaBarcode /> },
   { label: "login", icon: <FiUser /> },
-  { label: "access", icon: <FaRegCalendar /> },
+  { label: "access", icon: <MdOutlineLock /> },
+  { label: "action", icon: <FiSearch /> }, // Align right for Action
+];
+
+export const contactsTableHeaders: tableHeader[] = [
+  { label: "corporateName", icon: <HiOutlineBuildingOffice /> },
+  { label: "firstName", icon: <PiIdentificationBadge /> },
+  { label: "lastName", icon: <PiIdentificationBadge /> },
+  { label: "access", icon: <MdOutlineLock /> },
   { label: "action", icon: <FiSearch /> }, // Align right for Action
 ];
 

@@ -1,0 +1,11 @@
+{
+  "title": "Gestion de mon répertoire",
+  "searchPlaceholder": "Rechercher dans votre répertoire...",
+  "tableHeaders": {
+    "corporateName": "Raison sociale",
+    "lastName": "Nom",
+    "firstName": "Prénom",
+    "access": "Niveau d'accès",
+    "action": "Action"
+  }
+}

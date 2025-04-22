@@ -2,20 +2,19 @@
 
 import { useLocale } from "next-intl";
 import { ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
 
 const LanguageSwitcher = () => {
   const currentLocale = useLocale();
-
+  const router = useRouter();
   const handleChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const newLocale = e.target.value;
 
-    // Set the ELYOTE_LANG cookie
     document.cookie = `ELYOTE_LANG=${newLocale}; path=/; max-age=${
       60 * 60 * 24 * 365
     }`; // 1 year expiration
 
-    // Reload the page to apply the new locale
-    window.location.reload();
+    router.refresh();
   };
 
   return (
