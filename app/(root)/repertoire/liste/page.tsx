@@ -18,15 +18,18 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
   const awaitedSearchParams = await searchParams;
   const query = (awaitedSearchParams.query as string) || "";
-  let contacts: ContactData[];
+  let contacts: ContactData[] = [];
 
   if (query) {
     const queryData = await getContactsFromQuery(query);
-    contacts = queryData.contacts;
+    if (queryData) {
+      contacts = queryData.contacts;
+    }
   } else {
     const data = await getContacts();
     contacts = data.contacts;
   }
+
   const tCredentials = await getTranslations("credentials");
   const tContacts = await getTranslations("contacts");
 
@@ -43,6 +46,11 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
         </Suspense>
       }
     >
+      {query.length > 1 && (
+        <span className="text-gray-500 font-semibold">
+          Résultat pour : {query}
+        </span>
+      )}
       <TableExample
         tableHeaders={contactsTableHeaders}
         translationsKey="contacts.tableHeaders"
@@ -73,7 +81,7 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
               </>
             ) : (
               <TableRow>
-                <TableCell>{tCredentials("noData")}</TableCell>
+                <TableCell>Données non disponibles.</TableCell>
               </TableRow>
             )}
           </>
@@ -112,7 +120,7 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
           </>
         ) : (
           <>
-            <p>{tCredentials("noData")}</p>
+            <p>Données non disponibles.</p>
           </>
         )}
       </div>

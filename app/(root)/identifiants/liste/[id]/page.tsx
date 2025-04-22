@@ -7,6 +7,7 @@ import React from "react";
 type Props = {
   params: Promise<{ id: string }>;
 };
+
 const IdentifiantsListeItem = async ({ params }: Props) => {
   const { id } = await params;
 

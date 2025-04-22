@@ -1,13 +1,18 @@
 "use client";
 
-import ContactForm from "@/components/ContactForm";
-import { addNewContact } from "@/lib/actions/actions.contacts";
-import { useRouter } from "next/navigation";
+import { ContactData } from "@/types";
 import React, { useActionState, useEffect } from "react";
+import ContactForm from "./ContactForm";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { updateContact } from "@/lib/actions/actions.contacts";
 
-const RepertoireAjout = () => {
-  const [state, action, isPending] = useActionState(addNewContact, {});
+type Props = {
+  contactData: ContactData;
+};
+
+const ContactUpdatePage = ({ contactData }: Props) => {
+  const [state, action, isPending] = useActionState(updateContact, {});
   const router = useRouter();
 
   useEffect(() => {
@@ -15,7 +20,7 @@ const RepertoireAjout = () => {
 
     if (state.success) {
       router.push("/repertoire/liste");
-      toast.success("Ajouté avec succès.");
+      toast.success(`Modifié avec succès.`);
     }
     if (state.error) {
       toast.error(`${state.error.toString()}`, {
@@ -37,10 +42,14 @@ const RepertoireAjout = () => {
   }, [state, router]);
 
   return (
-    <div className="flex-grow max-sm:p-5 py-6 flex justify-center">
-      <ContactForm updatePage={false} action={action} isPending={isPending} />
-    </div>
+    <ContactForm
+      updatePage={true}
+      contactData={contactData}
+      isPending={isPending}
+      action={action}
+      id={String(contactData.id)}
+    />
   );
 };
 
-export default RepertoireAjout;
+export default ContactUpdatePage;
