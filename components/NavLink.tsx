@@ -71,7 +71,7 @@ const NavLink = ({
             </DropdownMenuTrigger>
             <DropdownMenuContent
               sideOffset={-36}
-              className="bg-white border-none ml-20 p-3"
+              className="bg-white border-none ml-20 p-3 font-primary"
             >
               <div className="flex flex-col gap-3">
                 {item.subLinks.map((subLink) => (

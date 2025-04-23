@@ -16,12 +16,12 @@ type Props = {
 const HeaderIcon = ({ icon, customContent, notification }: Props) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="relative cursor-pointer">
+      <DropdownMenuTrigger className="relative cursor-pointer ">
         {icon}
         {notification && notification}
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="bg-white p-4"
+        className="bg-white p-4 font-primary"
         side="bottom"
         sideOffset={14}
       >

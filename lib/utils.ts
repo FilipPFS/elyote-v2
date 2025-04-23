@@ -58,3 +58,14 @@ export const accessLevel = (level: number): string => {
 
   return key;
 };
+
+export const formatType = (type: string): string => {
+  let key = "";
+
+  if (type === "other") key = "Autre";
+  else if (type === "printer") key = "Imprimante";
+  else if (type === "phone") key = "Téléphone";
+  else if (type === "projector") key = "Projecteur";
+
+  return key;
+};

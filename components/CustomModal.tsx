@@ -22,7 +22,7 @@ const CustomModal = ({ icon, customContent, title }: Props) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger className="cursor-pointer">{icon}</AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="font-primary">
         <AlertDialogTitle>{title}</AlertDialogTitle>
         {customContent}
         <AlertDialogFooter className="flex justify-center items-center">

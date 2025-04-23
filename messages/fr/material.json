@@ -1,0 +1,11 @@
+{
+  "tableHeaders": {
+    "id": "ID",
+    "name": "Matériel",
+    "type": "Type",
+    "availableForLoan": "Dispo pour prêt",
+    "availableForRent": "Dispo pour location",
+    "status": "État",
+    "action": "Voir Détails"
+  }
+}

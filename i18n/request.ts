@@ -11,6 +11,7 @@ export default getRequestConfig(async () => {
     global: (await import(`@/messages/${locale}/global.json`)).default,
     commandes: (await import(`@/messages/${locale}/commandes.json`)).default,
     contacts: (await import(`@/messages/${locale}/contacts.json`)).default,
+    material: (await import(`@/messages/${locale}/material.json`)).default,
     credentials: (await import(`@/messages/${locale}/credentials.json`))
       .default,
   };

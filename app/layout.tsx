@@ -28,12 +28,14 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={`${poppins.variable}`}>
         <NextIntlClientProvider>
-          {children}
-          <ToastContainer
-            position="bottom-right"
-            autoClose={4000}
-            theme="colored"
-          />
+          <div className="font-primary">
+            {children}
+            <ToastContainer
+              position="bottom-right"
+              autoClose={4000}
+              theme="colored"
+            />
+          </div>
         </NextIntlClientProvider>
       </body>
     </html>

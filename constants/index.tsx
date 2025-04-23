@@ -214,6 +214,16 @@ export const contactsTableHeaders: tableHeader[] = [
   { label: "action", icon: <FiSearch /> }, // Align right for Action
 ];
 
+export const materialTableHeaders: tableHeader[] = [
+  { label: "id", icon: <HiOutlineBuildingOffice /> },
+  { label: "name", icon: <PiIdentificationBadge /> },
+  { label: "type", icon: <PiIdentificationBadge /> },
+  { label: "availableForLoan", icon: <MdOutlineLock /> },
+  { label: "availableForRent", icon: <FiSearch /> },
+  { label: "status", icon: <MdOutlineLock /> },
+  { label: "action", icon: <FiSearch /> },
+];
+
 export const orderTableFilters = [
   {
     label: "Numéro",

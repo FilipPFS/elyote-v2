@@ -1,0 +1,11 @@
+{
+  "tableHeaders": {
+    "id": "ID",
+    "name": "Material",
+    "type": "Type",
+    "availableForLoan": "Available for loan",
+    "availableForRent": "Available for rent",
+    "status": "Status",
+    "action": "See Details"
+  }
+}

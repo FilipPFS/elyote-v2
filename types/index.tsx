@@ -63,3 +63,17 @@ export type ContactData = {
   client_type: string;
   additional_data: string;
 };
+
+export type MaterialData = {
+  id: number;
+  customer_id: string;
+  name: string;
+  type: string;
+  lend: number;
+  rent: number;
+  daily_rate: number;
+  deposit: number;
+  state?: number;
+  value?: string;
+  client_type: string;
+};
