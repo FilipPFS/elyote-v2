@@ -8,6 +8,7 @@
     "access": "Access Level",
     "action": "Action"
   },
+  "sortKey": "Sort",
   "filterKeys": {
     "all": "All",
     "corporateName": "Corporate Name",

@@ -8,6 +8,7 @@
     "access": "Niveau d'accès",
     "action": "Action"
   },
+  "sortKey": "Tri",
   "filterKeys": {
     "all": "Tous",
     "corporateName": "Raison sociale",

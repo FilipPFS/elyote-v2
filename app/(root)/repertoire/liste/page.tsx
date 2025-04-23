@@ -56,7 +56,7 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
       }
     >
       <div className="flex items-center gap-2">
-        <h2 className="text-lg font-semibold">Filtres:</h2>
+        <h2 className="text-lg font-semibold">{tContacts("sortKey")}:</h2>
         <FilterContact />
       </div>
       {query.length > 1 && (
