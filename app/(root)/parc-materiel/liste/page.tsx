@@ -68,12 +68,36 @@ const ParcMaterielListe = async () => {
               <MobileCard key={item.id}>
                 <div className="flex flex-col gap-3">
                   <section className="flex justify-between items-center">
-                    <h2 className="font-semibold">{item.corporate_name}</h2>
+                    <div>
+                      <h2 className="font-semibold">ID: {item.id}</h2>
+                    </div>
                     <Link href={`/repertoire/liste/${item.id}`}>
                       <MdKeyboardArrowRight size={20} />
                     </Link>
                   </section>
-                  <section className="flex justify-between items-center"></section>
+                  <section className="flex justify-between items-center">
+                    <h3 className="font-semibold text-sm">{item.name}</h3>
+                    <div className="text-[12px] flex gap-3 items-center">
+                      <div className="flex items-center gap-2">
+                        Prêt:
+                        <span>
+                          {item.lend === 0 ? (
+                            <FaXmark className="text-red-600" />
+                          ) : (
+                            <FaCheck />
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        Location:
+                        {item.rent === 0 ? (
+                          <FaXmark className="text-red-600" />
+                        ) : (
+                          <FaCheck />
+                        )}
+                      </div>
+                    </div>
+                  </section>
                 </div>
               </MobileCard>
             ))}
