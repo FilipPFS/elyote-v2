@@ -37,3 +37,30 @@ export const createNewContactValidation = (t: (key: string) => string) =>
 export type NewContactValidationType = z.infer<
   ReturnType<typeof createNewContactValidation>
 >;
+
+export const materialFormSchema = z.object({
+  name: z.string().min(1, "Le nom est requis"),
+  type: z
+    .string({ required_error: "Le type est requis" })
+    .nullable()
+    .refine((val) => val !== null && val.length > 0, {
+      message: "Le type est requis",
+    }),
+  lend: z.preprocess(
+    (val) => (val === null ? undefined : val),
+    z.coerce
+      .number({
+        invalid_type_error: "Veuillez choisir la disponibilité pour prêt",
+      })
+      .nonnegative("Veuillez choisir la disponibilité pour prêt")
+  ),
+  rent: z.preprocess(
+    (val) => (val === null ? undefined : val),
+    z.coerce
+      .number({
+        invalid_type_error: "Veuillez choisir la disponibilité pour location",
+      })
+      .nonnegative("Veuillez choisir la disponibilité pour location")
+  ),
+  deposit: z.string().min(1, "La caution ou prix d'achat est requis"),
+});

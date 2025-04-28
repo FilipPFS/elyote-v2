@@ -16,8 +16,6 @@ const ParcMaterielListe = async () => {
   const data: { material: MaterialData[] } = await getMaterials();
   const materials = data.material;
 
-  console.log("materials", materials);
-
   const tMaterial = await getTranslations("material");
 
   return (
@@ -45,8 +43,8 @@ const ParcMaterielListe = async () => {
                       )}
                     </TableCell>
                     <TableCell>
-                      <Link href={`/repertoire/liste/${item.id}`}>
-                        {tMaterial("tableHeaders.action")}
+                      <Link href={`/parc-materiel/liste/${item.id}`}>
+                        {tMaterial("tableHeaders.seeDetails")}
                       </Link>
                     </TableCell>
                   </TableRow>
@@ -71,7 +69,7 @@ const ParcMaterielListe = async () => {
                     <div>
                       <h2 className="font-semibold">ID: {item.id}</h2>
                     </div>
-                    <Link href={`/repertoire/liste/${item.id}`}>
+                    <Link href={`/parc-materiel/liste/${item.id}`}>
                       <MdKeyboardArrowRight size={20} />
                     </Link>
                   </section>

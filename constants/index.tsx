@@ -6,12 +6,20 @@ import { LuClipboardList, LuIdCard, LuPrinter } from "react-icons/lu";
 import { PiBag, PiIdentificationBadge } from "react-icons/pi";
 import { RiComputerLine, RiGalleryLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
-import { FaBarcode, FaRegCalendar } from "react-icons/fa6";
+import { FaBarcode, FaRegCalendar, FaRegHandshake } from "react-icons/fa6";
 import { FiSearch, FiTruck, FiUser } from "react-icons/fi";
 import { BiCube } from "react-icons/bi";
 import { tableHeader } from "@/types";
-import { MdOutlineLock, MdOutlineLockClock } from "react-icons/md";
+import {
+  MdDevices,
+  MdOutlineLock,
+  MdOutlineLockClock,
+  MdOutlineRadio,
+  MdOutlineRadioButtonChecked,
+  MdOutlineTag,
+} from "react-icons/md";
 import { HiOutlineBuildingOffice } from "react-icons/hi2";
+import { CgOptions } from "react-icons/cg";
 
 export const navItems = [
   {
@@ -215,12 +223,12 @@ export const contactsTableHeaders: tableHeader[] = [
 ];
 
 export const materialTableHeaders: tableHeader[] = [
-  { label: "id", icon: <HiOutlineBuildingOffice /> },
-  { label: "name", icon: <PiIdentificationBadge /> },
-  { label: "type", icon: <PiIdentificationBadge /> },
-  { label: "availableForLoan", icon: <MdOutlineLock /> },
-  { label: "availableForRent", icon: <FiSearch /> },
-  { label: "status", icon: <MdOutlineLock /> },
+  { label: "id", icon: <MdOutlineTag /> },
+  { label: "name", icon: <MdDevices /> },
+  { label: "type", icon: <CgOptions /> },
+  { label: "availableForLoan", icon: <FaRegHandshake /> },
+  { label: "availableForRent", icon: <FaRegHandshake /> },
+  { label: "status", icon: <MdOutlineRadioButtonChecked /> },
   { label: "action", icon: <FiSearch /> },
 ];
 

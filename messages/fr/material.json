@@ -6,6 +6,7 @@
     "availableForLoan": "Dispo pour prêt",
     "availableForRent": "Dispo pour location",
     "status": "État",
-    "action": "Voir Détails"
+    "action": "Action",
+    "seeDetails": "Voir Détails"
   }
 }

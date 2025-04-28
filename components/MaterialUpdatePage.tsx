@@ -1,13 +1,18 @@
 "use client";
 
-import MaterialForm from "@/components/MaterialForm";
-import { addMaterial } from "@/lib/actions/actions.material";
-import { useRouter } from "next/navigation";
+import { MaterialData } from "@/types";
 import React, { useActionState, useEffect } from "react";
+import MaterialForm from "./MaterialForm";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { updateMaterial } from "@/lib/actions/actions.material";
 
-const ParcMaterielAjout = () => {
-  const [state, action, isPending] = useActionState(addMaterial, {});
+type Props = {
+  materialData: MaterialData;
+};
+
+const MaterialUpdatePage = ({ materialData }: Props) => {
+  const [state, action, isPending] = useActionState(updateMaterial, {});
   const router = useRouter();
 
   useEffect(() => {
@@ -15,7 +20,7 @@ const ParcMaterielAjout = () => {
 
     if (state.success) {
       router.push("/parc-materiel/liste");
-      toast.success("Ajouté avec succès.");
+      toast.success("Modifié avec succès.");
     }
     if (state.error) {
       toast.error(`${state.error.toString()}`, {
@@ -38,9 +43,15 @@ const ParcMaterielAjout = () => {
 
   return (
     <div className="flex-grow max-sm:p-5 py-6 flex justify-center">
-      <MaterialForm action={action} isPending={isPending} updatePage={false} />
+      <MaterialForm
+        updatePage={true}
+        materialData={materialData}
+        action={action}
+        isPending={isPending}
+        id={String(materialData.id)}
+      />
     </div>
   );
 };
 
-export default ParcMaterielAjout;
+export default MaterialUpdatePage;

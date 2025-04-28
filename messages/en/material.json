@@ -6,6 +6,7 @@
     "availableForLoan": "Available for loan",
     "availableForRent": "Available for rent",
     "status": "Status",
-    "action": "See Details"
+    "action": "Action",
+    "seeDetails": "See Details"
   }
 }
