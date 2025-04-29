@@ -8,7 +8,7 @@ import { RiComputerLine, RiGalleryLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
 import { FaBarcode, FaRegCalendar, FaRegHandshake } from "react-icons/fa6";
 import { FiSearch, FiTruck, FiUser } from "react-icons/fi";
-import { BiCube } from "react-icons/bi";
+import { BiCalendarAlt, BiCalendarCheck, BiCube } from "react-icons/bi";
 import { tableHeader } from "@/types";
 import {
   MdDevices,
@@ -228,6 +228,15 @@ export const materialTableHeaders: tableHeader[] = [
   { label: "type", icon: <CgOptions /> },
   { label: "availableForLoan", icon: <FaRegHandshake /> },
   { label: "availableForRent", icon: <FaRegHandshake /> },
+  { label: "status", icon: <MdOutlineRadioButtonChecked /> },
+  { label: "action", icon: <FiSearch /> },
+];
+
+export const rentalsTableHeaders: tableHeader[] = [
+  { label: "customer", icon: <MdOutlineTag /> },
+  { label: "material", icon: <MdDevices /> },
+  { label: "startDate", icon: <BiCalendarAlt /> },
+  { label: "endDate", icon: <BiCalendarCheck /> },
   { label: "status", icon: <MdOutlineRadioButtonChecked /> },
   { label: "action", icon: <FiSearch /> },
 ];

@@ -1,7 +1,111 @@
+import MainPage from "@/components/Mobile/MainPage";
+import MobileCard from "@/components/Mobile/MobileCard";
+import TableExample from "@/components/TableExample";
+import { TableCell, TableRow } from "@/components/ui/table";
+import { rentalsTableHeaders } from "@/constants";
+import { getRentals } from "@/lib/actions/actions.rental";
+import { RentalData } from "@/types";
+import { getFormatter, getTranslations } from "next-intl/server";
+import Link from "next/link";
 import React from "react";
+import { FaCheck, FaXmark } from "react-icons/fa6";
+import { MdKeyboardArrowRight } from "react-icons/md";
 
-const LocationsListe = () => {
-  return <div>LocationsListe</div>;
+const LocationsListe = async () => {
+  const data: { rentals: RentalData[] } = await getRentals();
+  const rentals = data?.rentals;
+  // const tRental = await getTranslations("rentals");
+  const tCredentials = await getTranslations("credentials");
+  const format = await getFormatter();
+
+  return (
+    <MainPage title="Locations">
+      <TableExample
+        translationsKey="rentals.tableHeaders"
+        tableHeaders={rentalsTableHeaders}
+        tableBody={
+          <>
+            {rentals && rentals.length > 0 ? (
+              <>
+                {rentals.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="font-medium">{item.client}</TableCell>
+                    <TableCell>{item.id_material}</TableCell>
+                    <TableCell>
+                      {format.dateTime(new Date(item.start_date), "short")}
+                    </TableCell>
+                    <TableCell>
+                      {format.dateTime(new Date(item.end_date), "short")}
+                    </TableCell>
+                    <TableCell>
+                      {item.status === 1 && (
+                        <span className="flex items-center gap-2">
+                          <FaCheck /> En cours
+                        </span>
+                      )}
+                      {item.status === 0 && (
+                        <span className="flex items-center gap-2">
+                          <FaXmark /> Terminée
+                        </span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Link href={`/locations/liste/${item.id}`}>
+                        {tCredentials("seeDetails")}
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </>
+            ) : (
+              <TableRow>
+                <TableCell>Données non disponibles.</TableCell>
+              </TableRow>
+            )}
+          </>
+        }
+      />
+
+      <div className="lg:hidden flex flex-col gap-3">
+        {rentals && rentals.length > 0 ? (
+          <>
+            {rentals.map((item) => (
+              <MobileCard key={item.id}>
+                <div className="flex flex-col gap-3">
+                  <section className="flex justify-between items-center">
+                    <h2 className="font-semibold">{item.client}</h2>
+                    <Link href={`/locations/liste/${item.id}`}>
+                      <MdKeyboardArrowRight size={20} />
+                    </Link>
+                  </section>
+                  <section className="flex justify-between items-center">
+                    <div className="flex flex-col gap-1">
+                      <small>Matériel:</small>
+                      <small>{item.id_material}</small>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <small>
+                        Début:{" "}
+                        {format.dateTime(new Date(item.start_date), "short")}
+                      </small>
+
+                      <small>
+                        Fin: {format.dateTime(new Date(item.end_date), "short")}
+                      </small>
+                    </div>
+                  </section>
+                </div>
+              </MobileCard>
+            ))}
+          </>
+        ) : (
+          <>
+            <p>Données non disponibles.</p>
+          </>
+        )}
+      </div>
+    </MainPage>
+  );
 };
 
 export default LocationsListe;

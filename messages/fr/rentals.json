@@ -1,0 +1,10 @@
+{
+  "tableHeaders": {
+    "customer": "Client",
+    "material": "Matériel",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "status": "Statut",
+    "action": "Action"
+  }
+}

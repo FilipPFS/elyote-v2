@@ -77,3 +77,22 @@ export type MaterialData = {
   value?: string;
   client_type: string;
 };
+
+export type RentalData = {
+  id: number;
+  customer_id: string;
+  id_material: number;
+  client: string;
+  client_city: string;
+  email: string;
+  phone: string;
+  accessories: string;
+  comment: string;
+  deposit: string;
+  rental_price: string;
+  acompte: string;
+  status: number;
+  start_date: string;
+  end_date: string;
+  client_type: string;
+};
