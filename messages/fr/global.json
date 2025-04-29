@@ -91,5 +91,8 @@
   },
   "search": {
     "result": "Résultats pour"
-  }
+  },
+  "yes": "Oui",
+  "no": "Non",
+  "dataNotAvailable": "Données non disponibles."
 }

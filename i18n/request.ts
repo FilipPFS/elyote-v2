@@ -19,5 +19,15 @@ export default getRequestConfig(async () => {
   return {
     locale,
     messages,
+    timeZone: "Indian/Reunion",
+    formats: {
+      dateTime: {
+        short: {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+        },
+      },
+    },
   };
 });

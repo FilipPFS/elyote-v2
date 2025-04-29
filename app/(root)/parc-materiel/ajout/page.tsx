@@ -2,6 +2,7 @@
 
 import MaterialForm from "@/components/MaterialForm";
 import { addMaterial } from "@/lib/actions/actions.material";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import React, { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
@@ -9,13 +10,14 @@ import { toast } from "react-toastify";
 const ParcMaterielAjout = () => {
   const [state, action, isPending] = useActionState(addMaterial, {});
   const router = useRouter();
+  const tMaterial = useTranslations("material");
 
   useEffect(() => {
     const { errors } = state;
 
     if (state.success) {
       router.push("/parc-materiel/liste");
-      toast.success("Ajouté avec succès.");
+      toast.success(tMaterial("zodValidation.addSuccess"));
     }
     if (state.error) {
       toast.error(`${state.error.toString()}`, {
@@ -34,7 +36,7 @@ const ParcMaterielAjout = () => {
         }
       }
     }
-  }, [state, router]);
+  }, [state, router, tMaterial]);
 
   return (
     <div className="flex-grow max-sm:p-5 py-6 flex justify-center">

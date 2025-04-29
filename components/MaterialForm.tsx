@@ -10,23 +10,20 @@ import { FaRegHandshake } from "react-icons/fa6";
 import { IoPricetagOutline } from "react-icons/io5";
 import DeletePasswordBtn from "./DeletePasswordBtn";
 import { deleteSingleMaterial } from "@/lib/actions/actions.material";
+import { useTranslations } from "next-intl";
 
 const materialSelectOptions = [
   {
     value: "printer",
-    labelKey: "Imprimante",
   },
   {
     value: "phone",
-    labelKey: "Téléphone",
   },
   {
     value: "projector",
-    labelKey: "Projecteur",
   },
   {
     value: "other",
-    labelKey: "Autre",
   },
 ];
 
@@ -45,6 +42,8 @@ const MaterialForm = ({
   materialData,
   id,
 }: Props) => {
+  const tMaterial = useTranslations("material");
+  const tGlobal = useTranslations("global");
   return (
     <form
       action={action}
@@ -52,14 +51,14 @@ const MaterialForm = ({
     >
       <div className="flex flex-col gap-4 ">
         <h1 className="text-xl font-semibold">
-          {updatePage ? "Mettre à jour" : "Ajouter"} un matériel
+          {updatePage ? tMaterial("updateTitle") : tMaterial("addTitle")}
         </h1>
         <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-7">
           <ElInput
             name="name"
             icon={<MdDevices className="text-blue-700" />}
             defaultValue={updatePage ? materialData?.name : ""}
-            placeholder={"Nom de l'appareil"}
+            placeholder={tMaterial("form.namePlaceholder")}
           />
           <input type="hidden" name="id" defaultValue={id} />
           <ElSelect
@@ -68,11 +67,11 @@ const MaterialForm = ({
             icon={<CgOptions className="text-blue-700" />}
           >
             <option value="" disabled>
-              Choisir le type
+              {tMaterial("form.selectType")}
             </option>
             {materialSelectOptions.map((item) => (
-              <option key={item.labelKey} value={item.value}>
-                {item.labelKey}
+              <option key={item.value} value={item.value}>
+                {tMaterial(`types.${item.value}`)}
               </option>
             ))}
           </ElSelect>
@@ -84,10 +83,10 @@ const MaterialForm = ({
             icon={<FaRegHandshake className="text-blue-700" />}
           >
             <option value="" disabled>
-              Disponible pour prêt
+              {tMaterial("form.lendSelect")}
             </option>
-            <option value={0}>Non</option>
-            <option value={1}>Oui</option>
+            <option value={0}>{tGlobal("no")}</option>
+            <option value={1}>{tGlobal("yes")}</option>
           </ElSelect>
           <ElSelect
             name="rent"
@@ -95,10 +94,10 @@ const MaterialForm = ({
             icon={<FaRegHandshake className="text-blue-700" />}
           >
             <option value="" disabled>
-              Disponible pour location
+              {tMaterial("form.rentSelect")}
             </option>
-            <option value={0}>Non</option>
-            <option value={1}>Oui</option>
+            <option value={0}>{tGlobal("no")}</option>
+            <option value={1}>{tGlobal("yes")}</option>
           </ElSelect>
         </div>
         <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-7">
@@ -106,19 +105,19 @@ const MaterialForm = ({
             name="daily_rate"
             defaultValue={updatePage ? materialData?.daily_rate : ""}
             icon={<MdEuro className="text-blue-700" />}
-            placeholder={"Prix à la journée en location"}
+            placeholder={tMaterial("form.dailyRatePlaceholder")}
           />
           <ElInput
             name="deposit"
             icon={<IoPricetagOutline className="text-blue-700" />}
             defaultValue={updatePage ? materialData?.deposit : ""}
-            placeholder={"Caution ou prix d'achat"}
+            placeholder={tMaterial("form.depositPlaceholder")}
           />
         </div>
         <div className="flex items-center gap-4">
-          <h3 className="text-lg font-semibold">État:</h3>
+          <h3 className="text-lg font-semibold">{tMaterial("form.status")}</h3>
           <div className="flex items-center gap-2">
-            <label htmlFor="correct-state">Disponible</label>
+            <label htmlFor="correct-state">{tMaterial("form.available")}</label>
             <input
               type="radio"
               name="state"
@@ -128,7 +127,7 @@ const MaterialForm = ({
             />
           </div>
           <div className="flex items-center gap-2">
-            <label htmlFor="bad-state">Non Disponible</label>
+            <label htmlFor="bad-state">{tMaterial("form.notAvailable")}</label>
             <input
               type="radio"
               name="state"
@@ -141,7 +140,7 @@ const MaterialForm = ({
       </div>
       <div className="flex justify-center gap-5">
         <ElButton
-          label={updatePage ? "Modifier" : "Ajouter"}
+          label={updatePage ? tMaterial("btnUpdate") : tMaterial("btnAdd")}
           type="submit"
           disabled={isPending}
           icon={isPending ? <CustomSpinner /> : undefined}

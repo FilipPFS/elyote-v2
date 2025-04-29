@@ -6,6 +6,7 @@ import MaterialForm from "./MaterialForm";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { updateMaterial } from "@/lib/actions/actions.material";
+import { useTranslations } from "next-intl";
 
 type Props = {
   materialData: MaterialData;
@@ -14,13 +15,14 @@ type Props = {
 const MaterialUpdatePage = ({ materialData }: Props) => {
   const [state, action, isPending] = useActionState(updateMaterial, {});
   const router = useRouter();
+  const tMaterial = useTranslations("material");
 
   useEffect(() => {
     const { errors } = state;
 
     if (state.success) {
       router.push("/parc-materiel/liste");
-      toast.success("Modifié avec succès.");
+      toast.success(tMaterial("zodValidation.updateSuccess"));
     }
     if (state.error) {
       toast.error(`${state.error.toString()}`, {
@@ -39,7 +41,7 @@ const MaterialUpdatePage = ({ materialData }: Props) => {
         }
       }
     }
-  }, [state, router]);
+  }, [state, router, tMaterial]);
 
   return (
     <div className="flex-grow max-sm:p-5 py-6 flex justify-center">

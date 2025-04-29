@@ -14,12 +14,12 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 
 const ParcMaterielListe = async () => {
   const data: { material: MaterialData[] } = await getMaterials();
-  const materials = data.material;
-
+  const materials = data?.material;
   const tMaterial = await getTranslations("material");
+  const tGlobal = await getTranslations("global");
 
   return (
-    <MainPage title="Gestion de mon parc matériel">
+    <MainPage title={tMaterial("title")}>
       <TableExample
         tableHeaders={materialTableHeaders}
         translationsKey="material.tableHeaders"
@@ -32,9 +32,15 @@ const ParcMaterielListe = async () => {
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{item.id}</TableCell>
                     <TableCell>{item.name}</TableCell>
-                    <TableCell>{formatType(item.type)}</TableCell>
-                    <TableCell>{item.lend === 0 ? "Non" : "Oui"}</TableCell>
-                    <TableCell>{item.rent === 0 ? "Non" : "Oui"}</TableCell>
+                    <TableCell>
+                      {tMaterial(`types.${formatType(item.type)}`)}
+                    </TableCell>
+                    <TableCell>
+                      {item.lend === 0 ? tGlobal("no") : tGlobal("yes")}
+                    </TableCell>
+                    <TableCell>
+                      {item.rent === 0 ? tGlobal("no") : tGlobal("yes")}
+                    </TableCell>
                     <TableCell>
                       {item.state === 0 ? (
                         <FaXmark className="text-red-600" />
@@ -52,7 +58,7 @@ const ParcMaterielListe = async () => {
               </>
             ) : (
               <TableRow>
-                <TableCell>Données non disponibles.</TableCell>
+                <TableCell>{tGlobal("dataNotAvailable")}</TableCell>
               </TableRow>
             )}
           </>
@@ -102,7 +108,7 @@ const ParcMaterielListe = async () => {
           </>
         ) : (
           <>
-            <p>Données non disponibles.</p>
+            <p>{tGlobal("dataNotAvailable")}</p>
           </>
         )}
       </div>

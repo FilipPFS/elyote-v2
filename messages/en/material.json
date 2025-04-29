@@ -1,4 +1,7 @@
 {
+  "title": "Managing my equipment fleet",
+  "addTitle": "Add a material",
+  "updateTitle": "Update a material",
   "tableHeaders": {
     "id": "ID",
     "name": "Material",
@@ -8,5 +11,33 @@
     "status": "Status",
     "action": "Action",
     "seeDetails": "See Details"
+  },
+  "types": {
+    "other": "Other",
+    "printer": "Printer",
+    "phone": "Phone",
+    "projector": "Projector"
+  },
+  "form": {
+    "namePlaceholder": "Device name",
+    "selectType": "Select type",
+    "lendSelect": "Available for lending",
+    "rentSelect": "Available for rental",
+    "dailyRatePlaceholder": "Daily rental price",
+    "depositPlaceholder": "Deposit or purchase price",
+    "status": "Status",
+    "available": "Available",
+    "notAvailable": "Not Available"
+  },
+  "btnAdd": "Add",
+  "btnUpdate": "Update",
+  "zodValidation": {
+    "nameMsg": "Name is required",
+    "typeMsg": "Type is required",
+    "lendMsg": "Please select lending availability",
+    "rentMsg": "Please select rental availability",
+    "depositMsg": "Deposit or purchase price is required",
+    "addSuccess": "Added successfully",
+    "updateSuccess": "Updated successfully"
   }
 }

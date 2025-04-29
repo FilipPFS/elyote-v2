@@ -1,4 +1,7 @@
 {
+  "title": "Gestion de mon parc matériel",
+  "addTitle": "Ajouter un matériel",
+  "updateTitle": "Mettre à jour un matériel",
   "tableHeaders": {
     "id": "ID",
     "name": "Matériel",
@@ -8,5 +11,33 @@
     "status": "État",
     "action": "Action",
     "seeDetails": "Voir Détails"
+  },
+  "types": {
+    "other": "Autre",
+    "printer": "Imprimante",
+    "phone": "Téléphone",
+    "projector": "Projecteur"
+  },
+  "form": {
+    "namePlaceholder": "Nom de l'appareil",
+    "selectType": "Choisir le type",
+    "lendSelect": "Disponible pour prêt",
+    "rentSelect": "Disponible pour location",
+    "dailyRatePlaceholder": "Prix à la journée en location",
+    "depositPlaceholder": "Caution ou prix d'achat",
+    "status": "État",
+    "available": "Disponible",
+    "notAvailable": "Non Disponible"
+  },
+  "btnAdd": "Ajouter",
+  "btnUpdate": "Modifer",
+  "zodValidation": {
+    "nameMsg": "Le nom est requis",
+    "typeMsg": "Le type est requis",
+    "lendMsg": "Veuillez choisir la disponibilité pour prêt",
+    "rentMsg": "Veuillez choisir la disponibilité pour location",
+    "depositMsg": "La caution ou prix d'achat est requis",
+    "addSuccess": "Ajouté avec succès",
+    "updateSuccess": "Modifié avec succès"
   }
 }

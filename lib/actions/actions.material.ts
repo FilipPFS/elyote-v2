@@ -5,7 +5,8 @@ import { apiClient } from "../axios";
 import { PostResponse } from "./actions.credentials";
 import { getToken } from "./actions.global";
 import axios from "axios";
-import { materialFormSchema } from "../validation";
+import { getTranslations } from "next-intl/server";
+import { createNewMaterialValidation } from "../validation";
 
 export const addMaterial = async (
   state: PostResponse,
@@ -13,6 +14,8 @@ export const addMaterial = async (
 ): Promise<PostResponse> => {
   try {
     const token = await getToken();
+    const t = await getTranslations("material");
+    const materialFormSchema = createNewMaterialValidation(t);
 
     if (!token)
       return {
@@ -182,6 +185,8 @@ export const updateMaterial = async (
 ): Promise<PostResponse> => {
   try {
     const token = await getToken();
+    const t = await getTranslations("material");
+    const materialFormSchema = createNewMaterialValidation(t);
 
     if (!token)
       return {
