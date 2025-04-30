@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React, { JSX } from "react";
 
 type Props = {
-  icon: JSX.Element;
+  icon?: JSX.Element;
   classNames?: string;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 

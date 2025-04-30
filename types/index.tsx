@@ -96,3 +96,9 @@ export type RentalData = {
   end_date: string;
   client_type: string;
 };
+
+export type RentalQuery = {
+  id: string;
+  name: string;
+  daily_rate: string;
+};

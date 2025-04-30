@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React, { JSX, ReactNode } from "react";
 
 type Props = {
-  icon: JSX.Element;
+  icon?: JSX.Element;
   children: ReactNode;
   classNames?: string;
 } & React.SelectHTMLAttributes<HTMLSelectElement>;

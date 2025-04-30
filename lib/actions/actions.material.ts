@@ -7,6 +7,7 @@ import { getToken } from "./actions.global";
 import axios from "axios";
 import { getTranslations } from "next-intl/server";
 import { createNewMaterialValidation } from "../validation";
+import { RentalQuery } from "@/types";
 
 export const addMaterial = async (
   state: PostResponse,
@@ -106,6 +107,64 @@ export const getMaterials = async () => {
       return res.data;
     } else {
       console.log("Unexpected status:", res.status);
+      return null;
+    }
+  } catch (error: unknown) {
+    console.error("Unexpected error:", error);
+    return null;
+  }
+};
+
+export const getRentMaterials = async () => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.log("Token expiré.");
+      return;
+    }
+
+    const types = [
+      {
+        labelKey: "Imprimante",
+        value: "printer",
+      },
+      {
+        labelKey: "Téléphone",
+        value: "phone",
+      },
+      {
+        labelKey: "Projecteur",
+        value: "projector",
+      },
+      {
+        labelKey: "Autre",
+        value: "other",
+      },
+    ];
+
+    const requests = types.map((type) =>
+      apiClient.get(
+        `/api/materials/rent/condition?customer_id=126&rent=1&state=1&type=${type.value}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+    );
+
+    const responses = await Promise.all(requests);
+
+    const data = types.reduce((acc, type, index) => {
+      acc[type.labelKey] = responses[index].data.material;
+      return acc;
+    }, {} as Record<string, RentalQuery[]>);
+
+    if (data) {
+      return data;
+    } else {
+      console.log("Error occured.");
       return null;
     }
   } catch (error: unknown) {

@@ -65,3 +65,17 @@ export const createNewMaterialValidation = (t: (key: string) => string) =>
     ),
     deposit: z.string().min(1, t("zodValidation.depositMsg")),
   });
+
+export const rentalFormFirstPartSchema = z.object({
+  client: z.string().min(1, "Client est obligatoire."),
+  client_city: z.string().min(1, "Ville est obligatoire."),
+  phone: z.string().min(1, "Téléphone est obligatoire."),
+  email: z.string().email("Email invalide."),
+  start_date: z.string().min(1, "Date de début est obligatoire."),
+  end_date: z.string().min(1, "Date de fin est obligatoire."),
+});
+
+export const rentalFormSecondPartSchema = z.object({
+  rental_price: z.string().min(1, "Prix est obligatoire."),
+  acompte: z.string().min(1, "Acompte est obligatoire."),
+});
