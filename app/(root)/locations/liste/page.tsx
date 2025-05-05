@@ -39,12 +39,12 @@ const LocationsListe = async () => {
                     </TableCell>
                     <TableCell>
                       {item.status === 1 && (
-                        <span className="flex items-center gap-2">
+                        <span className="flex items-center gap-2 text-green-700">
                           <FaCheck /> En cours
                         </span>
                       )}
                       {item.status === 0 && (
-                        <span className="flex items-center gap-2">
+                        <span className="flex items-center gap-2 text-red-700">
                           <FaXmark /> Terminée
                         </span>
                       )}

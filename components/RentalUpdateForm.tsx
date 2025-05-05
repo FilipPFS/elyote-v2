@@ -1,7 +1,7 @@
 "use client";
 
 import { RentalData } from "@/types";
-import React from "react";
+import React, { useActionState, useEffect } from "react";
 import ElInput from "./custom/ElInput";
 import {
   MdEuro,
@@ -19,6 +19,10 @@ import { getDateDifferenceInDays } from "@/lib/utils";
 import Link from "next/link";
 import clsx from "clsx";
 import { FaCheck, FaXmark } from "react-icons/fa6";
+import { updateRental } from "@/lib/actions/actions.rental";
+import ChangeRentalStatusForm from "./ChangeRentalStatusForm";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 type Props = {
   singleRental: RentalData;
@@ -32,17 +36,42 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
   const format = useFormatter();
   const startDateTime = new Date(singleRental.start_date);
   const endDateTime = new Date(singleRental.end_date);
-
   const startDate = format.dateTime(startDateTime, "short");
   const endDate = format.dateTime(endDateTime, "short");
-
   const differenceHere = getDateDifferenceInDays(startDateTime, endDateTime);
 
-  console.log("difference", differenceHere);
+  const [state, action, isPending] = useActionState(updateRental, {});
+  const router = useRouter();
+
+  useEffect(() => {
+    const { errors } = state;
+
+    if (state.success) {
+      router.push("/locations/liste");
+      toast.success("Modifié avec succès.");
+    }
+    if (state.error) {
+      toast.error(`${state.error.toString()}`, {
+        className: "bg-amber-700 text-white",
+      });
+    }
+    if (errors) {
+      for (const key in errors) {
+        const messages = errors[key];
+        if (Array.isArray(messages)) {
+          messages.forEach((msg) =>
+            toast.error(msg, {
+              className: "bg-amber-700 text-white",
+            })
+          );
+        }
+      }
+    }
+  }, [state, router]);
 
   return (
     <div className="w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md flex flex-col gap-8">
-      <div className="flex items-center justify-between">
+      <div className="flex sm:flex-row flex-col sm:items-center gap-2 justify-between">
         <h1
           className={clsx(
             "text-xl font-semibold flex gap-2",
@@ -61,15 +90,12 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
           )}
         </h1>
         {singleRental.status === 1 && (
-          <form>
-            <button className="bg-green-700 text-white px-4 py-1 rounded-md cursor-pointer transition-all duration-300 hover:bg-green-800 active:bg-green-900">
-              Mettre fin à la location
-            </button>
-          </form>
+          <ChangeRentalStatusForm id={String(singleRental.id)} />
         )}
       </div>
-      <form action={""} className="flex flex-col gap-8">
+      <form action={action} className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
+          <input type="hidden" name="id" defaultValue={singleRental.id} />
           <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
             <ElInput
               name="client"
@@ -99,11 +125,10 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
             />
           </div>
           <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
-            <div className="w-1/3">
+            <div className="w-full sm:w-1/3">
               <label>Date de début</label>
               <ElInput
                 type="text"
-                name="start_date"
                 disabled
                 classNames="disabled:cursor-not-allowed"
                 parentClassNames="bg-gray-300 cursor-not-allowed"
@@ -111,11 +136,10 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
                 defaultValue={startDate}
               />
             </div>
-            <div className="w-1/3">
+            <div className="w-full sm:w-1/3">
               <label>Date de fin</label>
               <ElInput
                 type="text"
-                name="end_date"
                 disabled
                 classNames="disabled:cursor-not-allowed"
                 parentClassNames="bg-gray-300 cursor-not-allowed"
@@ -123,11 +147,10 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
                 defaultValue={endDate}
               />
             </div>
-            <div className="w-1/3">
+            <div className="w-full sm:w-1/3">
               <label>Nombre de jours</label>
               <ElInput
                 type="text"
-                name="difference_date"
                 disabled
                 classNames="disabled:cursor-not-allowed"
                 parentClassNames="bg-gray-300 cursor-not-allowed"
@@ -138,7 +161,6 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
           </div>
           <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
             <ElInput
-              name="rental_price"
               placeholder="Prix"
               disabled
               classNames="disabled:cursor-not-allowed"
@@ -179,6 +201,7 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
           <button
             className="w-32 bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2 justify-center text-sm cursor-pointer transition-all duration-500 hover:bg-blue-800 text-white rounded-md h-10"
             type="submit"
+            disabled={isPending}
           >
             Modifier
           </button>

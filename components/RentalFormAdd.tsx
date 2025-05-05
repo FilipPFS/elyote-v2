@@ -147,7 +147,7 @@ const RentalFormAdd = ({ materials }: Props) => {
                 />
               </div>
               <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
-                <div className="w-1/2">
+                <div className="w-full sm:w-1/2">
                   <label>Date de début</label>
                   <ElInput
                     type="date"
@@ -158,7 +158,7 @@ const RentalFormAdd = ({ materials }: Props) => {
                     onChange={handleChange}
                   />
                 </div>
-                <div className="w-1/2">
+                <div className="w-full sm:w-1/2">
                   <label>Date de fin</label>
                   <ElInput
                     type="date"
