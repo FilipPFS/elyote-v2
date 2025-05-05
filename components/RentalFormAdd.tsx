@@ -92,6 +92,7 @@ const RentalFormAdd = ({ materials }: Props) => {
 
     if (!result.success) {
       result.error.errors.map((item) => toast.error(item.message));
+      setIsSubmitting(false);
       return;
     }
 
@@ -169,41 +170,44 @@ const RentalFormAdd = ({ materials }: Props) => {
                   />
                 </div>
               </div>
-            </div>
-            <ElSelect
-              name="id_material"
-              icon={<MdDevices className="text-blue-700" />}
-              value={formData.id_material}
-              onChange={handleChange}
-            >
-              <option value="">Select a material</option>
-              {Object.entries(materials).map(
-                ([section, items]) =>
-                  items.length > 0 && (
-                    <optgroup key={section} label={section}>
-                      {items.map((item) => (
+              <ElSelect
+                name="id_material"
+                icon={<MdDevices className="text-blue-700" />}
+                value={formData.id_material}
+                onChange={handleChange}
+              >
+                <option value="" disabled>
+                  Select a material
+                </option>
+                {Object.entries(materials).map(([section, items]) => (
+                  <optgroup key={section} label={section}>
+                    {items.length > 0 ? (
+                      items.map((item) => (
                         <option key={item.id} value={item.id}>
                           {item.name}
                         </option>
-                      ))}
-                    </optgroup>
-                  )
-              )}
-            </ElSelect>
-            <ElTextarea
-              name="accessories"
-              placeholder="Accessoires"
-              icon={<FiTool className="text-blue-700" />}
-              value={formData.accessories}
-              onChange={handleChange}
-            />
-            <ElTextarea
-              name="comment"
-              placeholder="Commentaires"
-              icon={<BiComment className="text-blue-700" />}
-              value={formData.comment}
-              onChange={handleChange}
-            />
+                      ))
+                    ) : (
+                      <option disabled>Aucun matériel disponible.</option>
+                    )}
+                  </optgroup>
+                ))}
+              </ElSelect>
+              <ElTextarea
+                name="accessories"
+                placeholder="Accessoires"
+                icon={<FiTool className="text-blue-700" />}
+                value={formData.accessories}
+                onChange={handleChange}
+              />
+              <ElTextarea
+                name="comment"
+                placeholder="Commentaires"
+                icon={<BiComment className="text-blue-700" />}
+                value={formData.comment}
+                onChange={handleChange}
+              />
+            </div>
           </>
         ) : (
           <div className="flex flex-col gap-4 lg:gap-7">
@@ -222,7 +226,7 @@ const RentalFormAdd = ({ materials }: Props) => {
             />
             <ElInput
               name="acompte"
-              placeholder="acompte"
+              placeholder="Acompte"
               icon={<MdOutlineCreditCard className="text-blue-700" />}
               value={formData.acompte}
               onChange={handleChange}
@@ -233,7 +237,7 @@ const RentalFormAdd = ({ materials }: Props) => {
               type="submit"
               disabled={isSubmitting}
             >
-              Submit
+              Ajouter
             </button>
           </div>
         )}
