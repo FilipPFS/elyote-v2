@@ -67,26 +67,27 @@ export const createNewMaterialValidation = (t: (key: string) => string) =>
   });
 
 export const rentalFormFirstPartSchema = z.object({
-  client: z.string().min(1, "Client est obligatoire."),
-  client_city: z.string().min(1, "Ville est obligatoire."),
-  phone: z.string().min(1, "Téléphone est obligatoire."),
-  email: z.string().email("Email invalide."),
-  start_date: z.string().min(1, "Date de début est obligatoire."),
-  end_date: z.string().min(1, "Date de fin est obligatoire."),
-  id_material: z.string().min(1, "Matériel est obligatoire"),
+  client: z.string().min(1, "zodValidation.clientRequired"),
+  client_city: z.string().min(1, "zodValidation.clientCityRequired"),
+  phone: z.string().min(1, "zodValidation.phoneRequired"),
+  email: z.string().email("zodValidation.emailInvalid"),
+  start_date: z.string().min(1, "zodValidation.startDateRequired"),
+  end_date: z.string().min(1, "zodValidation.endDateRequired"),
+  id_material: z.string().min(1, "zodValidation.materialRequired"),
 });
 
 export const rentalFormSecondPartSchema = z.object({
-  rental_price: z.string().min(1, "Prix est obligatoire."),
-  acompte: z.string().min(1, "Acompte est obligatoire."),
+  rental_price: z.string().min(1, "zodValidation.priceRequired"),
+  acompte: z.string().min(1, "zodValidation.depositRequired"),
 });
 
-export const rentalUpdatedFormSchema = z.object({
-  client: z.string().min(1, "Client est obligatoire."),
-  client_city: z.string().min(1, "Ville est obligatoire."),
-  phone: z.string().min(1, "Téléphone est obligatoire."),
-  email: z.string().email("Email invalide."),
-  acompte: z.string().min(1, "Acompte est obligatoire."),
-  accessories: z.string().optional(),
-  comment: z.string().optional(),
-});
+export const createRentalUpdateFormValidation = (t: (key: string) => string) =>
+  z.object({
+    client: z.string().min(1, t("zodValidation.clientRequired")),
+    client_city: z.string().min(1, t("zodValidation.clientCityRequired")),
+    phone: z.string().min(1, t("zodValidation.phoneRequired")),
+    email: z.string().email(t("zodValidation.emailInvalid")),
+    acompte: z.string().min(1, t("zodValidation.depositRequired")),
+    accessories: z.string().optional(),
+    comment: z.string().optional(),
+  });

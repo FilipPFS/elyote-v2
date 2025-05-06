@@ -15,7 +15,7 @@ import {
 import { BiComment } from "react-icons/bi";
 import { FiTool } from "react-icons/fi";
 import { useState } from "react";
-import { RentalQuery } from "@/types";
+import { MaterialData, RentalQuery } from "@/types";
 import { addNewRental } from "@/lib/actions/actions.rental";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
@@ -24,6 +24,8 @@ import {
   rentalFormSecondPartSchema,
 } from "@/lib/validation";
 import { HiArrowLeft } from "react-icons/hi2";
+import { getMaterialById } from "@/lib/actions/actions.material";
+import { useTranslations } from "next-intl";
 
 type Props = {
   materials: Record<string, RentalQuery[]>;
@@ -46,8 +48,7 @@ export type RentalFormData = {
 const RentalFormAdd = ({ materials }: Props) => {
   const [firstPartVisible, setFirstPartVisible] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  console.log("submitting", isSubmitting);
+  const tRental = useTranslations("rentals");
 
   const router = useRouter();
 
@@ -74,13 +75,40 @@ const RentalFormAdd = ({ materials }: Props) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleVisibility = () => {
+  const handleVisibility = async () => {
     const result = rentalFormFirstPartSchema.safeParse(formData);
 
     if (result.success) {
+      const startDate = new Date(formData.start_date);
+      const endDate = new Date(formData.end_date);
+      const timeDiff = endDate.getTime() - startDate.getTime();
+      const days = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
+
+      if (startDate > endDate) {
+        toast.error(tRental("zodValidation.dateCheck"));
+        return;
+      }
+
+      const selectedMaterial: MaterialData = await getMaterialById(
+        formData.id_material
+      );
+
+      if (selectedMaterial && days > 0) {
+        const totalPrice = Number(selectedMaterial.daily_rate) * days;
+        const deposit = Number(selectedMaterial.deposit);
+
+        setFormData((prev) => ({
+          ...prev,
+          rental_price: totalPrice.toFixed(2),
+          acompte: deposit.toFixed(2),
+        }));
+      }
+
+      console.log(formData);
+
       setFirstPartVisible(false);
     } else {
-      result.error.errors.map((item) => toast.error(item.message));
+      result.error.errors.map((item) => toast.error(tRental(item.message)));
     }
   };
 
@@ -91,7 +119,7 @@ const RentalFormAdd = ({ materials }: Props) => {
     const result = rentalFormSecondPartSchema.safeParse(formData);
 
     if (!result.success) {
-      result.error.errors.map((item) => toast.error(item.message));
+      result.error.errors.map((item) => toast.error(tRental(item.message)));
       setIsSubmitting(false);
       return;
     }
@@ -99,7 +127,7 @@ const RentalFormAdd = ({ materials }: Props) => {
     const res = await addNewRental(formData);
 
     if (res.success) {
-      toast.success("Votre location a été ajouté.");
+      toast.success(tRental("addPage.success"));
       router.push("/locations/liste");
     } else if (res.error) {
       toast.error(`Erreur: ${res.error.toString()}`);
@@ -109,7 +137,7 @@ const RentalFormAdd = ({ materials }: Props) => {
 
   return (
     <div className="w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md flex flex-col gap-8">
-      <h1 className="text-xl font-semibold">Ajouter une location</h1>
+      <h1 className="text-xl font-semibold">{tRental("addPage.title")}</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-8">
         {firstPartVisible ? (
           <>
@@ -117,14 +145,14 @@ const RentalFormAdd = ({ materials }: Props) => {
               <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
                 <ElInput
                   name="client"
-                  placeholder="Client"
+                  placeholder={tRental("addPage.form.customer")}
                   icon={<MdOutlinePerson className="text-blue-700" />}
                   value={formData.client}
                   onChange={handleChange}
                 />
                 <ElInput
                   name="client_city"
-                  placeholder="Ville du client"
+                  placeholder={tRental("addPage.form.customerCity")}
                   icon={<MdOutlineLocationCity className="text-blue-700" />}
                   value={formData.client_city}
                   onChange={handleChange}
@@ -133,7 +161,7 @@ const RentalFormAdd = ({ materials }: Props) => {
               <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
                 <ElInput
                   name="phone"
-                  placeholder="Tél"
+                  placeholder={tRental("addPage.form.phone")}
                   icon={<MdOutlinePhone className="text-blue-700" />}
                   value={formData.phone}
                   onChange={handleChange}
@@ -148,7 +176,7 @@ const RentalFormAdd = ({ materials }: Props) => {
               </div>
               <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
                 <div className="w-full sm:w-1/2">
-                  <label>Date de début</label>
+                  <label>{tRental("addPage.form.startDate")}</label>
                   <ElInput
                     type="date"
                     name="start_date"
@@ -159,7 +187,7 @@ const RentalFormAdd = ({ materials }: Props) => {
                   />
                 </div>
                 <div className="w-full sm:w-1/2">
-                  <label>Date de fin</label>
+                  <label>{tRental("addPage.form.endDate")}</label>
                   <ElInput
                     type="date"
                     name="end_date"
@@ -177,7 +205,7 @@ const RentalFormAdd = ({ materials }: Props) => {
                 onChange={handleChange}
               >
                 <option value="" disabled>
-                  Select a material
+                  {tRental("addPage.form.selectMaterial")}
                 </option>
                 {Object.entries(materials).map(([section, items]) => (
                   <optgroup key={section} label={section}>
@@ -188,21 +216,24 @@ const RentalFormAdd = ({ materials }: Props) => {
                         </option>
                       ))
                     ) : (
-                      <option disabled>Aucun matériel disponible.</option>
+                      <option disabled>
+                        {" "}
+                        {tRental("addPage.form.noMaterialData")}
+                      </option>
                     )}
                   </optgroup>
                 ))}
               </ElSelect>
               <ElTextarea
                 name="accessories"
-                placeholder="Accessoires"
+                placeholder={tRental("addPage.form.accessories")}
                 icon={<FiTool className="text-blue-700" />}
                 value={formData.accessories}
                 onChange={handleChange}
               />
               <ElTextarea
                 name="comment"
-                placeholder="Commentaires"
+                placeholder={tRental("addPage.form.comment")}
                 icon={<BiComment className="text-blue-700" />}
                 value={formData.comment}
                 onChange={handleChange}
@@ -215,18 +246,18 @@ const RentalFormAdd = ({ materials }: Props) => {
               onClick={() => setFirstPartVisible(true)}
               className="flex items-center gap-2 cursor-pointer"
             >
-              <HiArrowLeft /> Retour
+              <HiArrowLeft /> {tRental("addPage.form.goBack")}
             </span>
             <ElInput
               name="rental_price"
-              placeholder="Prix"
+              placeholder={tRental("addPage.form.rentalPrice")}
               icon={<MdEuro className="text-blue-700" />}
               value={formData.rental_price}
               onChange={handleChange}
             />
             <ElInput
               name="acompte"
-              placeholder="Acompte"
+              placeholder={tRental("addPage.form.deposit")}
               icon={<MdOutlineCreditCard className="text-blue-700" />}
               value={formData.acompte}
               onChange={handleChange}
@@ -237,7 +268,7 @@ const RentalFormAdd = ({ materials }: Props) => {
               type="submit"
               disabled={isSubmitting}
             >
-              Ajouter
+              {tRental("addPage.form.add")}
             </button>
           </div>
         )}
@@ -249,7 +280,7 @@ const RentalFormAdd = ({ materials }: Props) => {
           className="bg-blue-700 disabled:bg-gray-400 flex items-center gap-2 justify-center text-sm cursor-pointer transition-all duration-500 hover:bg-blue-800 text-white rounded-md h-10 self-center w-2/3 lg:w-1/4"
           onClick={handleVisibility}
         >
-          Calculer le prix
+          {tRental("addPage.form.priceCalc")}
         </button>
       )}
     </div>

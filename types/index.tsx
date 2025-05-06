@@ -72,7 +72,7 @@ export type MaterialData = {
   lend: number;
   rent: number;
   daily_rate: number;
-  deposit: number;
+  deposit: string;
   state?: number;
   value?: string;
   client_type: string;
@@ -98,7 +98,7 @@ export type RentalData = {
 };
 
 export type RentalQuery = {
-  id: string;
+  id: number;
   name: string;
   daily_rate: string;
 };

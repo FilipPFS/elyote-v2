@@ -6,5 +6,64 @@
     "endDate": "Date de fin",
     "status": "Statut",
     "action": "Action"
+  },
+  "status": {
+    "label": "Statut",
+    "completed": "Terminée",
+    "inProgress": "En cours"
+  },
+  "noData": "Données non disponible.",
+  "material": "Matériel",
+  "dates": {
+    "startDate": "Début",
+    "endDate": "Fin",
+    "daysNumber": "Nombre de jours"
+  },
+  "addPage": {
+    "success": "Ajouté avec succès.",
+    "title": "Ajouter une location",
+    "form": {
+      "customer": "Client",
+      "customerCity": "Ville de client",
+      "phone": "Tél",
+      "startDate": "Date de début",
+      "endDate": "Date de fin",
+      "selectMaterial": "Séléctionnez un matériel",
+      "noMaterialData": "Aucun matériel disponible",
+      "accessories": "Accessoires",
+      "comment": "Commentaire",
+      "goBack": "Retour",
+      "rentalPrice": "Prix de la location",
+      "deposit": "Acompte",
+      "add": "Ajouter",
+      "priceCalc": "Calculer le prix",
+      "materials": {
+        "printer": "Imprimante",
+        "projector": "Projecteur",
+        "other": "Autre",
+        "phone": "Téléphone",
+        "noMaterial": "Aucun matériel disponible."
+      }
+    }
+  },
+  "updatePage": {
+    "idNotFound": "Location n'a pas été trouvé.",
+    "idDeleted": "Il semble que cet Location ait été supprimé.",
+    "backToList": "Retour à la liste",
+    "statusChangeBtn": "Mettre fin à la location",
+    "updateBtn": "Modifier",
+    "success": "Modifié avec succès."
+  },
+  "zodValidation": {
+    "clientRequired": "Client est obligatoire.",
+    "clientCityRequired": "Ville est obligatoire.",
+    "phoneRequired": "Téléphone est obligatoire.",
+    "emailInvalid": "Email invalide.",
+    "startDateRequired": "Date de début est obligatoire.",
+    "endDateRequired": "Date de fin est obligatoire.",
+    "materialRequired": "Matériel est obligatoire.",
+    "priceRequired": "Prix est obligatoire.",
+    "depositRequired": "Acompte est obligatoire",
+    "dateCheck": "La date de fin ne peut pas être antérieure à la date de début."
   }
 }

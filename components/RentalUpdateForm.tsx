@@ -14,7 +14,7 @@ import {
 import ElTextarea from "./custom/ElTextarea";
 import { FiTool } from "react-icons/fi";
 import { BiComment } from "react-icons/bi";
-import { useFormatter } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 import { getDateDifferenceInDays } from "@/lib/utils";
 import Link from "next/link";
 import clsx from "clsx";
@@ -39,6 +39,7 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
   const startDate = format.dateTime(startDateTime, "short");
   const endDate = format.dateTime(endDateTime, "short");
   const differenceHere = getDateDifferenceInDays(startDateTime, endDateTime);
+  const tRental = useTranslations("rentals");
 
   const [state, action, isPending] = useActionState(updateRental, {});
   const router = useRouter();
@@ -48,7 +49,7 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
 
     if (state.success) {
       router.push("/locations/liste");
-      toast.success("Modifié avec succès.");
+      toast.success(tRental("updatePage.success"));
     }
     if (state.error) {
       toast.error(`${state.error.toString()}`, {
@@ -67,7 +68,7 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
         }
       }
     }
-  }, [state, router]);
+  }, [state, router, tRental]);
 
   return (
     <div className="w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md flex flex-col gap-8">
@@ -78,14 +79,14 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
             singleRental.status === 0 ? "text-red-600" : "text-green-600"
           )}
         >
-          Statut:{" "}
+          {tRental("status.label")}:{" "}
           {singleRental.status === 1 ? (
             <span className="flex items-center gap-1">
-              <FaCheck /> En Cours
+              <FaCheck /> {tRental("status.inProgress")}
             </span>
           ) : (
             <span className="flex items-center gap-1">
-              <FaXmark /> Terminée
+              <FaXmark /> {tRental("status.completed")}
             </span>
           )}
         </h1>
@@ -99,13 +100,13 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
           <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
             <ElInput
               name="client"
-              placeholder="Client"
+              placeholder={tRental("addPage.form.customer")}
               icon={<MdOutlinePerson className="text-blue-700" />}
               defaultValue={singleRental.client}
             />
             <ElInput
               name="client_city"
-              placeholder="Ville du client"
+              placeholder={tRental("addPage.form.customerCity")}
               icon={<MdOutlineLocationCity className="text-blue-700" />}
               defaultValue={singleRental.client_city}
             />
@@ -113,7 +114,7 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
           <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
             <ElInput
               name="phone"
-              placeholder="Tél"
+              placeholder={tRental("addPage.form.phone")}
               icon={<MdOutlinePhone className="text-blue-700" />}
               defaultValue={singleRental.phone}
             />
@@ -126,7 +127,7 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
           </div>
           <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
             <div className="w-full sm:w-1/3">
-              <label>Date de début</label>
+              <label>{tRental("addPage.form.startDate")}</label>
               <ElInput
                 type="text"
                 disabled
@@ -137,7 +138,7 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
               />
             </div>
             <div className="w-full sm:w-1/3">
-              <label>Date de fin</label>
+              <label>{tRental("addPage.form.endDate")}</label>
               <ElInput
                 type="text"
                 disabled
@@ -148,7 +149,7 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
               />
             </div>
             <div className="w-full sm:w-1/3">
-              <label>Nombre de jours</label>
+              <label>{tRental("dates.daysNumber")}</label>
               <ElInput
                 type="text"
                 disabled
@@ -170,13 +171,13 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
             />
             <ElInput
               name="acompte"
-              placeholder="acompte"
+              placeholder={tRental("addPage.form.deposit")}
               icon={<MdOutlineCreditCard className="text-blue-700" />}
               defaultValue={singleRental.acompte}
             />
           </div>
           <div className="flex gap-1">
-            <label>Matériel</label>
+            <label>{tRental("material")}</label>
             <Link
               href={`/parc-materiel/liste/${materialData.id}`}
               className="text-gray-400 hover:underline hover:text-gray-500"
@@ -186,13 +187,13 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
           </div>
           <ElTextarea
             name="accessories"
-            placeholder="Accessoires"
+            placeholder={tRental("addPage.form.accessories")}
             icon={<FiTool className="text-blue-700" />}
             defaultValue={singleRental.accessories}
           />
           <ElTextarea
             name="comment"
-            placeholder="Commentaires"
+            placeholder={tRental("addPage.form.comment")}
             icon={<BiComment className="text-blue-700" />}
             defaultValue={singleRental.comment}
           />
@@ -203,7 +204,7 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
             type="submit"
             disabled={isPending}
           >
-            Modifier
+            {tRental("updatePage.updateBtn")}
           </button>
         </div>
       </form>

@@ -2,6 +2,7 @@ import RentalUpdateForm from "@/components/RentalUpdateForm";
 import { getMaterialById } from "@/lib/actions/actions.material";
 import { getRentalById } from "@/lib/actions/actions.rental";
 import { MaterialData, RentalData } from "@/types";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import React from "react";
 
@@ -11,16 +12,17 @@ type Props = {
 
 const SingleRentalPage = async ({ params }: Props) => {
   const { id } = await params;
+  const tRental = await getTranslations("rentals");
 
   const singleRental: RentalData = await getRentalById(id);
 
   if (!singleRental) {
     return (
       <div>
-        <h2>Location non trouvé</h2>
-        <p>Il semble que cet Location ait été supprimé.</p>
+        <h2>{tRental("updatePage.idNotFound")}</h2>
+        <p>{tRental("updatePage.idDeleted")}</p>
 
-        <Link href="/locations/liste">Retour à la liste</Link>
+        <Link href="/locations/liste">{tRental("updatePage.backToList")}</Link>
       </div>
     );
   }

@@ -6,5 +6,64 @@
     "endDate": "End Date",
     "status": "Status",
     "action": "Action"
+  },
+  "status": {
+    "label": "Status",
+    "completed": "Completed",
+    "inProgress": "In Progress"
+  },
+  "noData": "Data not available.",
+  "material": "Material",
+  "dates": {
+    "startDate": "Start",
+    "endDate": "End",
+    "daysNumber": "Days number"
+  },
+  "addPage": {
+    "success": "Added successfully.",
+    "title": "Add a Rental",
+    "form": {
+      "customer": "Customer",
+      "customerCity": "Customer City",
+      "phone": "Phone",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "selectMaterial": "Select a Material",
+      "noMaterialData": "No material available",
+      "accessories": "Accessories",
+      "comment": "Comment",
+      "goBack": "Back",
+      "rentalPrice": "Rental Price",
+      "deposit": "Deposit",
+      "add": "Add",
+      "priceCalc": "Calculate Price",
+      "materials": {
+        "printer": "Printer",
+        "projector": "Projector",
+        "other": "Other",
+        "phone": "Phone",
+        "noMaterial": "No material available."
+      }
+    }
+  },
+  "updatePage": {
+    "idNotFound": "Rental not found.",
+    "idDeleted": "It seems this rental has been deleted.",
+    "backToList": "Back to list",
+    "statusChangeBtn": "End the rental",
+    "updateBtn": "Update",
+    "success": "Updated successfully."
+  },
+  "zodValidation": {
+    "clientRequired": "Client is required.",
+    "clientCityRequired": "City is required.",
+    "phoneRequired": "Phone number is required.",
+    "emailInvalid": "Invalid email.",
+    "startDateRequired": "Start date is required.",
+    "endDateRequired": "End date is required.",
+    "materialRequired": "Material is required.",
+    "priceRequired": "Price is required.",
+    "depositRequired": "Deposit is required.",
+    "dateCheck": "End date cannot be earlier than start date."
   }
 }

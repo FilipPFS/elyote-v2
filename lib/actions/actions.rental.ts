@@ -7,7 +7,8 @@ import { revalidatePath } from "next/cache";
 import axios from "axios";
 import { RentalData } from "@/types";
 import { PostResponse } from "./actions.credentials";
-import { rentalUpdatedFormSchema } from "../validation";
+import { createRentalUpdateFormValidation } from "../validation";
+import { getTranslations } from "next-intl/server";
 
 export const getRentals = async () => {
   try {
@@ -202,6 +203,8 @@ export const updateRental = async (
   try {
     const token = await getToken();
     const id = formData.get("id") as string;
+    const t = await getTranslations("rentals");
+    const rentalUpdatedFormSchema = createRentalUpdateFormValidation(t);
 
     if (!token)
       return {

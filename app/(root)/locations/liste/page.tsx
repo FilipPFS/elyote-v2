@@ -14,7 +14,7 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 const LocationsListe = async () => {
   const data: { rentals: RentalData[] } = await getRentals();
   const rentals = data?.rentals;
-  // const tRental = await getTranslations("rentals");
+  const tRental = await getTranslations("rentals");
   const tCredentials = await getTranslations("credentials");
   const format = await getFormatter();
 
@@ -40,12 +40,12 @@ const LocationsListe = async () => {
                     <TableCell>
                       {item.status === 1 && (
                         <span className="flex items-center gap-2 text-green-700">
-                          <FaCheck /> En cours
+                          <FaCheck /> {tRental("status.inProgress")}
                         </span>
                       )}
                       {item.status === 0 && (
                         <span className="flex items-center gap-2 text-red-700">
-                          <FaXmark /> Terminée
+                          <FaXmark /> {tRental("status.completed")}
                         </span>
                       )}
                     </TableCell>
@@ -59,7 +59,7 @@ const LocationsListe = async () => {
               </>
             ) : (
               <TableRow>
-                <TableCell>Données non disponibles.</TableCell>
+                <TableCell>{tRental("noData")}</TableCell>
               </TableRow>
             )}
           </>
@@ -80,17 +80,18 @@ const LocationsListe = async () => {
                   </section>
                   <section className="flex justify-between items-center">
                     <div className="flex flex-col gap-1">
-                      <small>Matériel:</small>
+                      <small>{tRental("material")}: </small>
                       <small>{item.id_material}</small>
                     </div>
                     <div className="flex flex-col gap-1">
                       <small>
-                        Début:{" "}
+                        {tRental("dates.startDate")}:{" "}
                         {format.dateTime(new Date(item.start_date), "short")}
                       </small>
 
                       <small>
-                        Fin: {format.dateTime(new Date(item.end_date), "short")}
+                        {tRental("dates.endDate")}:{" "}
+                        {format.dateTime(new Date(item.end_date), "short")}
                       </small>
                     </div>
                   </section>
@@ -100,7 +101,7 @@ const LocationsListe = async () => {
           </>
         ) : (
           <>
-            <p>Données non disponibles.</p>
+            <p>{tRental("noData")}</p>
           </>
         )}
       </div>

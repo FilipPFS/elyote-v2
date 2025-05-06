@@ -118,6 +118,7 @@ export const getMaterials = async () => {
 export const getRentMaterials = async () => {
   try {
     const token = await getToken();
+    const t = await getTranslations("rentals.addPage.form.materials");
 
     if (!token) {
       console.log("Token expiré.");
@@ -126,19 +127,15 @@ export const getRentMaterials = async () => {
 
     const types = [
       {
-        labelKey: "Imprimante",
         value: "printer",
       },
       {
-        labelKey: "Téléphone",
         value: "phone",
       },
       {
-        labelKey: "Projecteur",
         value: "projector",
       },
       {
-        labelKey: "Autre",
         value: "other",
       },
     ];
@@ -157,7 +154,7 @@ export const getRentMaterials = async () => {
     const responses = await Promise.all(requests);
 
     const data = types.reduce((acc, type, index) => {
-      acc[type.labelKey] = responses[index].data.material;
+      acc[t(type.value)] = responses[index].data.material;
       return acc;
     }, {} as Record<string, RentalQuery[]>);
 
