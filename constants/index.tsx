@@ -13,8 +13,6 @@ import { tableHeader } from "@/types";
 import {
   MdDevices,
   MdOutlineLock,
-  MdOutlineLockClock,
-  MdOutlineRadio,
   MdOutlineRadioButtonChecked,
   MdOutlineTag,
 } from "react-icons/md";
@@ -95,7 +93,10 @@ export const navItems = [
   {
     link: "/sav",
     labelKey: "sav",
-    subLinks: [],
+    subLinks: [
+      { labelKey: "sav_list", link: "/sav/liste" },
+      { labelKey: "sav_add", link: "/sav/ajout" },
+    ],
     icon: <FiTool />,
   },
   {
@@ -237,6 +238,16 @@ export const rentalsTableHeaders: tableHeader[] = [
   { label: "material", icon: <MdDevices /> },
   { label: "startDate", icon: <BiCalendarAlt /> },
   { label: "endDate", icon: <BiCalendarCheck /> },
+  { label: "status", icon: <MdOutlineRadioButtonChecked /> },
+  { label: "action", icon: <FiSearch /> },
+];
+
+export const savTableHeaders: tableHeader[] = [
+  { label: "client", icon: <MdOutlineTag /> },
+  { label: "supplier", icon: <MdDevices /> },
+  { label: "product", icon: <BiCalendarAlt /> },
+  { label: "updateDate", icon: <BiCalendarCheck /> },
+  { label: "creationDate", icon: <BiCalendarCheck /> },
   { label: "status", icon: <MdOutlineRadioButtonChecked /> },
   { label: "action", icon: <FiSearch /> },
 ];

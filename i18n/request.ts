@@ -13,6 +13,7 @@ export default getRequestConfig(async () => {
     contacts: (await import(`@/messages/${locale}/contacts.json`)).default,
     material: (await import(`@/messages/${locale}/material.json`)).default,
     rentals: (await import(`@/messages/${locale}/rentals.json`)).default,
+    sav: (await import(`@/messages/${locale}/sav.json`)).default,
     credentials: (await import(`@/messages/${locale}/credentials.json`))
       .default,
   };

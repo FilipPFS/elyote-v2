@@ -79,3 +79,35 @@ export const getDateDifferenceInDays = (
 
   return diffInDays;
 };
+
+export const formatSavStatus = (status: string) => {
+  let object = { key: "", classNames: "" };
+
+  if (status === "0")
+    object = {
+      key: "SAV à faire",
+      classNames: "text-white bg-red-500",
+    };
+  else if (status === "1")
+    object = {
+      key: "En attente Fournisseur/Fabricant",
+      classNames: "text-white bg-orange-700",
+    };
+  else if (status === "2")
+    object = {
+      key: "Colis envoyé en SAV",
+      classNames: "text-white bg-blue-800",
+    };
+  else if (status === "3")
+    object = {
+      key: "En attente Client",
+      classNames: "text-white bg-orange-400",
+    };
+  else if (status === "4")
+    object = {
+      key: "Pret à être retiré",
+      classNames: "text-white bg-gray-500",
+    };
+
+  return object;
+};

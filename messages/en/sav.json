@@ -1,0 +1,11 @@
+{
+  "tableHeaders": {
+    "client": "Client",
+    "supplier": "Supplier",
+    "product": "Product",
+    "updateDate": "Update Date",
+    "creationDate": "Creation Date",
+    "status": "Status",
+    "action": "Action"
+  }
+}

@@ -102,3 +102,29 @@ export type RentalQuery = {
   name: string;
   daily_rate: string;
 };
+
+export type SavData = {
+  id: number;
+  customer_id: string;
+  code_sav: string;
+  client: string;
+  supplier: string;
+  sku: string;
+  product: string;
+  warranty: string;
+  date_purchase: string;
+  bill_number: string;
+  serial_number: string;
+  material_state: string;
+  description: string;
+  accessories: string;
+  comment: string;
+  attachment: File[];
+  email: string;
+  phone: string;
+  lend_machine: string;
+  status: string;
+  deadline: number;
+  created_at: string;
+  updated_at: string;
+};
