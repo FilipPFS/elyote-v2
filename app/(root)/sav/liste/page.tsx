@@ -1,22 +1,34 @@
+import FilterContact from "@/components/FilterContact";
 import MainPage from "@/components/Mobile/MainPage";
 import MobileCard from "@/components/Mobile/MobileCard";
 import Search from "@/components/Search";
 import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { savTableHeaders } from "@/constants";
-import { getSavs } from "@/lib/actions/actions.sav";
+import { filterSavOptions, savTableHeaders } from "@/constants";
+import { getSavs, getSavsByQuery } from "@/lib/actions/actions.sav";
 import { formatSavStatus } from "@/lib/utils";
-import { SavData } from "@/types";
+import { SavData, SearchParamProps } from "@/types";
 import clsx from "clsx";
 import { getFormatter } from "next-intl/server";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
-const Sav = async () => {
-  const savData: { sav: SavData[] } = await getSavs();
-  const savs = savData?.sav;
+const Sav = async ({ searchParams }: SearchParamProps) => {
+  let savs: SavData[] | [] = [];
   const format = await getFormatter();
+  const awaitedSearchParams = await searchParams;
+  const query = (awaitedSearchParams.query as string) || "";
+
+  console.log("query", query);
+
+  if (query) {
+    const savData: { savs: SavData[] } = await getSavsByQuery(query);
+    savs = savData?.savs;
+  } else {
+    const savData: { sav: SavData[] } = await getSavs();
+    savs = savData?.sav;
+  }
 
   return (
     <MainPage
@@ -31,6 +43,12 @@ const Sav = async () => {
         </Suspense>
       }
     >
+      <FilterContact keyString="status" filterOptions={filterSavOptions} />
+      {query.length > 1 && (
+        <span className="text-gray-500 font-semibold">
+          Résultat pour: {query}
+        </span>
+      )}
       <TableExample
         translationsKey="sav.tableHeaders"
         tableHeaders={savTableHeaders}

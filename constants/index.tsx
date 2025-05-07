@@ -379,3 +379,26 @@ export const filterContactOptions = [
     filterKey: "access_level",
   },
 ];
+
+export const filterSavOptions = [
+  {
+    label: "Tous",
+    filterKey: "all",
+  },
+  {
+    label: "SAV à faire",
+    filterKey: "0",
+  },
+  {
+    label: "En attente fournisseur/Fabricant",
+    filterKey: "1",
+  },
+  {
+    label: "Colise envoyé en SAV",
+    filterKey: "3",
+  },
+  {
+    label: "En attente client",
+    filterKey: "4",
+  },
+];

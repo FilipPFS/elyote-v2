@@ -1,29 +1,37 @@
 "use client";
 
-import { filterContactOptions } from "@/constants";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-const FilterContact = () => {
+type Props = {
+  translationKey?: string;
+  filterOptions: {
+    label?: string;
+    filterKey: string;
+  }[];
+  keyString: string;
+};
+
+const FilterContact = ({ translationKey, filterOptions, keyString }: Props) => {
   const [category, setCategory] = useState("");
   const searchParams = useSearchParams();
   const router = useRouter();
-  const t = useTranslations("contacts.filterKeys");
+  const t = useTranslations(translationKey);
 
   const onSelectCategory = (category: string) => {
     let newUrl = "";
     if (category && category !== "all") {
       newUrl = formUrlQuery({
         params: searchParams.toString(),
-        key: "category",
+        key: keyString,
         value: category,
       });
     } else {
       newUrl = removeKeysFromQuery({
         params: searchParams.toString(),
-        keysToRemove: ["category"],
+        keysToRemove: [keyString],
       });
     }
 
@@ -40,9 +48,13 @@ const FilterContact = () => {
         onSelectCategory(selectedCategory);
       }}
     >
-      {filterContactOptions.map((item) => (
+      {filterOptions.map((item) => (
         <option key={item.filterKey} value={item.filterKey}>
-          {t(item.label)}
+          {item.label ? (
+            <>{translationKey ? t(item.label) : item.label}</>
+          ) : (
+            <>{item.filterKey}</>
+          )}
         </option>
       ))}
     </select>

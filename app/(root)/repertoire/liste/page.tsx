@@ -16,6 +16,7 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { filterContactOptions } from "@/constants";
 
 const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
   const awaitedSearchParams = await searchParams;
@@ -57,7 +58,11 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
     >
       <div className="flex items-center gap-2">
         <h2 className="text-lg font-semibold">{tContacts("sortKey")}:</h2>
-        <FilterContact />
+        <FilterContact
+          keyString="category"
+          translationKey="contacts.filterKeys"
+          filterOptions={filterContactOptions}
+        />
       </div>
       {query.length > 1 && (
         <span className="text-gray-500 font-semibold">
