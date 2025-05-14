@@ -91,3 +91,11 @@ export const createRentalUpdateFormValidation = (t: (key: string) => string) =>
     accessories: z.string().optional(),
     comment: z.string().optional(),
   });
+
+export const savFormSchemaValidation = z.object({
+  client: z.string().min(1, "Client est obligatoire"),
+  phone: z.string().min(1, "Téléphone est obligatoire"),
+  email: z.string().email("Email est obligatoire"),
+  product: z.string().min(1, "Produit est obligatoire"),
+  supplier: z.string().min(1, "Fournisseur est obligatoire"),
+});

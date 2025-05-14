@@ -3,6 +3,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import qs from "query-string";
 import { RemoveUrlQueryParams, UrlQueryParams } from "@/types";
+import { toast } from "react-toastify";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -110,4 +111,15 @@ export const formatSavStatus = (status: string) => {
     };
 
   return object;
+};
+
+export const customDateFormat = (theDate: string) => {
+  const date = new Date(theDate);
+  if (!isNaN(date.getTime())) {
+    const formattedDate = `${theDate} 00:00:00`;
+    return formattedDate;
+  } else {
+    toast.error("Veuillez entrer une date valide.");
+    return;
+  }
 };

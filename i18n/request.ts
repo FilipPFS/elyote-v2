@@ -21,13 +21,22 @@ export default getRequestConfig(async () => {
   return {
     locale,
     messages,
-    timeZone: "Indian/Reunion",
+    timeZone: "Europe/Paris",
     formats: {
       dateTime: {
         short: {
-          day: "numeric",
+          day: "2-digit",
           month: "numeric",
           year: "numeric",
+        },
+        long: {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
         },
       },
     },

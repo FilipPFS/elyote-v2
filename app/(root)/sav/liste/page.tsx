@@ -9,7 +9,7 @@ import { getSavs, getSavsByQuery } from "@/lib/actions/actions.sav";
 import { formatSavStatus } from "@/lib/utils";
 import { SavData, SearchParamProps } from "@/types";
 import clsx from "clsx";
-import { getFormatter } from "next-intl/server";
+import { getFormatter, getTimeZone } from "next-intl/server";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
@@ -21,6 +21,10 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
   const query = (awaitedSearchParams.query as string) || "";
 
   console.log("query", query);
+
+  const timezone = await getTimeZone();
+
+  console.log("timezone", timezone);
 
   if (query) {
     const savData: { savs: SavData[] } = await getSavsByQuery(query);
@@ -62,10 +66,10 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
                     <TableCell>{item.supplier}</TableCell>
                     <TableCell>{item.product}</TableCell>
                     <TableCell>
-                      {format.dateTime(new Date(item.updated_at), "short")}
+                      {format.dateTime(new Date(item.updated_at), "long")}
                     </TableCell>
                     <TableCell>
-                      {format.dateTime(new Date(item.created_at), "short")}
+                      {format.dateTime(new Date(item.created_at), "long")}
                     </TableCell>
                     <TableCell
                       className={formatSavStatus(item.status).classNames}
@@ -127,7 +131,7 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
                         MAJ :{" "}
                         <span className="font-semibold">
                           {" "}
-                          {format.dateTime(new Date(item.updated_at), "short")}
+                          {format.dateTime(new Date(item.updated_at), "long")}
                         </span>
                       </small>
 
@@ -135,7 +139,7 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
                         Créé :{" "}
                         <span className="font-semibold">
                           {" "}
-                          {format.dateTime(new Date(item.created_at), "short")}
+                          {format.dateTime(new Date(item.created_at), "long")}
                         </span>
                       </small>
                     </div>
