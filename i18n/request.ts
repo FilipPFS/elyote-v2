@@ -26,7 +26,7 @@ export default getRequestConfig(async () => {
       dateTime: {
         short: {
           day: "2-digit",
-          month: "numeric",
+          month: "2-digit",
           year: "numeric",
         },
         long: {

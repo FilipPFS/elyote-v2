@@ -106,6 +106,7 @@ export type RentalQuery = {
 export type SavData = {
   id: number;
   customer_id: string;
+  user_id: string;
   code_sav: string;
   client: string;
   supplier: string;
@@ -119,7 +120,7 @@ export type SavData = {
   description: string;
   accessories: string;
   comment: string;
-  attachment: File[];
+  attachment: string[];
   email: string;
   phone: string;
   lend_machine: string;

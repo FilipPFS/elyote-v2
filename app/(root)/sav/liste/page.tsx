@@ -9,7 +9,7 @@ import { getSavs, getSavsByQuery } from "@/lib/actions/actions.sav";
 import { formatSavStatus } from "@/lib/utils";
 import { SavData, SearchParamProps } from "@/types";
 import clsx from "clsx";
-import { getFormatter, getTimeZone } from "next-intl/server";
+import { getFormatter } from "next-intl/server";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
@@ -19,12 +19,6 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
   const format = await getFormatter();
   const awaitedSearchParams = await searchParams;
   const query = (awaitedSearchParams.query as string) || "";
-
-  console.log("query", query);
-
-  const timezone = await getTimeZone();
-
-  console.log("timezone", timezone);
 
   if (query) {
     const savData: { savs: SavData[] } = await getSavsByQuery(query);

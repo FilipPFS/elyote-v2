@@ -98,4 +98,48 @@ export const savFormSchemaValidation = z.object({
   email: z.string().email("Email est obligatoire"),
   product: z.string().min(1, "Produit est obligatoire"),
   supplier: z.string().min(1, "Fournisseur est obligatoire"),
+  lend_machine: z.string().min(1, "Matériel est obligatoire"),
+});
+
+export const savUpdateFormSchemaValidation = z
+  .object({
+    client: z.string().min(1, "Client est obligatoire"),
+    phone: z.string().min(1, "Téléphone est obligatoire"),
+    email: z.string().email("Email est obligatoire"),
+    product: z.string().min(1, "Produit est obligatoire"),
+    supplier: z.string().min(1, "Fournisseur est obligatoire"),
+    accessories: z.string().optional(),
+    comment: z.string().optional(),
+    description: z.string().optional(),
+    date_purchase: z.string().optional(),
+    bill_number: z.string().optional(),
+    sku: z.string().optional(),
+    warranty: z.enum(["yes", "no"]).optional(),
+    serial_number: z.string().optional(),
+    deadline: z.string().optional(),
+    material_state: z.string().optional(),
+    lend_machine: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.warranty === "yes") {
+      if (!data.date_purchase || data.date_purchase.length === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["date_purchase"],
+          message: "Date d'achat est obligatoire lorsque la garantie est 'oui'",
+        });
+      }
+      if (!data.bill_number || data.bill_number.length === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["bill_number"],
+          message:
+            "Numéro de facture est obligatoire lorsque la garantie est 'oui'",
+        });
+      }
+    }
+  });
+
+export const savFilesValidation = z.object({
+  files: z.array(z.instanceof(File)).optional(),
 });

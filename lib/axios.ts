@@ -13,7 +13,7 @@ interface ProxyConfig {
 interface AxiosConfig {
   baseURL: string;
   headers: {
-    "Content-Type": string;
+    "Content-Type"?: string;
     "api-key": string;
   };
   proxy?: ProxyConfig;
@@ -97,6 +97,23 @@ function createMultipartAxiosInstance(): AxiosInstance {
   return instance;
 }
 
+function createAutoContentAxiosInstance(): AxiosInstance {
+  validateEnvVars();
+
+  const axiosConfig: AxiosConfig = {
+    baseURL: process.env.API_ELYOTE_BASE_URL!, // e.g., 'https://api.example.com'
+    headers: {
+      // "Content-Type": "multipart/form-data", // détection automatique (utile pour l'envoi des fichiers)
+      "api-key": process.env.API_ELYOTE_KEY!,
+    },
+    proxy: getProxyConfig(),
+  };
+
+  const instance = axios.create(axiosConfig);
+  return instance;
+}
+
 // Export both singleton instances
 export const apiClient = createJsonAxiosInstance();
 export const multipartApiClient = createMultipartAxiosInstance();
+export const contentDetectApiClient = createAutoContentAxiosInstance();

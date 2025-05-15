@@ -1,7 +1,7 @@
 "use client";
 
 import ElInput from "./custom/ElInput";
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { FaBarcode, FaTruck } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import ElSelect from "./custom/ElSelect";
@@ -23,7 +23,7 @@ import { FiTool } from "react-icons/fi";
 import { TbFileInvoice } from "react-icons/tb";
 import { BsCalendarCheck } from "react-icons/bs";
 import { customDateFormat } from "@/lib/utils";
-import { savFormSchemaValidation } from "@/lib/validation";
+import { savFilesValidation, savFormSchemaValidation } from "@/lib/validation";
 import { addNewSav } from "@/lib/actions/actions.sav";
 import { useRouter } from "next/navigation";
 import { GrStatusInfo } from "react-icons/gr";
@@ -41,7 +41,6 @@ export type SavFormData = {
   description: string;
   comment: string;
   lend_machine: string;
-  attachment: File[];
   client: string;
   phone: string;
   email: string;
@@ -60,6 +59,7 @@ type Props = {
 const SavFormAdd = ({ materials }: Props) => {
   const [firstPartVisible, setFirstPartVisible] = useState(true);
   const [eanCode, setEanCode] = useState("");
+  const [attachment, setAttachment] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const [savForm, setSavForm] = useState<SavFormData>({
@@ -75,7 +75,6 @@ const SavFormAdd = ({ materials }: Props) => {
     description: "",
     comment: "",
     lend_machine: "no",
-    attachment: [],
     client: "",
     phone: "",
     email: "",
@@ -99,6 +98,13 @@ const SavFormAdd = ({ materials }: Props) => {
     }
   };
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      setAttachment(Array.from(files));
+    }
+  };
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -106,23 +112,22 @@ const SavFormAdd = ({ materials }: Props) => {
   ) => {
     const { name, value } = e.target;
     console.log("name:", name, "value:", value);
-
-    if (e.target.type === "file") {
-      const files = (e.target as HTMLInputElement).files;
-      if (files) {
-        setSavForm((prev) => ({
-          ...prev,
-          [name]: Array.from(files),
-        }));
-      }
-    } else {
-      setSavForm((prev) => ({ ...prev, [name]: value }));
-    }
+    setSavForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    const files = attachment;
+
+    const fileCheck = savFilesValidation.safeParse({ files });
+
+    if (!fileCheck.success) {
+      toast.error("Erreur des fichiers.");
+      setIsSubmitting(false);
+      return;
+    }
 
     let formattedDate: string | undefined = "";
     if (savForm.warranty === "yes") {
@@ -149,7 +154,9 @@ const SavFormAdd = ({ materials }: Props) => {
       result.error.errors.map((item) => toast.error(String(item.message)));
       setIsSubmitting(false);
     } else {
-      const res = await addNewSav(formData);
+      console.log("att", attachment);
+
+      const res = await addNewSav(formData, attachment);
 
       if (res.success) {
         setIsSubmitting(false);
@@ -318,14 +325,14 @@ const SavFormAdd = ({ materials }: Props) => {
                 <input
                   type="file"
                   name="attachment"
-                  onChange={handleChange}
+                  onChange={handleFileChange}
                   multiple
                   className="hidden"
                 />
               </label>
-              {savForm.attachment.length > 0 && (
+              {attachment.length > 0 && (
                 <ul className="mt-2 text-sm text-gray-600 flex flex-col gap-2">
-                  {savForm.attachment.map((file, idx) => (
+                  {attachment.map((file, idx) => (
                     <li
                       key={idx}
                       className="bg-gray-300 w-fit py-0.5 px-3 rounded-md"
