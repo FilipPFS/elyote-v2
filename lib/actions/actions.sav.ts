@@ -351,3 +351,30 @@ export const updateSav = async (
     }
   }
 };
+
+export const getSavEvolutionById = async (id: string) => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.log("Unauthorized.");
+      return null;
+    }
+
+    const res = await apiClient.get(`/api/sav_evolution/read/127/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 200) {
+      return res.data;
+    } else {
+      console.log("Unexpected status:", res.status);
+      return null;
+    }
+  } catch (error: unknown) {
+    console.log(error);
+    return null;
+  }
+};

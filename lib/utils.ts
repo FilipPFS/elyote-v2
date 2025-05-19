@@ -92,7 +92,7 @@ export const formatSavStatus = (status: string) => {
   else if (status === "1")
     object = {
       key: "En attente Fournisseur/Fabricant",
-      classNames: "text-white bg-orange-700",
+      classNames: "text-white bg-orange-500",
     };
   else if (status === "2")
     object = {

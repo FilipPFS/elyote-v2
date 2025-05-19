@@ -35,11 +35,7 @@ type Props = {
 const SavUpdateForm = ({ savData, materialName }: Props) => {
   const [files, setFiles] = useState<File[]>([]);
   const [warranty, setWarranty] = useState(savData.warranty);
-  const date = new Date(savData.date_purchase);
-  const formattedDate = isNaN(date.getTime())
-    ? ""
-    : date.toISOString().split("T")[0];
-
+  const formattedDate = savData.date_purchase.split(" ")[0];
   const [state, action, isPending] = useActionState(updateSav, {});
   const router = useRouter();
 
@@ -181,6 +177,7 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
                 placeholder="Description de la panne"
                 name="description"
                 icon={<LuMessageSquare className="text-blue-700" />}
+                defaultValue={savData.description}
               />
             </div>
             <ElTextarea

@@ -129,3 +129,13 @@ export type SavData = {
   created_at: string;
   updated_at: string;
 };
+
+export type SavEvolutionData = {
+  id: number;
+  sav_id: number;
+  customer_id: number;
+  user_id: number;
+  status: number;
+  details: string;
+  created_at: string;
+};
