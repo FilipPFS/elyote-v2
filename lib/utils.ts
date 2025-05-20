@@ -86,32 +86,32 @@ export const formatSavStatus = (status: string) => {
 
   if (status === "0")
     object = {
-      key: "SAV à faire",
+      key: "first",
       classNames: "text-white bg-red-500",
     };
   else if (status === "1")
     object = {
-      key: "En attente Fournisseur/Fabricant",
+      key: "second",
       classNames: "text-white bg-orange-500",
     };
   else if (status === "2")
     object = {
-      key: "Colis envoyé en SAV",
+      key: "third",
       classNames: "text-white bg-blue-800",
     };
   else if (status === "3")
     object = {
-      key: "En attente Client",
+      key: "fourth",
       classNames: "text-white bg-orange-400",
     };
   else if (status === "4")
     object = {
-      key: "Pret à être retiré",
+      key: "fifth",
       classNames: "text-white bg-gray-500",
     };
   else if (status === "5")
     object = {
-      key: "Traité",
+      key: "sixth",
       classNames: "text-white bg-green-600",
     };
 

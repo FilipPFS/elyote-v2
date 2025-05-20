@@ -1,4 +1,7 @@
 {
+  "title": "SAV Management",
+  "seeDetails": "See details",
+  "searchPlaceholder": "Search in SAV",
   "tableHeaders": {
     "client": "Client",
     "supplier": "Supplier",
@@ -7,5 +10,77 @@
     "creationDate": "Creation Date",
     "status": "Status",
     "action": "Action"
+  },
+  "filterKeys": {
+    "title": "Sort",
+    "all": "All",
+    "byStatus": "By status",
+    "bySupplier": "By supplier"
+  },
+  "statues": {
+    "all": "All",
+    "first": "SAV to do",
+    "second": "Waiting for Supplier/Manufacturer",
+    "third": "Package sent to SAV",
+    "fourth": "Waiting for client",
+    "fifth": "Ready to be picked up",
+    "sixth": "Processed"
+  },
+  "addPage": {
+    "title": "Add a Service Request",
+    "firstStep": {
+      "placeholder": "BV / EAN Code",
+      "btn": "Search",
+      "skipBtn": "Skip this step"
+    },
+    "secondStep": {
+      "product": "Product",
+      "supplier": "Supplier",
+      "warrantyLabel": "Under warranty",
+      "warrantyOptions": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "purchaseDate": "Purchase date",
+      "billNumber": "Bill number",
+      "serialNumber": "Serial number",
+      "deadline": "Estimated service time (in days)",
+      "materialState": "Condition of the equipment",
+      "accessories": "Accessories",
+      "description": "Issue description",
+      "comment": "Seller's comment",
+      "materialLend": "Loan of equipment",
+      "addFile": "Add an attachment",
+      "customerInfo": "Customer information",
+      "customer": "Customer",
+      "phone": "Phone",
+      "mail": "Email",
+      "addBtn": "Add"
+    }
+  },
+  "updatePage": {
+    "title": "SAV Code",
+    "clientInfo": "Client Information",
+    "productInfo": "Product Information",
+    "btnUpdate": "Update the SAV",
+    "savStatus": {
+      "title": "Update SAV Tracking",
+      "btn": "Update Status",
+      "select": "Select a status",
+      "comment": "Comments"
+    },
+    "savEvolution": {
+      "status": "Status"
+    }
+  },
+  "zodValidation": {
+    "clientRequired": "Client is required",
+    "phoneRequired": "Phone is required",
+    "emailInvalid": "Email is required",
+    "productRequired": "Product is required",
+    "supplierRequired": "Supplier is required",
+    "lendMachineRequired": "Loan equipment is required",
+    "purchaseDateRequired": "Purchase date is required when warranty is 'yes'",
+    "billNumberRequired": "Bill number is required when warranty is 'yes'"
   }
 }

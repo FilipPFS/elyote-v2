@@ -3,7 +3,7 @@
 import { formatSavStatus } from "@/lib/utils";
 import { SavEvolutionData } from "@/types";
 import clsx from "clsx";
-import { useFormatter } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 
 type Props = {
   savEvolution: SavEvolutionData[];
@@ -12,8 +12,7 @@ type Props = {
 
 const SavEvolutionTable = ({ savEvolution, savDate }: Props) => {
   const format = useFormatter();
-
-  console.log("SAV", savDate);
+  const t = useTranslations("sav");
 
   return (
     <div className="flex flex-col text-sm md:text-[10px] gap-2 bg-gray-200 shadow-sm p-4 rounded-sm">
@@ -22,7 +21,7 @@ const SavEvolutionTable = ({ savEvolution, savDate }: Props) => {
           Date
         </div>
         <div className="font-bold text-gray-800 w-1/2 rounded uppercase bg-gray-300 p-2">
-          Status
+          {t("updatePage.savEvolution.status")}
         </div>
       </div>
       <div className="flex flex-col gap-1.5">
@@ -45,7 +44,7 @@ const SavEvolutionTable = ({ savEvolution, savDate }: Props) => {
                       formatSavStatus(String(item.status)).classNames
                     )}
                   >
-                    {formatSavStatus(String(item.status)).key}
+                    {t(`statues.${formatSavStatus(String(item.status)).key}`)}
                   </div>
                 </div>
                 {item.details && (

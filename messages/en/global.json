@@ -79,7 +79,9 @@
     "title": "Markup"
   },
   "notifications": {
-    "title": "My notifications"
+    "title": "My notifications",
+    "addSuccess": "Successfully added.",
+    "updateSuccess": "Successfully updated."
   },
   "signInForm": {
     "title": "Sign In",

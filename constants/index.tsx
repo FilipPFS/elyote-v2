@@ -382,31 +382,31 @@ export const filterContactOptions = [
 
 export const filterSavOptions = [
   {
-    label: "Tous",
+    label: "all",
     filterKey: "all",
   },
   {
-    label: "SAV à faire",
+    label: "first",
     filterKey: "0",
   },
   {
-    label: "En attente fournisseur/Fabricant",
+    label: "second",
     filterKey: "1",
   },
   {
-    label: "Colis envoyé en SAV",
+    label: "third",
     filterKey: "2",
   },
   {
-    label: "En attente client",
+    label: "fourth",
     filterKey: "3",
   },
   {
-    label: "Prêt à être retiré.",
+    label: "fifth",
     filterKey: "4",
   },
   {
-    label: "Traité",
+    label: "sixth",
     filterKey: "5",
   },
 ];

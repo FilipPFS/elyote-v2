@@ -26,6 +26,7 @@ import { LuMessageSquare } from "react-icons/lu";
 import Link from "next/link";
 import { updateSav } from "@/lib/actions/actions.sav";
 import { toast } from "react-toastify";
+import { useTranslations } from "next-intl";
 
 type Props = {
   savData: SavData;
@@ -38,6 +39,8 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
   const formattedDate = savData.date_purchase.split(" ")[0];
   const [state, action, isPending] = useActionState(updateSav, {});
   const router = useRouter();
+  const t = useTranslations("sav");
+  const tGlobal = useTranslations("global");
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -51,7 +54,7 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
 
     if (state.success) {
       // router.push("/sav/liste");
-      toast.success("Succes");
+      toast.success(tGlobal("notifications.updateSuccess"));
     }
     if (state.error) {
       toast.error(`${state.error.toString()}`, {
@@ -63,22 +66,26 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
         const messages = errors[key];
         if (Array.isArray(messages)) {
           messages.forEach((msg) =>
-            toast.error(msg, {
+            toast.error(t(`${msg}`), {
               className: "bg-amber-700 text-white",
             })
           );
         }
       }
     }
-  }, [state, router]);
+  }, [state, router, t, tGlobal]);
 
   return (
     <div className="w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md flex flex-col gap-8">
-      <h1 className="text-xl font-semibold">Code SAV: {savData.code_sav}</h1>
+      <h1 className="text-xl font-semibold">
+        {t("updatePage.title")}: {savData.code_sav}
+      </h1>
       <div>
         <form action={action} className="flex flex-col gap-4">
           <section className="flex flex-col gap-4">
-            <h3 className="font-semibold text-lg">Informations client</h3>
+            <h3 className="font-semibold text-lg">
+              {t("updatePage.clientInfo")}
+            </h3>
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
               <input type="hidden" name="id" defaultValue={savData.id} />
               {/* <ElSelect
@@ -94,26 +101,28 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
               </ElSelect> */}
               <ElInput
                 name="client"
-                placeholder={"Client"}
+                placeholder={t("addPage.secondStep.customer")}
                 icon={<MdOutlinePerson className="text-blue-700" />}
                 defaultValue={savData.client || ""}
               />
               <ElInput
                 name="phone"
-                placeholder={"Tél"}
+                placeholder={t("addPage.secondStep.phone")}
                 icon={<MdOutlinePhone className="text-blue-700" />}
                 defaultValue={savData.phone || ""}
               />
             </div>
             <ElInput
               name="email"
-              placeholder="Email"
+              placeholder={t("addPage.secondStep.mail")}
               icon={<MdOutlineMail className="text-blue-700" />}
               defaultValue={savData.email || ""}
             />
           </section>
           <section className="flex flex-col gap-4">
-            <h3 className="font-semibold text-lg">Informations produit</h3>
+            <h3 className="font-semibold text-lg">
+              {t("updatePage.productInfo")}
+            </h3>
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
               <ElInput
                 placeholder="Produit"
@@ -129,27 +138,31 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <label>Sous garantie</label>
+              <label>{t("addPage.secondStep.warrantyLabel")}</label>
               <ElSelect
                 icon={<MdOutlineHandshake className="text-blue-700" />}
                 name="warranty"
                 defaultValue={warranty}
                 onChange={(e) => setWarranty(e.target.value)}
               >
-                <option value={"no"}>Non</option>
-                <option value={"yes"}>Oui</option>
+                <option value={"no"}>
+                  {t("addPage.secondStep.warrantyOptions.no")}
+                </option>
+                <option value={"yes"}>
+                  {t("addPage.secondStep.warrantyOptions.yes")}
+                </option>
               </ElSelect>
               {warranty === "yes" && (
                 <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
                   <ElInput
-                    placeholder="Date d'achat"
+                    placeholder={t("addPage.secondStep.purchaseDate")}
                     type="date"
                     name="date_purchase"
                     icon={<BsCalendarCheck className="text-blue-700" />}
                     defaultValue={formattedDate}
                   />
                   <ElInput
-                    placeholder="Numéro facture"
+                    placeholder={t("addPage.secondStep.billNumber")}
                     name="bill_number"
                     icon={<TbFileInvoice className="text-blue-700" />}
                     defaultValue={savData.bill_number}
@@ -159,20 +172,20 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
             </div>
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
               <ElInput
-                placeholder="Numéro de série"
+                placeholder={t("addPage.secondStep.serialNumber")}
                 icon={<MdOutlineNumbers className="text-blue-700" />}
                 name="serial_number"
                 defaultValue={savData.serial_number || ""}
               />{" "}
               <ElInput
-                placeholder="Délai estimé du SAV (en jour)"
+                placeholder={t("addPage.secondStep.deadline")}
                 name="deadline"
                 icon={<PiClockCountdownBold className="text-blue-700" />}
                 defaultValue={savData.deadline || ""}
               />
             </div>
             <ElInput
-              placeholder="Etat du matériel"
+              placeholder={t("addPage.secondStep.materialState")}
               name="material_state"
               icon={<GrStatusInfo className="text-blue-700" />}
               defaultValue={savData.material_state}
@@ -185,14 +198,14 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
                 defaultValue={savData.accessories}
               />{" "}
               <ElTextarea
-                placeholder="Description de la panne"
+                placeholder={t("addPage.secondStep.description")}
                 name="description"
                 icon={<LuMessageSquare className="text-blue-700" />}
                 defaultValue={savData.description}
               />
             </div>
             <ElTextarea
-              placeholder="Commentaire du vendeur"
+              placeholder={t("addPage.secondStep.comment")}
               name="comment"
               icon={<MdOutlineComment className="text-blue-700" />}
               defaultValue={savData.comment}
@@ -213,7 +226,7 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
             <div>
               <label className="flex items-center gap-2 cursor-pointer text-blue-700 hover:underline">
                 <MdOutlineAttachFile className="text-xl" />
-                <span>Ajouter une pièce jointe</span>
+                <span>{t("addPage.secondStep.addFile")}</span>
                 <input
                   type="file"
                   name="attachment"
@@ -259,7 +272,7 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
             disabled={isPending}
             className="bg-blue-600 disabled:bg-gray-600 disabled:cursor-not-allowed hover:bg-blue-800 duration-300 text-white rounded-lg px-6 py-2 cursor-pointer"
           >
-            Mettre à jour le SAV
+            {t("updatePage.btnUpdate")}
           </button>
         </form>
       </div>

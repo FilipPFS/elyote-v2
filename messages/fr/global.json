@@ -79,7 +79,9 @@
     "title": "Balisage"
   },
   "notifications": {
-    "title": "Mes notifications"
+    "title": "Mes notifications",
+    "addSuccess": "Ajouté avec succès.",
+    "updateSuccess": "Modifié avec succès."
   },
   "signInForm": {
     "title": "Connexion",

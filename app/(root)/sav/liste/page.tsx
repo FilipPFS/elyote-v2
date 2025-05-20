@@ -14,7 +14,7 @@ import {
 import { formatSavStatus } from "@/lib/utils";
 import { SavData, SearchParamProps } from "@/types";
 import clsx from "clsx";
-import { getFormatter } from "next-intl/server";
+import { getFormatter, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
@@ -27,6 +27,7 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
   const supplier = (awaitedSearchParams.supplier as string) || "";
   const status = (awaitedSearchParams.status as string) || "";
   const savSuppliers = await getSavSuppliers();
+  const savTranslations = await getTranslations("sav");
 
   if (query) {
     const savData: { savs: SavData[] } = await getSavsByQuery(query);
@@ -45,29 +46,32 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
 
   return (
     <MainPage
-      title="Gestion des SAV"
+      title={savTranslations("title")}
       headerElement={
         <Suspense fallback={null}>
           <Search
             component="identifiants"
-            placeholder={"Rechercher sur le SAV"}
+            placeholder={savTranslations("searchPlaceholder")}
             classNames="w-full sm:w-2/4"
           />
         </Suspense>
       }
     >
       <section className="flex flex-col gap-2">
-        <h2 className="text-lg font-semibold">Trier:</h2>
+        <h2 className="text-lg font-semibold">
+          {savTranslations("filterKeys.title")}:
+        </h2>
         <div className="flex gap-5">
           <div>
-            <h3>Par Statut</h3>
+            <h3>{savTranslations("filterKeys.byStatus")}</h3>
             <FilterContact
               keyString="status"
               filterOptions={filterSavOptions}
+              translationKey="sav.statues"
             />
           </div>
           <div>
-            <h3>Par Fournisseur</h3>
+            <h3>{savTranslations("filterKeys.bySupplier")}</h3>
             <FilterContact keyString="supplier" oneKeyFilters={savSuppliers} />
           </div>
         </div>
@@ -98,10 +102,14 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
                     <TableCell
                       className={formatSavStatus(item.status).classNames}
                     >
-                      {formatSavStatus(item.status).key}
+                      {savTranslations(
+                        `statues.${formatSavStatus(item.status).key}`
+                      )}
                     </TableCell>
                     <TableCell>
-                      <Link href={`/sav/liste/${item.id}`}>Voir détails</Link>
+                      <Link href={`/sav/liste/${item.id}`}>
+                        {savTranslations("seeDetails")}
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))}

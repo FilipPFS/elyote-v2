@@ -1,4 +1,7 @@
 {
+  "title": "Gestion des SAV",
+  "seeDetails": "Voir détails",
+  "searchPlaceholder": "Rechercher sur le SAV",
   "tableHeaders": {
     "client": "Client",
     "supplier": "Fournisseur",
@@ -7,5 +10,77 @@
     "creationDate": "Date de création",
     "status": "Statut",
     "action": "Action"
+  },
+  "filterKeys": {
+    "title": "Trier",
+    "all": "Tous",
+    "byStatus": "Par statut",
+    "bySupplier": "Par fournisseur"
+  },
+  "statues": {
+    "all": "Tous",
+    "first": "SAV à faire",
+    "second": "En attente Fournisseur/Fabricant",
+    "third": "Colis envoyé en SAV",
+    "fourth": "En attente client",
+    "fifth": "Prêt à être retiré",
+    "sixth": "Traité"
+  },
+  "addPage": {
+    "title": "Ajouter un SAV",
+    "firstStep": {
+      "placeholder": "Code BV / EAN",
+      "btn": "Rechercher",
+      "skipBtn": "Passer cette étape"
+    },
+    "secondStep": {
+      "product": "Produit",
+      "supplier": "Fournisseur",
+      "warrantyLabel": "Sous garantie",
+      "warrantyOptions": {
+        "yes": "Oui",
+        "no": "Non"
+      },
+      "purchaseDate": "Date d'ahcat",
+      "billNumber": "Numéro de facture",
+      "serialNumber": "Numéro de série",
+      "deadline": "Délai estimé du SAV en jour",
+      "materialState": "Etat du matériel",
+      "accessories": "Accessoires",
+      "description": "Description de la panne",
+      "comment": "Commentaire du vendeur",
+      "materialLend": "Prêt du matériel",
+      "addFile": "Ajouter une pièce jointe",
+      "customerInfo": "Informations client",
+      "customer": "Client",
+      "phone": "Tel",
+      "mail": "Email",
+      "addBtn": "Ajouter"
+    }
+  },
+  "updatePage": {
+    "title": "Code SAV",
+    "clientInfo": "Informations client",
+    "productInfo": "Informations produit",
+    "btnUpdate": "Mettre à jour le sav",
+    "savStatus": {
+      "title": "Mettre à jour le suivi du SAV",
+      "btn": "Mettre à jour le statut",
+      "select": "Séléctionnez un statut",
+      "comment": "Commentaires"
+    },
+    "savEvolution": {
+      "status": "Statut"
+    }
+  },
+  "zodValidation": {
+    "clientRequired": "Client est obligatoire",
+    "phoneRequired": "Téléphone est obligatoire",
+    "emailInvalid": "Email est obligatoire",
+    "productRequired": "Produit est obligatoire",
+    "supplierRequired": "Fournisseur est obligatoire",
+    "lendMachineRequired": "Matériel est obligatoire",
+    "purchaseDateRequired": "La date d'achat est obligatoire lorsque la garantie est 'oui'",
+    "billNumberRequired": "Le numéro de facture est obligatoire lorsque la garantie est 'oui'"
   }
 }

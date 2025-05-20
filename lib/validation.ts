@@ -93,21 +93,21 @@ export const createRentalUpdateFormValidation = (t: (key: string) => string) =>
   });
 
 export const savFormSchemaValidation = z.object({
-  client: z.string().min(1, "Client est obligatoire"),
-  phone: z.string().min(1, "Téléphone est obligatoire"),
-  email: z.string().email("Email est obligatoire"),
-  product: z.string().min(1, "Produit est obligatoire"),
-  supplier: z.string().min(1, "Fournisseur est obligatoire"),
-  lend_machine: z.string().min(1, "Matériel est obligatoire"),
+  client: z.string().min(1, "zodValidation.clientRequired"),
+  phone: z.string().min(1, "zodValidation.phoneRequired"),
+  email: z.string().email("zodValidation.emailInvalid"),
+  product: z.string().min(1, "zodValidation.productRequired"),
+  supplier: z.string().min(1, "zodValidation.supplierRequired"),
+  lend_machine: z.string().min(1, "zodValidation.lendMachineRequired"),
 });
 
 export const savUpdateFormSchemaValidation = z
   .object({
-    client: z.string().min(1, "Client est obligatoire"),
-    phone: z.string().min(1, "Téléphone est obligatoire"),
-    email: z.string().email("Email est obligatoire"),
-    product: z.string().min(1, "Produit est obligatoire"),
-    supplier: z.string().min(1, "Fournisseur est obligatoire"),
+    client: z.string().min(1, "zodValidation.clientRequired"),
+    phone: z.string().min(1, "zodValidation.phoneRequired"),
+    email: z.string().email("zodValidation.emailInvalid"),
+    product: z.string().min(1, "zodValidation.productRequired"),
+    supplier: z.string().min(1, "zodValidation.supplierRequired"),
     // status: z.string().min(1, "Statut est obligatoire"), // à enlever
     accessories: z.string().optional(),
     comment: z.string().optional(),
@@ -127,15 +127,14 @@ export const savUpdateFormSchemaValidation = z
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["date_purchase"],
-          message: "Date d'achat est obligatoire lorsque la garantie est 'oui'",
+          message: "zodValidation.purchaseDateRequiredIfWarrantyYes",
         });
       }
       if (!data.bill_number || data.bill_number.length === 0) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["bill_number"],
-          message:
-            "Numéro de facture est obligatoire lorsque la garantie est 'oui'",
+          message: "zodValidation.billNumberRequiredIfWarrantyYes",
         });
       }
     }
