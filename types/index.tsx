@@ -139,3 +139,12 @@ export type SavEvolutionData = {
   details: string;
   created_at: string;
 };
+
+export type PdfType = {
+  content: Array<Record<string, unknown>>;
+  type: string;
+  template_id: string;
+  resolution_dpi: number;
+  template_name: string;
+  template_title: string;
+};

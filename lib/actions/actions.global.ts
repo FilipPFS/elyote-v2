@@ -3,6 +3,8 @@
 import { cookies } from "next/headers";
 import { apiClient } from "../axios";
 import { getTranslations } from "next-intl/server";
+import axios from "axios";
+import { PdfType } from "@/types";
 
 type SignInType = { success: boolean; error?: string };
 
@@ -75,3 +77,73 @@ export async function signOut() {
     return null;
   }
 }
+
+export const generatePdf = async ({
+  content,
+  type,
+  template_id,
+  resolution_dpi,
+  template_name,
+  template_title,
+}: PdfType) => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.error("Token not available.");
+      return null;
+    }
+
+    const postData = {
+      data: {
+        content,
+      },
+      type,
+      template_id,
+      resolution_dpi,
+      template_name,
+      template_title,
+    };
+
+    const customer_id = 126;
+
+    const res = await apiClient.post(
+      `/api/generate_pdf/${customer_id}`,
+      postData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (res.status === 200) {
+      console.log("resData", res.data);
+
+      return res.data;
+    } else {
+      return {
+        success: false,
+        error: `Erreur survenue: ${res.status}`,
+      };
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Axios error occurred:",
+        error.response?.data || error.message
+      );
+
+      return {
+        success: false,
+        error: String(error.message),
+      };
+    } else {
+      console.error("Unexpected error:", error);
+      return {
+        success: false,
+        error: String(error),
+      };
+    }
+  }
+};
