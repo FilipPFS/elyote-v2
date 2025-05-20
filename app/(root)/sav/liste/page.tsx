@@ -5,7 +5,12 @@ import Search from "@/components/Search";
 import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { filterSavOptions, savTableHeaders } from "@/constants";
-import { getSavs, getSavsByQuery } from "@/lib/actions/actions.sav";
+import {
+  getSavs,
+  getSavsByFilter,
+  getSavsByQuery,
+  getSavSuppliers,
+} from "@/lib/actions/actions.sav";
 import { formatSavStatus } from "@/lib/utils";
 import { SavData, SearchParamProps } from "@/types";
 import clsx from "clsx";
@@ -19,10 +24,20 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
   const format = await getFormatter();
   const awaitedSearchParams = await searchParams;
   const query = (awaitedSearchParams.query as string) || "";
+  const supplier = (awaitedSearchParams.supplier as string) || "";
+  const status = (awaitedSearchParams.status as string) || "";
+  const savSuppliers = await getSavSuppliers();
 
   if (query) {
     const savData: { savs: SavData[] } = await getSavsByQuery(query);
     savs = savData?.savs;
+  } else if (supplier || status) {
+    const filteredData: { sav: SavData[] } = await getSavsByFilter({
+      supplier,
+      status,
+    });
+
+    savs = filteredData?.sav;
   } else {
     const savData: { sav: SavData[] } = await getSavs();
     savs = savData?.sav;
@@ -41,7 +56,22 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
         </Suspense>
       }
     >
-      <FilterContact keyString="status" filterOptions={filterSavOptions} />
+      <section className="flex flex-col gap-2">
+        <h2 className="text-lg font-semibold">Trier:</h2>
+        <div className="flex gap-5">
+          <div>
+            <h3>Par Statut</h3>
+            <FilterContact
+              keyString="status"
+              filterOptions={filterSavOptions}
+            />
+          </div>
+          <div>
+            <h3>Par Fournisseur</h3>
+            <FilterContact keyString="supplier" oneKeyFilters={savSuppliers} />
+          </div>
+        </div>
+      </section>
       {query.length > 1 && (
         <span className="text-gray-500 font-semibold">
           Résultat pour: {query}

@@ -109,6 +109,11 @@ export const formatSavStatus = (status: string) => {
       key: "Pret à être retiré",
       classNames: "text-white bg-gray-500",
     };
+  else if (status === "5")
+    object = {
+      key: "Traité",
+      classNames: "text-white bg-green-600",
+    };
 
   return object;
 };

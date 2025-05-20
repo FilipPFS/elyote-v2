@@ -9,7 +9,7 @@ type Props = {
 
 const ElSelect = ({ icon, children, classNames, ...rest }: Props) => {
   return (
-    <div className="border-gray-400 border-[1.5px] rounded-sm w-full flex items-center gap-3 h-10 px-4">
+    <div className="border-gray-400 bg-white border-[1.5px] rounded-sm w-full flex items-center gap-3 h-10 px-4">
       <span>{icon}</span>
       <select
         {...rest}

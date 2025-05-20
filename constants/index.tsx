@@ -394,11 +394,19 @@ export const filterSavOptions = [
     filterKey: "1",
   },
   {
-    label: "Colise envoyé en SAV",
-    filterKey: "3",
+    label: "Colis envoyé en SAV",
+    filterKey: "2",
   },
   {
     label: "En attente client",
+    filterKey: "3",
+  },
+  {
+    label: "Prêt à être retiré.",
     filterKey: "4",
+  },
+  {
+    label: "Traité",
+    filterKey: "5",
   },
 ];

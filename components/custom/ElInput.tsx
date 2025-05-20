@@ -11,7 +11,7 @@ const ElInput = ({ icon, classNames, parentClassNames, ...rest }: Props) => {
   return (
     <div
       className={clsx(
-        "border-gray-400 border-[1.5px] rounded-sm w-full flex items-center gap-3 h-10 px-4",
+        "border-gray-400 bg-white border-[1.5px] rounded-sm w-full flex items-center gap-3 h-10 px-4",
         parentClassNames
       )}
     >

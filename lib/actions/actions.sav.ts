@@ -16,6 +16,11 @@ import {
 } from "../validation";
 import { SavData } from "@/types";
 
+export interface SavEvolutionResponse {
+  success?: boolean;
+  error?: string;
+}
+
 export const getSavs = async () => {
   try {
     const token = await getToken();
@@ -375,6 +380,130 @@ export const getSavEvolutionById = async (id: string) => {
     }
   } catch (error: unknown) {
     console.log(error);
+    return null;
+  }
+};
+
+export const getSavSuppliers = async () => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.log("Unauthorized.");
+      return;
+    }
+
+    const res = await apiClient.get("/api/sav/read/127", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 200) {
+      return res.data.sav.map((item: SavData) => item.supplier);
+    } else {
+      console.log("Unexpected status:", res.status);
+      return null;
+    }
+  } catch (error: unknown) {
+    console.error("Unexpected error:", error);
+    return null;
+  }
+};
+
+export const updateSavStatus = async (
+  state: SavEvolutionResponse,
+  formData: FormData
+): Promise<SavEvolutionResponse> => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.log("Unauthorized.");
+      return {
+        success: false,
+        error: "Vous n'êtes pas autorisé.",
+      };
+    }
+
+    const id = formData.get("id");
+
+    if (!id) return { success: false, error: "SAV est introuvable." };
+
+    const postData = {
+      details: formData.get("details"),
+      status: formData.get("status"),
+      sav_id: id,
+      customer_id: "127",
+      user_id: "15",
+    };
+
+    const res = await apiClient.post(
+      `/api/sav_evolution/create/127`,
+      { data: postData },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (res.status === 201) {
+      revalidatePath(`sav/liste/${id}`);
+      return { success: true };
+    } else {
+      console.log("Unexpected status:", res.status);
+      return {
+        success: false,
+        error: "Erreur survenue.",
+      };
+    }
+  } catch (error: unknown) {
+    console.log(error);
+    return {
+      success: false,
+      error: String(error),
+    };
+  }
+};
+
+export const getSavsByFilter = async ({
+  supplier,
+  status,
+}: {
+  supplier: string;
+  status: string;
+}) => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.log("Token expiré.");
+      return;
+    }
+
+    const res = await apiClient.get(
+      `/api/sav/filter/127?supplier=${supplier}&status=${status}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => status >= 200 && status < 500,
+      }
+    );
+
+    console.log("status", res.status);
+
+    if (res.status === 200) {
+      return res.data;
+    } else if (res.status === 404) {
+      console.log("Query not found");
+    } else {
+      console.log("Unexpected status:", res.status);
+      return null;
+    }
+  } catch (error: unknown) {
+    console.error("Unexpected error:", error);
     return null;
   }
 };

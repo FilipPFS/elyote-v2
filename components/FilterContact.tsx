@@ -7,14 +7,20 @@ import { useState } from "react";
 
 type Props = {
   translationKey?: string;
-  filterOptions: {
+  filterOptions?: {
     label?: string;
     filterKey: string;
   }[];
+  oneKeyFilters?: string[];
   keyString: string;
 };
 
-const FilterContact = ({ translationKey, filterOptions, keyString }: Props) => {
+const FilterContact = ({
+  translationKey,
+  filterOptions,
+  keyString,
+  oneKeyFilters,
+}: Props) => {
   const [category, setCategory] = useState("");
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -48,15 +54,29 @@ const FilterContact = ({ translationKey, filterOptions, keyString }: Props) => {
         onSelectCategory(selectedCategory);
       }}
     >
-      {filterOptions.map((item) => (
-        <option key={item.filterKey} value={item.filterKey}>
-          {item.label ? (
-            <>{translationKey ? t(item.label) : item.label}</>
-          ) : (
-            <>{item.filterKey}</>
-          )}
-        </option>
-      ))}
+      {filterOptions && (
+        <>
+          {filterOptions.map((item, index) => (
+            <option key={index} value={item.filterKey}>
+              {item.label ? (
+                <>{translationKey ? t(item.label) : item.label}</>
+              ) : (
+                <>{item.filterKey}</>
+              )}
+            </option>
+          ))}
+        </>
+      )}
+      {oneKeyFilters && (
+        <>
+          <option value={"all"}>Tous</option>
+          {oneKeyFilters.map((item, index) => (
+            <option key={index} value={item}>
+              {item}
+            </option>
+          ))}
+        </>
+      )}
     </select>
   );
 };

@@ -1,5 +1,6 @@
 import SavEvolutionTable from "@/components/SavEvolutionTable";
 import SavUpdateForm from "@/components/SavUpdateForm";
+import SavUpdateStatus from "@/components/SavUpdateStatus";
 import { getMaterialById } from "@/lib/actions/actions.material";
 import { getSavById, getSavEvolutionById } from "@/lib/actions/actions.sav";
 import { MaterialData, SavData, SavEvolutionData } from "@/types";
@@ -32,9 +33,7 @@ const SingleSavPage = async ({ params }: Props) => {
         materialName={materialUsed ? materialUsed.name : ""}
       />
       <div className="flex flex-col gap-4 w-full md:w-2/5">
-        <div className="p-6 bg-orange-400 rounded-md h-fit">
-          <h2 className="font-semibold">SAV Evolution</h2>
-        </div>
+        <SavUpdateStatus id={id} />
         <SavEvolutionTable
           savEvolution={savEvolution}
           savDate={singleSav.created_at}

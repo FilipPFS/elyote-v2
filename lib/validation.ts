@@ -108,6 +108,7 @@ export const savUpdateFormSchemaValidation = z
     email: z.string().email("Email est obligatoire"),
     product: z.string().min(1, "Produit est obligatoire"),
     supplier: z.string().min(1, "Fournisseur est obligatoire"),
+    // status: z.string().min(1, "Statut est obligatoire"), // à enlever
     accessories: z.string().optional(),
     comment: z.string().optional(),
     description: z.string().optional(),

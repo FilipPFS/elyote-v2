@@ -81,6 +81,17 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
             <h3 className="font-semibold text-lg">Informations client</h3>
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-7">
               <input type="hidden" name="id" defaultValue={savData.id} />
+              {/* <ElSelect
+                icon={<MdOutlineHandshake className="text-blue-700" />}
+                name="status"
+                defaultValue={savData.status}
+              >
+                {Array.from({ length: 6 }, (_, index) => (
+                  <option key={index} value={index}>
+                    {index}
+                  </option>
+                ))}
+              </ElSelect> */}
               <ElInput
                 name="client"
                 placeholder={"Client"}
