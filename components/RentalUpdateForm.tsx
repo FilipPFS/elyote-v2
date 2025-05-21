@@ -15,7 +15,6 @@ import ElTextarea from "./custom/ElTextarea";
 import { FiTool } from "react-icons/fi";
 import { BiComment } from "react-icons/bi";
 import { useFormatter, useTranslations } from "next-intl";
-import { getDateDifferenceInDays } from "@/lib/utils";
 import Link from "next/link";
 import clsx from "clsx";
 import { FaCheck, FaXmark } from "react-icons/fa6";
@@ -24,7 +23,6 @@ import ChangeRentalStatusForm from "./ChangeRentalStatusForm";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import GeneratePdf from "./GeneratePdf";
-import { rentalContent } from "@/constants/data";
 
 type Props = {
   singleRental: RentalData;
@@ -67,7 +65,8 @@ const RentalUpdateForm = ({
   const endDateTime = new Date(singleRental.end_date);
   const startDate = format.dateTime(startDateTime, "short");
   const endDate = format.dateTime(endDateTime, "short");
-  const differenceHere = getDateDifferenceInDays(startDateTime, endDateTime);
+  const timeDiff = endDateTime.getTime() - startDateTime.getTime();
+  const days = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
   const tRental = useTranslations("rentals");
   const [state, action, isPending] = useActionState(updateRental, {});
   const router = useRouter();
@@ -105,8 +104,24 @@ const RentalUpdateForm = ({
     template_id: String(templateId),
     resolution_dpi: 300,
     content: {
-      ...rentalContent,
       ...localData,
+      id_location: singleRental.id,
+      client_nom: singleRental.client,
+      client_ville: singleRental.client_city,
+      telephone: singleRental.phone,
+      mail: singleRental.email,
+      machine_pret: materialData.name,
+      caution: singleRental.deposit,
+      duree: days,
+      date_debut: startDate,
+      date_fin: endDate,
+      prix_location_jour: Number(singleRental.rental_price) / days,
+      id_materiel: materialData.id,
+      accessoires: singleRental.accessories,
+      commentaires: singleRental.comment,
+      date_creation: "",
+      prix_location: singleRental.rental_price,
+      code_bv: "",
     },
     pdfType: "Rental" as "SAV" | "Rental",
   };
@@ -200,7 +215,7 @@ const RentalUpdateForm = ({
                 classNames="disabled:cursor-not-allowed"
                 parentClassNames="bg-gray-300 cursor-not-allowed"
                 className="p-2 border rounded w-full"
-                defaultValue={differenceHere}
+                defaultValue={days}
               />
             </div>
           </div>
