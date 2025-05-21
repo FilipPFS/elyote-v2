@@ -251,3 +251,24 @@ export const pdfContent = [
     address_city: "Coulommiers",
   },
 ];
+
+export const rentalContent = {
+  id_location: "14500003",
+  client_nom: "Dupont",
+  client_ville: "Paris",
+  telephone: "0102030405",
+  mail: "client@gmail.com",
+  machine_pret:
+    "vidéoprjecteur samsung qu'il est bien et qu'il fonctionne parfaitement",
+  caution: "300",
+  duree: "5",
+  date_debut: "18/08/23",
+  date_fin: "25/08/23",
+  prix_location_jour: "20",
+  id_materiel: "145000016",
+  accessoires: "un truc",
+  commentaires: "com",
+  date_creation: "",
+  prix_location: "100",
+  code_bv: "",
+};

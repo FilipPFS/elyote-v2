@@ -22,7 +22,10 @@ const SingInForm = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (state.success) {
+    if (state.success && state.customerData) {
+      Object.entries(state.customerData).forEach(([key, value]) => {
+        localStorage.setItem(key, value);
+      });
       router.push("/");
       toast.success("Connexion réussi.");
     }

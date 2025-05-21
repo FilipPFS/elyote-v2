@@ -6,7 +6,11 @@ import { getTranslations } from "next-intl/server";
 import axios from "axios";
 import { PdfType } from "@/types";
 
-type SignInType = { success: boolean; error?: string };
+type SignInType = {
+  success: boolean;
+  customerData?: Record<string, string>;
+  error?: string;
+};
 
 export const signIn = async (
   prevState: SignInType,
@@ -38,7 +42,18 @@ export const signIn = async (
         path: "/",
       });
 
-      return { success: true };
+      return {
+        success: true,
+        customerData: {
+          customer_social_reason: "SARL du parc",
+          customer_capital: "48956.32",
+          customer_address: "25 rue du paradis",
+          customer_zipcode: "77120",
+          customer_city: "Coulommiers",
+          customer_rcs_city: "Meaux",
+          customer_rcs_number: "405 236 598",
+        },
+      };
     } else {
       return { success: false, error: "Invalid response status" };
     }
@@ -79,6 +94,7 @@ export async function signOut() {
 }
 
 export const generatePdf = async ({
+  pdfType,
   content,
   type,
   template_id,
@@ -95,9 +111,12 @@ export const generatePdf = async ({
     }
 
     const postData = {
-      data: {
-        content,
-      },
+      data:
+        pdfType === "SAV"
+          ? {
+              content,
+            }
+          : content,
       type,
       template_id,
       resolution_dpi,
@@ -118,8 +137,6 @@ export const generatePdf = async ({
     );
 
     if (res.status === 200) {
-      console.log("resData", res.data);
-
       return res.data;
     } else {
       return {

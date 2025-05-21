@@ -1,7 +1,7 @@
 "use client";
 
 import { RentalData } from "@/types";
-import React, { useActionState, useEffect } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import ElInput from "./custom/ElInput";
 import {
   MdEuro,
@@ -23,6 +23,8 @@ import { updateRental } from "@/lib/actions/actions.rental";
 import ChangeRentalStatusForm from "./ChangeRentalStatusForm";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import GeneratePdf from "./GeneratePdf";
+import { rentalContent } from "@/constants/data";
 
 type Props = {
   singleRental: RentalData;
@@ -30,9 +32,36 @@ type Props = {
     name: string;
     id: number;
   };
+  templateId: string;
 };
 
-const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
+const RentalUpdateForm = ({
+  singleRental,
+  materialData,
+  templateId,
+}: Props) => {
+  const [localData, setLocalData] = useState({
+    raison_sociale: "",
+    capital: "",
+    adresse_bv: "",
+    cp_bv: "",
+    ville_bv: "",
+    rcs_ville: "",
+    rcs_num: "",
+  });
+
+  useEffect(() => {
+    setLocalData({
+      raison_sociale: localStorage.getItem("customer_social_reason") || "",
+      capital: localStorage.getItem("customer_capital") || "",
+      adresse_bv: localStorage.getItem("customer_address") || "",
+      cp_bv: localStorage.getItem("customer_zipcode") || "",
+      ville_bv: localStorage.getItem("customer_city") || "",
+      rcs_ville: localStorage.getItem("customer_rcs_city") || "",
+      rcs_num: localStorage.getItem("customer_rcs_number") || "",
+    });
+  }, []);
+
   const format = useFormatter();
   const startDateTime = new Date(singleRental.start_date);
   const endDateTime = new Date(singleRental.end_date);
@@ -40,7 +69,6 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
   const endDate = format.dateTime(endDateTime, "short");
   const differenceHere = getDateDifferenceInDays(startDateTime, endDateTime);
   const tRental = useTranslations("rentals");
-
   const [state, action, isPending] = useActionState(updateRental, {});
   const router = useRouter();
 
@@ -70,6 +98,19 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
     }
   }, [state, router, tRental]);
 
+  const pdfObject = {
+    type: "invoice",
+    template_name: "invoice",
+    template_title: "invoice",
+    template_id: String(templateId),
+    resolution_dpi: 300,
+    content: {
+      ...rentalContent,
+      ...localData,
+    },
+    pdfType: "Rental" as "SAV" | "Rental",
+  };
+
   return (
     <div className="w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md flex flex-col gap-8">
       <div className="flex sm:flex-row flex-col sm:items-center gap-2 justify-between">
@@ -90,9 +131,12 @@ const RentalUpdateForm = ({ singleRental, materialData }: Props) => {
             </span>
           )}
         </h1>
-        {singleRental.status === 1 && (
-          <ChangeRentalStatusForm id={String(singleRental.id)} />
-        )}
+        <div className="flex items-center gap-2">
+          {singleRental.status === 1 && (
+            <ChangeRentalStatusForm id={String(singleRental.id)} />
+          )}
+          <GeneratePdf pdfObject={pdfObject} />
+        </div>
       </div>
       <form action={action} className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">

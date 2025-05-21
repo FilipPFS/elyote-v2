@@ -141,7 +141,8 @@ export type SavEvolutionData = {
 };
 
 export type PdfType = {
-  content: Array<Record<string, unknown>>;
+  pdfType: "SAV" | "Rental";
+  content: Record<string, unknown> | Array<Record<string, unknown>>;
   type: string;
   template_id: string;
   resolution_dpi: number;

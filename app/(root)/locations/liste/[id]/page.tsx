@@ -31,11 +31,14 @@ const SingleRentalPage = async ({ params }: Props) => {
     String(singleRental.id_material)
   );
 
+  const templateId = process.env.PDF_RENTAL_TEMPLATE_ID;
+
   return (
     <div className="flex-grow max-sm:p-5 py-6 flex justify-center">
       <RentalUpdateForm
         singleRental={singleRental}
         materialData={{ name: materialUsed.name, id: materialUsed.id }}
+        templateId={String(templateId)}
       />
     </div>
   );

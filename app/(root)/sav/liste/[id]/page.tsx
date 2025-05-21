@@ -37,6 +37,7 @@ const SingleSavPage = async ({ params }: Props) => {
     template_id: String(templateId),
     resolution_dpi: 300,
     content: pdfContent,
+    pdfType: "SAV" as "SAV" | "Rental",
   };
 
   return (
