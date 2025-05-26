@@ -46,7 +46,7 @@ const GeneratePdf = ({ pdfObject }: Props) => {
   return (
     <>
       <CustomModal
-        // classNames="max-w-[700px]!"
+        classNames="md:max-w-[700px]!"
         customContent={
           <div className="h-[400px] flex items-center justify-center">
             {isSubmitting ? (

@@ -23,6 +23,8 @@ import ChangeRentalStatusForm from "./ChangeRentalStatusForm";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import GeneratePdf from "./GeneratePdf";
+import ElButton from "./custom/ElButton";
+import CustomSpinner from "./custom/Spinner";
 
 type Props = {
   singleRental: RentalData;
@@ -257,14 +259,14 @@ const RentalUpdateForm = ({
             defaultValue={singleRental.comment}
           />
         </div>
-        <div className="flex flex-col gap-4 lg:gap-7">
-          <button
-            className="w-32 bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2 justify-center text-sm cursor-pointer transition-all duration-500 hover:bg-blue-800 text-white rounded-md h-10"
+        <div className="flex flex-col items-center gap-4 lg:gap-7">
+          <ElButton
             type="submit"
             disabled={isPending}
-          >
-            {tRental("updatePage.updateBtn")}
-          </button>
+            icon={isPending ? <CustomSpinner /> : undefined}
+            classNames="w-2/3 lg:w-1/4"
+            label={tRental("updatePage.updateBtn")}
+          />
         </div>
       </form>
     </div>

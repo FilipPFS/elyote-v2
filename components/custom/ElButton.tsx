@@ -7,9 +7,10 @@ type Props = {
   classNames?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const ElButton = ({ icon, classNames, label }: Props) => {
+const ElButton = ({ icon, classNames, label, disabled }: Props) => {
   return (
     <button
+      disabled={disabled}
       className={clsx(
         "bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2 justify-center text-sm cursor-pointer transition-all duration-500 hover:bg-blue-800 text-white rounded-md h-10",
         classNames

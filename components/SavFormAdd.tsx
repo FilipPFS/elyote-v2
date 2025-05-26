@@ -28,6 +28,8 @@ import { addNewSav } from "@/lib/actions/actions.sav";
 import { useRouter } from "next/navigation";
 import { GrStatusInfo } from "react-icons/gr";
 import { useTranslations } from "next-intl";
+import ElButton from "./custom/ElButton";
+import CustomSpinner from "./custom/Spinner";
 
 export type SavFormData = {
   product: string;
@@ -380,13 +382,15 @@ const SavFormAdd = ({ materials }: Props) => {
                 />
               </div>
             </section>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="bg-blue-600 disabled:bg-gray-600 disabled:cursor-not-allowed hover:bg-blue-800 duration-300 text-white rounded-lg px-6 py-2 cursor-pointer"
-            >
-              {t("addPage.secondStep.addBtn")}
-            </button>
+            <div className="flex justify-center gap-5">
+              <ElButton
+                type="submit"
+                disabled={isSubmitting}
+                icon={isSubmitting ? <CustomSpinner /> : undefined}
+                label={t("addPage.secondStep.addBtn")}
+                classNames="lg:w-1/4 w-2/3"
+              />
+            </div>
           </form>
         </div>
       )}

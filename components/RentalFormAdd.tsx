@@ -26,6 +26,8 @@ import {
 import { HiArrowLeft } from "react-icons/hi2";
 import { getMaterialById } from "@/lib/actions/actions.material";
 import { useTranslations } from "next-intl";
+import ElButton from "./custom/ElButton";
+import CustomSpinner from "./custom/Spinner";
 
 type Props = {
   materials: Record<string, RentalQuery[]>;
@@ -263,13 +265,13 @@ const RentalFormAdd = ({ materials }: Props) => {
               onChange={handleChange}
             />
 
-            <button
-              className="w-32 bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2 justify-center text-sm cursor-pointer transition-all duration-500 hover:bg-blue-800 text-white rounded-md h-10"
+            <ElButton
+              classNames="w-2/3 lg:w-1/4"
               type="submit"
               disabled={isSubmitting}
-            >
-              {tRental("addPage.form.add")}
-            </button>
+              icon={isSubmitting ? <CustomSpinner /> : undefined}
+              label={tRental("addPage.form.add")}
+            />
           </div>
         )}
       </form>

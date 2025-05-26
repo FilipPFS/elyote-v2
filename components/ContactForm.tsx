@@ -13,6 +13,7 @@ import { ContactData } from "@/types";
 import DeletePasswordBtn from "./DeletePasswordBtn";
 import { deleteSingleContact } from "@/lib/actions/actions.contacts";
 import { useTranslations } from "next-intl";
+import CustomSpinner from "./custom/Spinner";
 
 type Props = {
   isPending?: boolean;
@@ -103,6 +104,7 @@ const ContactForm = ({
           label={updatePage ? t("btnUpdate") : t("btnAdd")}
           type="submit"
           disabled={isPending}
+          icon={isPending ? <CustomSpinner /> : undefined}
           classNames="self-center w-2/3 lg:w-1/4"
         />
         {updatePage && id && (

@@ -27,6 +27,8 @@ import Link from "next/link";
 import { updateSav } from "@/lib/actions/actions.sav";
 import { toast } from "react-toastify";
 import { useTranslations } from "next-intl";
+import ElButton from "./custom/ElButton";
+import CustomSpinner from "./custom/Spinner";
 
 type Props = {
   savData: SavData;
@@ -267,13 +269,13 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
               )}
             </div>
           </section>
-          <button
+          <ElButton
             type="submit"
             disabled={isPending}
-            className="bg-blue-600 disabled:bg-gray-600 disabled:cursor-not-allowed hover:bg-blue-800 duration-300 text-white rounded-lg px-6 py-2 cursor-pointer"
-          >
-            {t("updatePage.btnUpdate")}
-          </button>
+            icon={isPending ? <CustomSpinner /> : undefined}
+            classNames="self-center w-2/3 lg:w-1/3"
+            label={t("updatePage.btnUpdate")}
+          />
         </form>
       </div>
     </div>

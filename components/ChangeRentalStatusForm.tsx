@@ -29,7 +29,7 @@ const ChangeRentalStatusForm = ({ id }: Props) => {
     <button
       disabled={isSubmitting}
       onClick={() => handleSubmit(id)}
-      className="bg-green-700 disabled:bg-gray-600 text-white text-sm px-6 py-1 rounded-md cursor-pointer transition-all duration-300 hover:bg-green-800 active:bg-green-900"
+      className="bg-yellow-600 font-semibold disabled:bg-gray-600 text-white text-sm px-6 py-1 rounded-md cursor-pointer transition-all duration-300 hover:bg-yellow-800 active:bg-yellow-900"
     >
       {t("updatePage.statusChangeBtn")}
     </button>
