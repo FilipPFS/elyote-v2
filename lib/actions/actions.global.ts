@@ -9,6 +9,7 @@ import { PdfType } from "@/types";
 type SignInType = {
   success: boolean;
   customerData?: Record<string, string>;
+  printerOptions?: string[];
   error?: string;
 };
 
@@ -53,6 +54,16 @@ export const signIn = async (
           customer_rcs_city: "Meaux",
           customer_rcs_number: "405 236 598",
         },
+        printerOptions: [
+          "balisage_affiche_prix",
+          "balisage_fiche_technique",
+          "etiquette_colis",
+          "etiquette_prix",
+          "ticket",
+          "ticket_service",
+          "document",
+          "bordereau_transport",
+        ],
       };
     } else {
       return { success: false, error: "Invalid response status" };

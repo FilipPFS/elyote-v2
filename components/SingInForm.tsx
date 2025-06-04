@@ -26,6 +26,11 @@ const SingInForm = () => {
       Object.entries(state.customerData).forEach(([key, value]) => {
         localStorage.setItem(key, value);
       });
+      if (state.printerOptions) {
+        document.cookie = `printer_options=${encodeURIComponent(
+          JSON.stringify(state.printerOptions)
+        )}; path=/; max-age=${60 * 60 * 24 * 7}`; // expire dans 7 jours
+      }
       router.push("/");
       toast.success("Connexion réussi.");
     }

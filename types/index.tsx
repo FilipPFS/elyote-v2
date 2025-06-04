@@ -149,3 +149,51 @@ export type PdfType = {
   template_name: string;
   template_title: string;
 };
+
+export type PrintSettings = {
+  color: string;
+  option: string;
+  computer_name: string;
+  format: string;
+  orientation: string;
+  printer_name: string;
+  scale: string;
+  side: string;
+};
+
+export type PrinterFormUpdateData = {
+  computer_name: string;
+  printer_name: string;
+  module: string | undefined;
+  format: string;
+  color: string;
+  orientation: string;
+  scale: string;
+  side: string;
+};
+
+export type Computer = {
+  name: string;
+  printers?: {
+    [printerName: string]: {
+      paperFormats: string[];
+      status: string;
+    };
+  };
+  settings: {
+    print: boolean;
+    web: boolean;
+    copy: boolean;
+  };
+  notifications: {
+    web: {
+      sound: string;
+      show_message: boolean;
+    };
+    service: {
+      sound: string;
+      show_message: boolean;
+    };
+  };
+  last_seen?: string;
+};
