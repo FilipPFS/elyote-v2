@@ -79,6 +79,9 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
 
   return (
     <div className="w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md flex flex-col gap-8">
+      <Link href={"/sav/liste"}>
+        <ElButton label="Retour à la liste" classNames="px-4 !h-8" />
+      </Link>
       <h1 className="text-xl font-semibold">
         {t("updatePage.title")}: {savData.code_sav}
       </h1>

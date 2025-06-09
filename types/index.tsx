@@ -151,14 +151,14 @@ export type PdfType = {
 };
 
 export type PrintSettings = {
-  color: string;
+  color?: string | number;
   option: string;
-  computer_name: string;
-  format: string;
-  orientation: string;
-  printer_name: string;
-  scale: string;
-  side: string;
+  computer_name?: string;
+  format?: string;
+  orientation?: string;
+  printer_name?: string;
+  scale?: string;
+  side?: string;
 };
 
 export type PrinterFormUpdateData = {
@@ -166,7 +166,7 @@ export type PrinterFormUpdateData = {
   printer_name: string;
   module: string | undefined;
   format: string;
-  color: string;
+  color: string | number;
   orientation: string;
   scale: string;
   side: string;

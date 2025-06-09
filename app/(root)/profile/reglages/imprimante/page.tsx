@@ -1,4 +1,3 @@
-import ElButton from "@/components/custom/ElButton";
 import MainPage from "@/components/Mobile/MainPage";
 import PrinterForm from "@/components/PrinterForm";
 import {
@@ -6,11 +5,11 @@ import {
   getPrintersList,
 } from "@/lib/actions/printer.actions";
 import { Computer } from "@/types";
-import Link from "next/link";
 import React from "react";
+import { CgPrinter } from "react-icons/cg";
 
 const ParametresImprimantes = async () => {
-  const printerOptions = await getPrinterByModule("common");
+  const printerOptions = await getPrinterByModule();
   const printerList: Computer[] = await getPrintersList();
 
   console.log("Printer", printerOptions);
@@ -18,14 +17,15 @@ const ParametresImprimantes = async () => {
 
   return (
     <MainPage title="Historique et réglages de l'impression directe">
-      <div className="mt-6">
+      <div className="flex flex-col gap-5 mt-1 bg-white rounded-md p-3 md:p-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Imprimantes par défaut</h2>
-          <Link href={"/profile/reglages/imprimante/ajout"}>
-            <ElButton label="Ajouter une imprimante" classNames="px-4 !h-8" />
-          </Link>
+          <h2 className="text-lg flex items-center gap-3 font-bold">
+            <CgPrinter size={23} />
+            Imprimantes par défaut
+          </h2>
         </div>
-        <div className="flex flex-col gap-8 md:gap-3 mt-4">
+        <div className="w-full bg-gray-700 h-[1.5px]" />
+        <div className="flex flex-col gap-8 md:gap-4">
           {printerOptions &&
             Object.entries(printerOptions).map(([label, data]) => {
               return (
