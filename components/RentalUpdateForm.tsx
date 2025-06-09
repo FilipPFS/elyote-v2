@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 import GeneratePdf from "./GeneratePdf";
 import ElButton from "./custom/ElButton";
 import CustomSpinner from "./custom/Spinner";
+import GoBackButton from "./Global/GoBackButton";
 
 type Props = {
   singleRental: RentalData;
@@ -130,6 +131,7 @@ const RentalUpdateForm = ({
 
   return (
     <div className="w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md flex flex-col gap-8">
+      <GoBackButton link="/locations/liste" />
       <div className="flex sm:flex-row flex-col sm:items-center gap-2 justify-between">
         <h1
           className={clsx(

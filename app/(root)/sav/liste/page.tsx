@@ -61,7 +61,7 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
         <h2 className="text-lg font-semibold">
           {savTranslations("filterKeys.title")}:
         </h2>
-        <div className="flex gap-5">
+        <div className="flex md:flex-row flex-col gap-2 md:gap-5">
           <div>
             <h3>{savTranslations("filterKeys.byStatus")}</h3>
             <FilterContact
@@ -140,7 +140,9 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
                           "rounded-sm py-0.5 px-2"
                         )}
                       >
-                        {formatSavStatus(item.status).key}
+                        {savTranslations(
+                          `statues.${formatSavStatus(item.status).key}`
+                        )}
                       </small>
                     </div>
                     <Link href={`/sav/liste/${item.id}`}>
@@ -150,17 +152,17 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
                   <section className="flex justify-between items-center">
                     <div className="flex flex-col gap-1">
                       <small>
-                        Fournisseur:{" "}
+                        {savTranslations("tableHeaders.supplier")}:{" "}
                         <span className="font-semibold">{item.supplier}</span>
                       </small>
                       <small>
-                        Produit:{" "}
+                        {savTranslations("tableHeaders.product")}:{" "}
                         <span className="font-semibold">{item.product}</span>
                       </small>
                     </div>
                     <div className="flex flex-col gap-1">
                       <small>
-                        MAJ :{" "}
+                        {savTranslations("tableHeaders.updated")} :{" "}
                         <span className="font-semibold">
                           {" "}
                           {format.dateTime(new Date(item.updated_at), "long")}
@@ -168,7 +170,7 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
                       </small>
 
                       <small>
-                        Créé :{" "}
+                        {savTranslations("tableHeaders.created")} :{" "}
                         <span className="font-semibold">
                           {" "}
                           {format.dateTime(new Date(item.created_at), "long")}

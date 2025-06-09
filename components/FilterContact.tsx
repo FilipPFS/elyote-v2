@@ -46,7 +46,7 @@ const FilterContact = ({
 
   return (
     <select
-      className="border-gray-400 bg-white border-[1.5px] rounded-sm flex items-center gap-3 py-1 px-4 w-fit"
+      className="border-gray-400 bg-white border-[1.5px] rounded-sm flex items-center gap-3 py-1 px-4 md:w-fit w-full"
       value={category}
       onChange={(e) => {
         const selectedCategory = e.target.value;

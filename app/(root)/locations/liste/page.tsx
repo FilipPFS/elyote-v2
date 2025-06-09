@@ -32,6 +32,9 @@ const LocationsListe = async () => {
                     <TableCell className="font-medium">{item.client}</TableCell>
                     <TableCell>{item.id_material}</TableCell>
                     <TableCell>
+                      {format.dateTime(new Date(item.created_at), "long")}
+                    </TableCell>
+                    <TableCell>
                       {format.dateTime(new Date(item.start_date), "short")}
                     </TableCell>
                     <TableCell>
@@ -72,6 +75,10 @@ const LocationsListe = async () => {
             {rentals.map((item) => (
               <MobileCard key={item.id}>
                 <div className="flex flex-col gap-3">
+                  <small>
+                    {tRental("tableHeaders.createdAt")}:{" "}
+                    {format.dateTime(new Date(item.created_at), "long")}
+                  </small>
                   <section className="flex justify-between items-center">
                     <h2 className="font-semibold">{item.client}</h2>
                     <Link href={`/locations/liste/${item.id}`}>

@@ -4,7 +4,7 @@ export const createNewPasswordValidation = (t: (key: string) => string) =>
   z.object({
     site: z.string().min(2, t("validation.siteMin")),
     login: z.string().min(2, t("validation.loginMin")),
-    password: z.string().min(2, t("validation.passwordMin")),
+    password: z.string().optional(),
     url: z
       .string()
       .url(t("validation.urlInvalid"))
@@ -127,14 +127,7 @@ export const savUpdateFormSchemaValidation = z
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["date_purchase"],
-          message: "zodValidation.purchaseDateRequiredIfWarrantyYes",
-        });
-      }
-      if (!data.bill_number || data.bill_number.length === 0) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["bill_number"],
-          message: "zodValidation.billNumberRequiredIfWarrantyYes",
+          message: "zodValidation.purchaseDateRequired",
         });
       }
     }

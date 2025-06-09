@@ -14,6 +14,7 @@ import DeletePasswordBtn from "./DeletePasswordBtn";
 import { deleteSingleContact } from "@/lib/actions/actions.contacts";
 import { useTranslations } from "next-intl";
 import CustomSpinner from "./custom/Spinner";
+import GoBackButton from "./Global/GoBackButton";
 
 type Props = {
   isPending?: boolean;
@@ -36,6 +37,7 @@ const ContactForm = ({
       action={action}
       className="flex flex-col justify-between gap-8 w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md "
     >
+      <GoBackButton link="/repertoire/liste" />
       <div className="flex flex-col gap-4 ">
         <h1 className="text-xl font-semibold">
           {updatePage ? t("titleUpdate") : t("titleAdd")}

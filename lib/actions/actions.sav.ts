@@ -448,7 +448,7 @@ export const updateSavStatus = async (
       }
     );
 
-    if (res.status === 201) {
+    if (res.status === 200) {
       revalidatePath(`sav/liste/${id}`);
       return { success: true };
     } else {

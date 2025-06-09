@@ -44,7 +44,7 @@ export type PasswordData = {
   site: string;
   url: string;
   login: string;
-  password: string;
+  password: string | boolean;
   access_level: number;
   client_type: string;
   additional_data: string;
@@ -80,6 +80,7 @@ export type MaterialData = {
 
 export type RentalData = {
   id: number;
+  created_at: string;
   customer_id: string;
   id_material: number;
   client: string;

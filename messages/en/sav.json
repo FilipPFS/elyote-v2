@@ -9,7 +9,9 @@
     "updateDate": "Update Date",
     "creationDate": "Creation Date",
     "status": "Status",
-    "action": "Action"
+    "action": "Action",
+    "updated": "Updated at",
+    "created": "Created at"
   },
   "filterKeys": {
     "title": "Sort",

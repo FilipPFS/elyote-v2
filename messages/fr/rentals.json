@@ -3,6 +3,7 @@
     "customer": "Client",
     "material": "Matériel",
     "startDate": "Date de début",
+    "createdAt": "Crée le",
     "endDate": "Date de fin",
     "status": "Statut",
     "action": "Action"

@@ -236,6 +236,7 @@ export const materialTableHeaders: tableHeader[] = [
 export const rentalsTableHeaders: tableHeader[] = [
   { label: "customer", icon: <MdOutlineTag /> },
   { label: "material", icon: <MdDevices /> },
+  { label: "createdAt", icon: <BiCalendarAlt /> },
   { label: "startDate", icon: <BiCalendarAlt /> },
   { label: "endDate", icon: <BiCalendarCheck /> },
   { label: "status", icon: <MdOutlineRadioButtonChecked /> },

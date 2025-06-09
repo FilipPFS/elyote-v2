@@ -11,6 +11,7 @@ import { IoPricetagOutline } from "react-icons/io5";
 import DeletePasswordBtn from "./DeletePasswordBtn";
 import { deleteSingleMaterial } from "@/lib/actions/actions.material";
 import { useTranslations } from "next-intl";
+import GoBackButton from "./Global/GoBackButton";
 
 const materialSelectOptions = [
   {
@@ -49,6 +50,7 @@ const MaterialForm = ({
       action={action}
       className="flex flex-col justify-between gap-8 w-full lg:w-2/3 bg-white p-6 lg:p-10 h-fit rounded-md "
     >
+      <GoBackButton link="/parc-materiel/liste" />
       <div className="flex flex-col gap-4 ">
         <h1 className="text-xl font-semibold">
           {updatePage ? tMaterial("updateTitle") : tMaterial("addTitle")}

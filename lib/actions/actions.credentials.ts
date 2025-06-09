@@ -192,16 +192,11 @@ export const getCredentials = async () => {
       return;
     }
 
-    const res = await axios.get(
-      `${process.env.base_url}/api/passwords/read/127`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "api-key": process.env.api_key,
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await apiClient.get(`/api/passwords/read/127`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (res.status === 200) {
       return res.data;
