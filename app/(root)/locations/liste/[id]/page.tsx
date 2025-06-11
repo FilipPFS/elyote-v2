@@ -1,7 +1,11 @@
 import RentalUpdateForm from "@/components/RentalUpdateForm";
 import { getMaterialById } from "@/lib/actions/actions.material";
 import { getRentalById } from "@/lib/actions/actions.rental";
-import { MaterialData, RentalData } from "@/types";
+import {
+  getPrintersList,
+  getSinglePrinter,
+} from "@/lib/actions/printer.actions";
+import { Computer, MaterialData, RentalData } from "@/types";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import React from "react";
@@ -13,7 +17,9 @@ type Props = {
 const SingleRentalPage = async ({ params }: Props) => {
   const { id } = await params;
   const tRental = await getTranslations("rentals");
-
+  const printFetch = await getSinglePrinter("document");
+  const printModule = printFetch?.data;
+  const printerList: Computer[] = await getPrintersList();
   const singleRental: RentalData = await getRentalById(id);
 
   if (!singleRental) {
@@ -39,6 +45,8 @@ const SingleRentalPage = async ({ params }: Props) => {
         singleRental={singleRental}
         materialData={{ name: materialUsed.name, id: materialUsed.id }}
         templateId={String(templateId)}
+        pdfModule={printModule}
+        printerList={printerList}
       />
     </div>
   );

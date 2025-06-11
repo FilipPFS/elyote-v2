@@ -3,9 +3,13 @@
 import { cookies } from "next/headers";
 import { apiClient } from "../axios";
 import { getToken } from "./actions.global";
-import { PrinterFormUpdateData, PrintSettings } from "@/types";
+import {
+  PrinterFormUpdateData,
+  PrintRequestData,
+  PrintSettings,
+} from "@/types";
 import { revalidatePath } from "next/cache";
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const optionLabels: Record<string, string> = {
   balisage_affiche_prix: "Balisage - Affiche Prix",
@@ -93,9 +97,9 @@ export const getPrintersList = async () => {
   }
 };
 
-interface ApiResponse<T = unknown> {
+interface ApiResponse {
   success: boolean;
-  data?: T;
+  data?: PrintSettings;
   error?: string;
 }
 
@@ -190,5 +194,41 @@ export const updateDefaultPrinter = async (
     return { success: false, error: "Failed to process request" };
   } catch (error) {
     return handleApiError(error);
+  }
+};
+
+export const sendPrintRequest = async (data: PrintRequestData) => {
+  const token = await getToken();
+
+  if (!token) {
+    console.log("Unauthorized");
+    return null;
+  }
+
+  const printerToken = process.env.PRINTER_TOKEN;
+
+  const apiData = {
+    ...data,
+    firebase_uid: printerToken,
+    request: "print",
+  };
+
+  console.log("apiData", apiData);
+
+  try {
+    const res: AxiosResponse<
+      { message: string; info: string; print_history_id: string },
+      AxiosRequestConfig
+    > = await apiClient.post(`/api/printer/print`, apiData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (res.status === 200) {
+      revalidatePath("/profile/reglages/imprimante");
+
+      return { success: res.data.info === "success", data: res.data };
+    }
+  } catch (error) {
+    handleApiError(error);
   }
 };

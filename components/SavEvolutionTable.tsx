@@ -76,7 +76,7 @@ const SavEvolutionTable = ({ savEvolution, savDate }: Props) => {
               formatSavStatus(String(0)).classNames
             )}
           >
-            {formatSavStatus(String(0)).key}
+            {t(`statues.${formatSavStatus(String(0)).key}`)}
           </div>
         </div>
       </div>

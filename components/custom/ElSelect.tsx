@@ -5,11 +5,23 @@ type Props = {
   icon?: JSX.Element;
   children: ReactNode;
   classNames?: string;
+  parentClassnames?: string;
 } & React.SelectHTMLAttributes<HTMLSelectElement>;
 
-const ElSelect = ({ icon, children, classNames, ...rest }: Props) => {
+const ElSelect = ({
+  icon,
+  children,
+  classNames,
+  parentClassnames,
+  ...rest
+}: Props) => {
   return (
-    <div className="border-gray-400 bg-white border-[1.5px] rounded-sm w-full flex items-center gap-3 h-10 px-4">
+    <div
+      className={clsx(
+        "border-gray-400 bg-white border-[1.5px] rounded-sm w-full flex items-center gap-3 h-10 px-4",
+        parentClassnames
+      )}
+    >
       <span>{icon}</span>
       <select
         {...rest}

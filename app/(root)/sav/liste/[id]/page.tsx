@@ -47,7 +47,7 @@ const SingleSavPage = async ({ params }: Props) => {
         materialName={materialUsed ? materialUsed.name : ""}
       />
       <div className="flex flex-col gap-4 w-full md:w-2/5">
-        <GeneratePdf pdfObject={pdfObject} />
+        <GeneratePdf pdfObject={pdfObject} rentalPage={false} />
         <SavUpdateStatus id={id} />
         <SavEvolutionTable
           savEvolution={savEvolution}

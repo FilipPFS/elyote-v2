@@ -1,17 +1,39 @@
 "use client";
 
 import { generatePdf } from "@/lib/actions/actions.global";
-import { PdfType } from "@/types";
+import { Computer, PdfType, PrintSettings } from "@/types";
 import { useState } from "react";
 import CustomSpinner from "./custom/Spinner";
-import CustomModal from "./CustomModal";
+import { HiXMark } from "react-icons/hi2";
 import Spinner from "./Spinner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import ElButton from "./custom/ElButton";
+import PrinterSelects from "./Printer/PrinterSelects";
+import { toast } from "react-toastify";
+import { sendPrintRequest } from "@/lib/actions/printer.actions";
+import { RiArrowDownWideFill } from "react-icons/ri";
+import clsx from "clsx";
 
 type Props = {
   pdfObject: PdfType;
+  printModule?: PrintSettings | undefined;
+  printerList?: Computer[];
+  rentalPage: boolean;
 };
 
-const GeneratePdf = ({ pdfObject }: Props) => {
+const GeneratePdf = ({
+  pdfObject,
+  printModule,
+  printerList,
+  rentalPage,
+}: Props) => {
+  const [printerOptionsVisible, setPrinterOptionsVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [url, setUrl] = useState("");
   const {
@@ -43,21 +65,84 @@ const GeneratePdf = ({ pdfObject }: Props) => {
     }
   };
 
+  const [isFormSubmitting, setIsFormSubmitting] = useState(false);
+
+  const [selectedPrinter, setSelectedPrinter] = useState<string | undefined>(
+    printModule?.computer_name && printModule?.printer_name
+      ? `${printModule.computer_name}|||${printModule.printer_name}`
+      : undefined
+  );
+
+  const [values, setValues] = useState({
+    format: printModule?.format || "",
+    color: String(printModule?.color) || "",
+    orientation: printModule?.orientation || "",
+    scale: "auto",
+    side: "auto",
+  });
+
+  // Sync state with props when they change
+  // useEffect(() => {
+  //   if (printModule?.computer_name && printModule?.printer_name) {
+  //     setSelectedPrinter(
+  //       `${printModule.computer_name}|||${printModule.printer_name}`
+  //     );
+  //   } else {
+  //     setSelectedPrinter(undefined);
+  //   }
+
+  //   setValues({
+  //     format: printModule?.format || "",
+  //     color: String(printModule?.color) || "",
+  //     orientation: printModule?.orientation || "",
+  //     scale: "auto",
+  //     side: "auto",
+  //   });
+  // }, [printModule, printerList]); // Run when printModule or printerList changes
+
+  const handleFormSubmit = async () => {
+    setIsFormSubmitting(true);
+    console.log("submitted");
+
+    if (!selectedPrinter) {
+      toast.error("Veuillez séléctionnez une imprimante.");
+      setIsFormSubmitting(false);
+      return;
+    }
+
+    const [computerName, printerName] = selectedPrinter.split("|||");
+
+    if (!values.color || !values.orientation || !values.format) {
+      setIsFormSubmitting(false);
+      toast.error("Veuillez séléctionnez une option pour chaque choix.");
+      return;
+    }
+
+    const dataToSend = {
+      computer_name: computerName,
+      printer_name: printerName,
+      module: String(printModule?.module),
+      paper_format: values.format,
+      print_color: "Couleur",
+      paper_quantity: "1",
+      paper_orientation: values.orientation,
+      paper_side: "simplex",
+      paper_scale: "fit",
+      url: url,
+    };
+
+    const res = await sendPrintRequest(dataToSend);
+
+    if (res?.success) {
+      setIsFormSubmitting(false);
+      toast.success("La reqête d'impression a été envoyé avec succès.");
+    }
+  };
+
   return (
     <>
-      <CustomModal
-        classNames="md:max-w-[700px]!"
-        customContent={
-          <div className="h-[400px] flex items-center justify-center">
-            {isSubmitting ? (
-              <Spinner />
-            ) : (
-              <iframe src={`${url}#toolbar=1`} width="100%" height="400px" />
-            )}
-          </div>
-        }
-        title="Visualisation du PDF"
-        jsxBtn={
+      <AlertDialog>
+        <AlertDialogTrigger className="cursor-pointer">
           <div
             role="button"
             onClick={!isSubmitting ? handleSubmit : undefined}
@@ -66,8 +151,60 @@ const GeneratePdf = ({ pdfObject }: Props) => {
             {isSubmitting && <CustomSpinner />}
             Generate PDF
           </div>
-        }
-      />
+        </AlertDialogTrigger>
+        <AlertDialogContent className="md:max-w-[700px]! flex flex-col gap-4 font-primary">
+          <div className="flex items-center justify-between">
+            <AlertDialogTitle>Visualisation du pdf</AlertDialogTitle>
+            <AlertDialogAction className="cursor-pointer">
+              <HiXMark size={20} />
+            </AlertDialogAction>
+          </div>
+          <div className="min-h-[300px] flex items-center justify-center">
+            {isSubmitting ? (
+              <Spinner />
+            ) : (
+              <iframe src={`${url}#toolbar=1`} width="100%" height="300px" />
+            )}
+          </div>
+          {!isSubmitting && rentalPage && (
+            <div className="flex items-center flex-col gap-3">
+              <div className="flex justify-center items-center gap-2">
+                <ElButton label="Télécharger" classNames="px-6 !h-8" />
+                <ElButton
+                  onClick={handleFormSubmit}
+                  label="Imprimer"
+                  classNames="px-6 !h-8"
+                  disabled={isFormSubmitting}
+                  icon={isFormSubmitting ? <CustomSpinner /> : undefined}
+                />
+              </div>
+              <span
+                className="cursor-pointer text-sm flex items-center gap-2"
+                onClick={() => setPrinterOptionsVisible((prev) => !prev)}
+              >
+                <span
+                  className={clsx(
+                    "text-sm transform transition-all rotate-0 duration-300",
+                    printerOptionsVisible && "rotate-180"
+                  )}
+                >
+                  <RiArrowDownWideFill size={20} />
+                </span>
+                {printerOptionsVisible ? "Masquer" : "Voir"} les options
+              </span>
+              {printerOptionsVisible && (
+                <PrinterSelects
+                  selectedPrinter={selectedPrinter}
+                  setSelectedPrinter={setSelectedPrinter}
+                  values={values}
+                  setValues={setValues}
+                  printerList={printerList!}
+                />
+              )}
+            </div>
+          )}
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };

@@ -160,6 +160,7 @@ export type PrintSettings = {
   printer_name?: string;
   scale?: string;
   side?: string;
+  module?: string;
 };
 
 export type PrinterFormUpdateData = {
@@ -197,4 +198,17 @@ export type Computer = {
     };
   };
   last_seen?: string;
+};
+
+export type PrintRequestData = {
+  module: string;
+  computer_name: string;
+  printer_name: string;
+  paper_format: string;
+  print_color: string;
+  paper_quantity: string;
+  paper_orientation: string;
+  paper_side: string;
+  paper_scale: string;
+  url: string;
 };

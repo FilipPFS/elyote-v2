@@ -1,5 +1,5 @@
 import MainPage from "@/components/Mobile/MainPage";
-import PrinterForm from "@/components/PrinterForm";
+import PrinterModal from "@/components/Printer/PrinterModal";
 import {
   getPrinterByModule,
   getPrintersList,
@@ -29,7 +29,7 @@ const ParametresImprimantes = async () => {
           {printerOptions &&
             Object.entries(printerOptions).map(([label, data]) => {
               return (
-                <PrinterForm
+                <PrinterModal
                   key={label}
                   label={label}
                   data={data}

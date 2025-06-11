@@ -1,6 +1,6 @@
 "use client";
 
-import { RentalData } from "@/types";
+import { Computer, PrintSettings, RentalData } from "@/types";
 import React, { useActionState, useEffect, useState } from "react";
 import ElInput from "./custom/ElInput";
 import {
@@ -34,12 +34,16 @@ type Props = {
     id: number;
   };
   templateId: string;
+  pdfModule: PrintSettings | undefined;
+  printerList: Computer[];
 };
 
 const RentalUpdateForm = ({
   singleRental,
   materialData,
   templateId,
+  pdfModule,
+  printerList,
 }: Props) => {
   const [localData, setLocalData] = useState({
     raison_sociale: "",
@@ -154,7 +158,12 @@ const RentalUpdateForm = ({
           {singleRental.status === 1 && (
             <ChangeRentalStatusForm id={String(singleRental.id)} />
           )}
-          <GeneratePdf pdfObject={pdfObject} />
+          <GeneratePdf
+            pdfObject={pdfObject}
+            printModule={pdfModule}
+            printerList={printerList}
+            rentalPage={true}
+          />
         </div>
       </div>
       <form action={action} className="flex flex-col gap-8">
