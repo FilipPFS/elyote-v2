@@ -232,3 +232,27 @@ export const sendPrintRequest = async (data: PrintRequestData) => {
     handleApiError(error);
   }
 };
+
+export const getPrintHistory = async () => {
+  const token = await getToken();
+
+  if (!token) {
+    console.log("Unauthorized");
+    return null;
+  }
+
+  const printerToken = process.env.PRINTER_TOKEN;
+
+  try {
+    const res = await apiClient.get(`/api/print/${printerToken}/history`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (res.status === 200) {
+      return res.data.records;
+    }
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};

@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import { sendPrintRequest } from "@/lib/actions/printer.actions";
 import { RiArrowDownWideFill } from "react-icons/ri";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 
 type Props = {
   pdfObject: PdfType;
@@ -45,6 +46,8 @@ const GeneratePdf = ({
     type,
     pdfType,
   } = pdfObject;
+  const tGlobal = useTranslations("global");
+  const tPrinter = useTranslations("printer");
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
@@ -105,7 +108,7 @@ const GeneratePdf = ({
     console.log("submitted");
 
     if (!selectedPrinter) {
-      toast.error("Veuillez séléctionnez une imprimante.");
+      toast.error(tPrinter("printerError"));
       setIsFormSubmitting(false);
       return;
     }
@@ -114,7 +117,7 @@ const GeneratePdf = ({
 
     if (!values.color || !values.orientation || !values.format) {
       setIsFormSubmitting(false);
-      toast.error("Veuillez séléctionnez une option pour chaque choix.");
+      toast.error("errorMsg");
       return;
     }
 
@@ -135,7 +138,7 @@ const GeneratePdf = ({
 
     if (res?.success) {
       setIsFormSubmitting(false);
-      toast.success("La reqête d'impression a été envoyé avec succès.");
+      toast.success(tPrinter("printSuccess"));
     }
   };
 
@@ -149,12 +152,12 @@ const GeneratePdf = ({
             className="bg-green-600 w-fit disabled:bg-gray-500 flex items-center gap-2 text-sm font-semibold cursor-pointer transition-all duration-500 hover:bg-green-800 px-6 py-1 rounded-md text-white"
           >
             {isSubmitting && <CustomSpinner />}
-            Generate PDF
+            {tGlobal("pdfModal.btn")}
           </div>
         </AlertDialogTrigger>
         <AlertDialogContent className="md:max-w-[700px]! flex flex-col gap-4 font-primary">
           <div className="flex items-center justify-between">
-            <AlertDialogTitle>Visualisation du pdf</AlertDialogTitle>
+            <AlertDialogTitle>{tGlobal("pdfModal.title")}</AlertDialogTitle>
             <AlertDialogAction className="cursor-pointer">
               <HiXMark size={20} />
             </AlertDialogAction>
@@ -169,10 +172,13 @@ const GeneratePdf = ({
           {!isSubmitting && rentalPage && (
             <div className="flex items-center flex-col gap-3">
               <div className="flex justify-center items-center gap-2">
-                <ElButton label="Télécharger" classNames="px-6 !h-8" />
+                <ElButton
+                  label={tGlobal("pdfModal.download")}
+                  classNames="px-6 !h-8"
+                />
                 <ElButton
                   onClick={handleFormSubmit}
-                  label="Imprimer"
+                  label={tGlobal("pdfModal.print")}
                   classNames="px-6 !h-8"
                   disabled={isFormSubmitting}
                   icon={isFormSubmitting ? <CustomSpinner /> : undefined}
@@ -190,7 +196,9 @@ const GeneratePdf = ({
                 >
                   <RiArrowDownWideFill size={20} />
                 </span>
-                {printerOptionsVisible ? "Masquer" : "Voir"} les options
+                {printerOptionsVisible
+                  ? tGlobal("pdfModal.hideOptions")
+                  : tGlobal("pdfModal.viewOptions")}
               </span>
               {printerOptionsVisible && (
                 <PrinterSelects

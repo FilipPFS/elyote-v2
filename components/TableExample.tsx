@@ -17,6 +17,7 @@ type Props = {
   tableHeaders: tableHeader[];
   headerClassnames?: string;
   translationsKey: string;
+  classNames?: string;
 };
 
 const TableExample = ({
@@ -24,11 +25,17 @@ const TableExample = ({
   tableHeaders,
   headerClassnames,
   translationsKey,
+  classNames,
 }: Props) => {
   const t = useTranslations(translationsKey);
 
   return (
-    <div className="hidden lg:block bg-white p-3">
+    <div
+      className={clsx(
+        "hidden lg:block w-full overflow-auto border p-3 bg-white rounded-lg shadow dark:border-gray-800",
+        classNames
+      )}
+    >
       <Table className="bg-white rounded-md">
         <TableHeader>
           <TableRow>

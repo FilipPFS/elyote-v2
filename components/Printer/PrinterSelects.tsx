@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import ElSelect from "../custom/ElSelect";
 import { Computer } from "@/types";
 
@@ -48,17 +49,19 @@ const PrinterSelects = ({
     return printer?.paperFormats || [];
   })();
 
+  const t = useTranslations("printer");
+
   return (
     <div className="flex flex-col md:flex-row gap-1.5 text-sm justify-between">
       <div className="w-full flex flex-col gap-1">
-        <h4>Imprimante</h4>
+        <h4>{t("modal.labels.printer")}</h4>
         <ElSelect
           parentClassnames="text-sm !gap-1.5 !h-8"
           value={selectedPrinter || ""}
           onChange={(e) => setSelectedPrinter(e.target.value)}
         >
           <option value="" disabled>
-            Séléctionnez une imprimante
+            {t("modal.selects.printer")}
           </option>
           {printerList.map((item) => (
             <optgroup key={item.name} label={item.name}>
@@ -72,14 +75,14 @@ const PrinterSelects = ({
                   </option>
                 ))
               ) : (
-                <option disabled>Aucune imprimante disponible</option>
+                <option disabled>{t("noPrinterAvailable")}</option>
               )}
             </optgroup>
           ))}
         </ElSelect>
       </div>
       <div className="w-full flex flex-col gap-1">
-        <h4>Format</h4>
+        <h4>{t("modal.labels.format")}</h4>
         <ElSelect
           value={values.format || ""}
           parentClassnames="text-sm !gap-1.5 !h-8"
@@ -88,7 +91,7 @@ const PrinterSelects = ({
           }
         >
           <option value="" disabled>
-            Séléctionnez un format
+            {t("modal.selects.format")}
           </option>
           {paperOptions.map((item) => (
             <option key={item} value={item}>
@@ -98,7 +101,7 @@ const PrinterSelects = ({
         </ElSelect>
       </div>
       <div className="w-full flex flex-col gap-1">
-        <h4>Couleur</h4>
+        <h4>{t("modal.labels.color")}</h4>
         <ElSelect
           parentClassnames="text-sm !gap-1.5 !h-8"
           value={values.color || ""}
@@ -107,17 +110,17 @@ const PrinterSelects = ({
           }
         >
           <option value="" disabled>
-            Séléctionnez une couleur
+            {t("modal.selects.color")}
           </option>
           {colorOptions.map((item) => (
             <option key={item.value} value={item.value}>
-              {item.label}
+              {t(`modal.selects.colors.${item.value}`)}
             </option>
           ))}
         </ElSelect>
       </div>
       <div className="w-full flex flex-col gap-1">
-        <h4>Orientation</h4>
+        <h4>{t("modal.labels.orientation")}</h4>
         <ElSelect
           parentClassnames="text-sm !gap-1.5 !h-8"
           value={values.orientation || ""}
@@ -129,11 +132,11 @@ const PrinterSelects = ({
           }
         >
           <option value="" disabled>
-            Séléctionnez l'orientation
+            {t("modal.selects.orientation")}
           </option>
           {orientationOptions.map((item) => (
             <option key={item.value} value={item.value}>
-              {item.label}
+              {t(`modal.selects.${item.value}`)}
             </option>
           ))}
         </ElSelect>

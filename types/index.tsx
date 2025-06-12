@@ -212,3 +212,15 @@ export type PrintRequestData = {
   paper_scale: string;
   url: string;
 };
+
+export type PrintHistory = {
+  print_history_id: number;
+  computer_name: string;
+  printer_name: string;
+  token: string;
+  module: string;
+  file: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+};

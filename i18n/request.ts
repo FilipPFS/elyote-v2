@@ -14,6 +14,7 @@ export default getRequestConfig(async () => {
     material: (await import(`@/messages/${locale}/material.json`)).default,
     rentals: (await import(`@/messages/${locale}/rentals.json`)).default,
     sav: (await import(`@/messages/${locale}/sav.json`)).default,
+    printer: (await import(`@/messages/${locale}/printer.json`)).default,
     credentials: (await import(`@/messages/${locale}/credentials.json`))
       .default,
   };

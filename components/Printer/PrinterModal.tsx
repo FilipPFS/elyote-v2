@@ -12,6 +12,7 @@ import { MdOutlineInsertPageBreak } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { FiPlusCircle } from "react-icons/fi";
 import PrinterSelects from "./PrinterSelects";
+import { useTranslations } from "next-intl";
 
 type Props = {
   label: string;
@@ -19,9 +20,11 @@ type Props = {
   printerList: Computer[];
 };
 
-const PrinterModal = ({ label, data, printerList }: Props) => {
+const PrinterModal = ({ data, printerList }: Props) => {
   const [visible, setVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const t = useTranslations("printer");
+  const tGlobal = useTranslations("global");
 
   const [selectedPrinter, setSelectedPrinter] = useState<string | undefined>(
     data?.computer_name && data?.printer_name
@@ -59,7 +62,7 @@ const PrinterModal = ({ label, data, printerList }: Props) => {
     setIsSubmitting(true);
 
     if (!selectedPrinter) {
-      toast.error("Veuillez séléctionnez une imprimante.");
+      toast.error(t("printerError"));
       setIsSubmitting(false);
       return;
     }
@@ -68,7 +71,7 @@ const PrinterModal = ({ label, data, printerList }: Props) => {
 
     if (!values.color || !values.orientation || !values.format) {
       setIsSubmitting(false);
-      toast.error("Veuillez séléctionnez une option pour chaque choix.");
+      toast.error(t("errorMsg"));
       return;
     }
 
@@ -83,7 +86,7 @@ const PrinterModal = ({ label, data, printerList }: Props) => {
 
     if (res.success) {
       setIsSubmitting(false);
-      toast.success("Modifié avec succès.");
+      toast.success(tGlobal("notifications.updateSuccess"));
     }
   };
 
@@ -101,17 +104,36 @@ const PrinterModal = ({ label, data, printerList }: Props) => {
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3  bg-blue-50 truncate px-4 py-1 rounded-full ">
-          <span>
-            <MdOutlineInsertPageBreak />
-          </span>
-          <h3 className="font-semibold truncate max-md:text-sm">{label}</h3>
+        <div className="flex flex-col gap-1 bg-blue-50 truncate px-4 py-1 rounded-full ">
+          <div className="flex items-center gap-2">
+            <span>
+              <MdOutlineInsertPageBreak />
+            </span>
+            <h3 className="font-semibold truncate max-md:text-sm">
+              {t(`frKeys.${data?.option}`)}
+            </h3>
+          </div>
+          <div className="flex items-center gap-2">
+            {selectedPrinter ? (
+              <>
+                <div className="w-2 h-2 bg-green-500 rounded-full" />
+                <small>{selectedPrinter?.split("|||")[1]}</small>
+              </>
+            ) : (
+              <>
+                <div className="w-2 h-2 bg-red-500 rounded-full" />
+                <small>{t("noPrinterAvailable")}</small>
+              </>
+            )}
+          </div>
         </div>
         <button
           className="flex items-center cursor-pointer gap-1.5 md:gap-3 bg-blue-50 px-4 py-1 rounded-full"
           onClick={() => setVisible((prev) => !prev)}
         >
-          <small className="font-semibold md:block hidden">Modifier</small>
+          <small className="font-semibold md:block hidden">
+            {t("modal.editBtn")}
+          </small>
           <FaEdit className="md:hidden block" />
           <FiPlusCircle
             size={20}
@@ -150,7 +172,7 @@ const PrinterModal = ({ label, data, printerList }: Props) => {
             <div className="flex flex-col gap-3">
               <div className="flex justify-between items-center">
                 <h3 id="modal-title" className="font-bold">
-                  {label}
+                  {t(`frKeys.${data?.option}`)}
                 </h3>
                 <button
                   className="cursor-pointer"
@@ -171,12 +193,14 @@ const PrinterModal = ({ label, data, printerList }: Props) => {
                   printerList={printerList}
                 />
                 <div className="flex flex-col gap-1">
-                  <h4 className="opacity-0 md:block hidden">Imprimante</h4>
+                  <h4 className="md:block text-sm opacity-0 hidden">
+                    Imprimante
+                  </h4>
                   <ElButton
                     disabled={isSubmitting}
                     icon={isSubmitting ? <CustomSpinner /> : undefined}
-                    label="Enregistrer"
-                    classNames="px-4 md:w-fit w-full"
+                    label={t("modal.saveBtn")}
+                    classNames="px-4 !h-8 md:w-fit w-full"
                   />
                 </div>
               </form>

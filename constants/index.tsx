@@ -8,13 +8,15 @@ import { RiComputerLine, RiGalleryLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
 import { FaBarcode, FaRegCalendar, FaRegHandshake } from "react-icons/fa6";
 import { FiSearch, FiTruck, FiUser } from "react-icons/fi";
-import { BiCalendarAlt, BiCalendarCheck, BiCube } from "react-icons/bi";
+import { BiCalendarAlt, BiCalendarCheck, BiCube, BiFile } from "react-icons/bi";
 import { tableHeader } from "@/types";
 import {
+  MdComputer,
   MdDevices,
   MdOutlineLock,
   MdOutlineRadioButtonChecked,
   MdOutlineTag,
+  MdPrint,
 } from "react-icons/md";
 import { HiOutlineBuildingOffice } from "react-icons/hi2";
 import { CgOptions } from "react-icons/cg";
@@ -251,6 +253,16 @@ export const savTableHeaders: tableHeader[] = [
   { label: "creationDate", icon: <BiCalendarCheck /> },
   { label: "status", icon: <MdOutlineRadioButtonChecked /> },
   { label: "action", icon: <FiSearch /> },
+];
+
+export const printTableHeaders: tableHeader[] = [
+  { label: "computer", icon: <MdComputer /> },
+  { label: "printer", icon: <MdPrint /> },
+  { label: "module", icon: <BiCube /> },
+  { label: "fileSent", icon: <BiFile /> },
+  { label: "printStatus", icon: <MdOutlineRadioButtonChecked /> },
+  { label: "requestDate", icon: <BiCalendarAlt /> },
+  { label: "updateDate", icon: <BiCalendarCheck /> },
 ];
 
 export const orderTableFilters = [

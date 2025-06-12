@@ -96,6 +96,14 @@
   "search": {
     "result": "Résultats pour"
   },
+  "pdfModal": {
+    "btn": "Générer un PDF",
+    "title": "Visualisation du PDF",
+    "print": "Imprimer",
+    "download": "Télécharger",
+    "viewOptions": "Voir les options",
+    "hideOptions": "Masquer les options"
+  },
   "yes": "Oui",
   "no": "Non",
   "dataNotAvailable": "Données non disponibles."

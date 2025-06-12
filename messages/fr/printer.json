@@ -1,0 +1,58 @@
+{
+  "title": "Historique et réglages de l'impression directe",
+  "historyTitle": "Historiques des impressions",
+  "printerTitle": "Imprimantes par défaut",
+  "noData": "Données non disponibles.",
+  "noPrinterAvailable": "Aucune imprimante disponible",
+  "printerError": "Veuillez séléctionnez une imprimante.",
+  "printSuccess": "La reqête d'impression a été envoyé avec succès.",
+  "errorMsg": "Veuillez séléctionnez une option pour chaque choix.",
+  "status": {
+    "error": "Erreur",
+    "success": "Envoyé à l'imprimante"
+  },
+  "view": "Voir",
+  "tableHeaders": {
+    "computer": "Ordinateur",
+    "printer": "Imprimante",
+    "module": "Module",
+    "fileSent": "Fichier envoyé",
+    "printStatus": "Statut de l'impression",
+    "requestDate": "Date de demande",
+    "updateDate": "Date de mise à jour"
+  },
+  "modal": {
+    "editBtn": "Modifier",
+    "labels": {
+      "printer": "Imprimante",
+      "format": "Format",
+      "color": "Couleur",
+      "orientation": "Orientation"
+    },
+    "selects": {
+      "printer": "Séléctionnez une imprimante",
+      "format": "Seléctionnez un format",
+      "color": "Séléctionnez une couleur",
+      "orientation": "Séléctionnez l'orientation",
+      "portrait": "Portrait",
+      "landscape": "Paysage",
+      "colors": {
+        "0": "Auto",
+        "1": "Couleur",
+        "2": "Noir et blanc"
+      }
+    },
+    "saveBtn": "Enregistrer"
+  },
+  "frKeys": {
+    "balisage_affiche_prix": "Balisage - Affiche Prix",
+    "balisage_fiche_technique": "Balisage - Fiche Technique",
+    "etiquette_colis": "Étiquette Colis - pour colisage",
+    "etiquette_prix": "Étiquette Prix",
+    "ticket": "Ticket (panier, rachat, etc.)",
+    "ticket_service": "Ticket - Espace service",
+    "document": "Document A4 (bon de livraison, résumé de commande, etc.)",
+    "bordereau_transport": "Bordereau transport (pdf, zpl)",
+    "affiche_prix": "Affiche Prix"
+  }
+}

@@ -2,6 +2,7 @@ import FilterContact from "@/components/FilterContact";
 import MainPage from "@/components/Mobile/MainPage";
 import MobileCard from "@/components/Mobile/MobileCard";
 import Search from "@/components/Search";
+import TableRowCustom from "@/components/Table/TableRowCustom";
 import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { filterSavOptions, savTableHeaders } from "@/constants";
@@ -84,12 +85,13 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
       <TableExample
         translationsKey="sav.tableHeaders"
         tableHeaders={savTableHeaders}
+        classNames="!block"
         tableBody={
           <>
             {savs && savs.length > 0 ? (
               <>
                 {savs.map((item) => (
-                  <TableRow key={item.id}>
+                  <TableRowCustom key={item.id} href={`/sav/liste/${item.id}`}>
                     <TableCell className="font-medium">{item.client}</TableCell>
                     <TableCell>{item.supplier}</TableCell>
                     <TableCell>{item.product}</TableCell>
@@ -111,7 +113,7 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
                         {savTranslations("seeDetails")}
                       </Link>
                     </TableCell>
-                  </TableRow>
+                  </TableRowCustom>
                 ))}
               </>
             ) : (

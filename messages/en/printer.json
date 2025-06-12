@@ -1,0 +1,58 @@
+{
+  "title": "History and Settings of Direct Printing",
+  "historyTitle": "Print History",
+  "printerTitle": "Default Printers",
+  "noData": "Data not available.",
+  "noPrinterAvailable": "Printer not available",
+  "printerError": "Please select a printer",
+  "printSuccess": "Print request was sent successfully.",
+  "errorMsg": "Please select an option for each choice.",
+  "status": {
+    "error": "Error",
+    "success": "Sent to printer"
+  },
+  "view": "View",
+  "tableHeaders": {
+    "computer": "Computer",
+    "printer": "Printer",
+    "module": "Module",
+    "fileSent": "File Sent",
+    "printStatus": "Print Status",
+    "requestDate": "Request Date",
+    "updateDate": "Update Date"
+  },
+  "modal": {
+    "editBtn": "Edit",
+    "labels": {
+      "printer": "Printer",
+      "format": "Format",
+      "color": "Color",
+      "orientation": "Orientation"
+    },
+    "selects": {
+      "printer": "Select a printer",
+      "format": "Select a format",
+      "color": "Select a color",
+      "orientation": "Select orientation",
+      "portrait": "Portrait",
+      "landscape": "Landscape",
+      "colors": {
+        "0": "Auto",
+        "1": "Color",
+        "2": "Black and White"
+      }
+    },
+    "saveBtn": "Save"
+  },
+  "frKeys": {
+    "balisage_affiche_prix": "Signage - Price Poster",
+    "balisage_fiche_technique": "Signage - Technical Sheet",
+    "etiquette_colis": "Package Label - for packaging",
+    "etiquette_prix": "Price Label",
+    "ticket": "Ticket (cart, repurchase, etc.)",
+    "ticket_service": "Ticket - Service Area",
+    "document": "A4 Document (delivery note, order summary, etc.)",
+    "bordereau_transport": "Transport Slip (PDF, ZPL)",
+    "affiche_prix": "Price Poster"
+  }
+}
