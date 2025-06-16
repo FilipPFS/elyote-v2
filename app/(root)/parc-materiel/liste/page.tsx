@@ -1,5 +1,7 @@
+import GoNextButton from "@/components/Global/GoNextButton";
 import MainPage from "@/components/Mobile/MainPage";
 import MobileCard from "@/components/Mobile/MobileCard";
+import TableRowCustom from "@/components/Table/TableRowCustom";
 import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { materialTableHeaders } from "@/constants";
@@ -19,7 +21,17 @@ const ParcMaterielListe = async () => {
   const tGlobal = await getTranslations("global");
 
   return (
-    <MainPage title={tMaterial("title")}>
+    <MainPage
+      title={tMaterial("title")}
+      headerElement={
+        <div className="max-sm:w-full">
+          <GoNextButton
+            link="/parc-materiel/ajout"
+            label="Ajouter un matériel"
+          />
+        </div>
+      }
+    >
       <TableExample
         tableHeaders={materialTableHeaders}
         translationsKey="material.tableHeaders"
@@ -29,7 +41,10 @@ const ParcMaterielListe = async () => {
             {materials && materials.length > 0 ? (
               <>
                 {materials.map((item) => (
-                  <TableRow key={item.id}>
+                  <TableRowCustom
+                    key={item.id}
+                    href={`/parc-materiel/liste/${item.id}`}
+                  >
                     <TableCell className="font-medium">{item.id}</TableCell>
                     <TableCell>{item.name}</TableCell>
                     <TableCell>
@@ -53,7 +68,7 @@ const ParcMaterielListe = async () => {
                         {tMaterial("tableHeaders.seeDetails")}
                       </Link>
                     </TableCell>
-                  </TableRow>
+                  </TableRowCustom>
                 ))}
               </>
             ) : (

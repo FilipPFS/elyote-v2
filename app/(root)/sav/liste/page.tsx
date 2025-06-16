@@ -1,4 +1,5 @@
 import FilterContact from "@/components/FilterContact";
+import GoNextButton from "@/components/Global/GoNextButton";
 import MainPage from "@/components/Mobile/MainPage";
 import MobileCard from "@/components/Mobile/MobileCard";
 import Search from "@/components/Search";
@@ -62,19 +63,25 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
         <h2 className="text-lg font-semibold">
           {savTranslations("filterKeys.title")}:
         </h2>
-        <div className="flex md:flex-row flex-col gap-2 md:gap-5">
-          <div>
-            <h3>{savTranslations("filterKeys.byStatus")}</h3>
-            <FilterContact
-              keyString="status"
-              filterOptions={filterSavOptions}
-              translationKey="sav.statues"
-            />
+        <div className="flex md:flex-row flex-col gap-3 md:justify-between md:items-end">
+          <div className="flex md:flex-row flex-col gap-2 md:gap-5">
+            <div>
+              <h3>{savTranslations("filterKeys.byStatus")}</h3>
+              <FilterContact
+                keyString="status"
+                filterOptions={filterSavOptions}
+                translationKey="sav.statues"
+              />
+            </div>
+            <div>
+              <h3>{savTranslations("filterKeys.bySupplier")}</h3>
+              <FilterContact
+                keyString="supplier"
+                oneKeyFilters={savSuppliers}
+              />
+            </div>
           </div>
-          <div>
-            <h3>{savTranslations("filterKeys.bySupplier")}</h3>
-            <FilterContact keyString="supplier" oneKeyFilters={savSuppliers} />
-          </div>
+          <GoNextButton label="Ajout un SAV" link="/sav/ajout" />
         </div>
       </section>
       {query.length > 1 && (

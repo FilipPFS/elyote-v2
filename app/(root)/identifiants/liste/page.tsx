@@ -11,6 +11,8 @@ import { PasswordData, SearchParamProps } from "@/types";
 import { getTranslations } from "next-intl/server";
 import React, { Suspense } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import TableRowCustom from "@/components/Table/TableRowCustom";
+import GoNextButton from "@/components/Global/GoNextButton";
 
 const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
   const awaitedSearchParams = await searchParams;
@@ -41,6 +43,7 @@ const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
           {tGlobal("search.result")}: {query}
         </span>
       )}
+      <GoNextButton link="/identifiants/ajout" label="Ajouter un identifiant" />
       <TableExample
         tableHeaders={passwordTableHeaders}
         translationsKey="credentials.headers"
@@ -50,7 +53,10 @@ const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
             {passwords && passwords.length > 0 ? (
               <>
                 {passwords.map((item) => (
-                  <TableRow key={item.id}>
+                  <TableRowCustom
+                    key={item.id}
+                    href={`/identifiants/liste/${item.id}`}
+                  >
                     <TableCell className="font-medium">{item.site}</TableCell>
                     <TableCell>{item.login}</TableCell>
                     <TableCell>
@@ -64,7 +70,7 @@ const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
                         {tCredentials("seeDetails")}
                       </Link>
                     </TableCell>
-                  </TableRow>
+                  </TableRowCustom>
                 ))}
               </>
             ) : (

@@ -17,6 +17,8 @@ import Link from "next/link";
 import React, { Suspense } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { filterContactOptions } from "@/constants";
+import TableRowCustom from "@/components/Table/TableRowCustom";
+import GoNextButton from "@/components/Global/GoNextButton";
 
 const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
   const awaitedSearchParams = await searchParams;
@@ -56,13 +58,16 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
         </Suspense>
       }
     >
-      <div className="flex items-center gap-2">
-        <h2 className="text-lg font-semibold">{tContacts("sortKey")}:</h2>
-        <FilterContact
-          keyString="category"
-          translationKey="contacts.filterKeys"
-          filterOptions={filterContactOptions}
-        />
+      <div className="flex md:flex-row flex-col md:items-center gap-3 justify-between">
+        <div className="flex items-center gap-2">
+          <h2 className="text-lg font-semibold">{tContacts("sortKey")}:</h2>
+          <FilterContact
+            keyString="category"
+            translationKey="contacts.filterKeys"
+            filterOptions={filterContactOptions}
+          />
+        </div>
+        <GoNextButton label="Ajouter un contact" link="/repertoire/ajout" />
       </div>
       {query.length > 1 && (
         <span className="text-gray-500 font-semibold">
@@ -78,7 +83,10 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
             {contacts && contacts.length > 0 ? (
               <>
                 {contacts.map((item) => (
-                  <TableRow key={item.id}>
+                  <TableRowCustom
+                    key={item.id}
+                    href={`/repertoire/liste/${item.id}`}
+                  >
                     <TableCell className="font-medium">
                       {item.corporate_name}
                     </TableCell>
@@ -94,7 +102,7 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
                         {tCredentials("seeDetails")}
                       </Link>
                     </TableCell>
-                  </TableRow>
+                  </TableRowCustom>
                 ))}
               </>
             ) : (

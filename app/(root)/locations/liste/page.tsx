@@ -1,5 +1,7 @@
+import GoNextButton from "@/components/Global/GoNextButton";
 import MainPage from "@/components/Mobile/MainPage";
 import MobileCard from "@/components/Mobile/MobileCard";
+import TableRowCustom from "@/components/Table/TableRowCustom";
 import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { rentalsTableHeaders } from "@/constants";
@@ -19,7 +21,14 @@ const LocationsListe = async () => {
   const format = await getFormatter();
 
   return (
-    <MainPage title="Locations">
+    <MainPage
+      title="Locations"
+      headerElement={
+        <div className="max-sm:w-full">
+          <GoNextButton link="/locations/ajout" label="Ajouter une location" />
+        </div>
+      }
+    >
       <TableExample
         translationsKey="rentals.tableHeaders"
         tableHeaders={rentalsTableHeaders}
@@ -28,7 +37,10 @@ const LocationsListe = async () => {
             {rentals && rentals.length > 0 ? (
               <>
                 {rentals.map((item) => (
-                  <TableRow key={item.id}>
+                  <TableRowCustom
+                    key={item.id}
+                    href={`/locations/liste/${item.id}`}
+                  >
                     <TableCell className="font-medium">{item.client}</TableCell>
                     <TableCell>{item.id_material}</TableCell>
                     <TableCell>
@@ -57,7 +69,7 @@ const LocationsListe = async () => {
                         {tCredentials("seeDetails")}
                       </Link>
                     </TableCell>
-                  </TableRow>
+                  </TableRowCustom>
                 ))}
               </>
             ) : (
