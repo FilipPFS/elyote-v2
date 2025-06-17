@@ -193,6 +193,8 @@ export const addNewSav = async (formData: SavFormData, attachment: File[]) => {
       formDataToSend.append("files[]", file);
     });
 
+    console.log("formSend", formDataToSend);
+
     const res = await contentDetectApiClient.post(
       `/api/sav/create/127`,
       formDataToSend,
@@ -311,6 +313,8 @@ export const updateSav = async (
           formDataToSend.append("files[]", file);
         });
     }
+
+    console.log("formSend", formDataToSend);
 
     const res = await contentDetectApiClient.post(
       `/api/sav/update/127/${id}`,
@@ -505,5 +509,147 @@ export const getSavsByFilter = async ({
   } catch (error: unknown) {
     console.error("Unexpected error:", error);
     return null;
+  }
+};
+
+export const getCustomStatuses = async () => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.log("Unauthorized.");
+      return null;
+    }
+
+    const res = await apiClient.get(`/api/default/sav_status/read/126`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 200) {
+      return res.data.records;
+    } else {
+      console.log("Unexpected status:", res.status);
+      return null;
+    }
+  } catch (error: unknown) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const addNewCustomStatus = async (
+  state: PostResponse,
+  formData: FormData
+): Promise<PostResponse> => {
+  try {
+    const token = await getToken();
+
+    if (!token)
+      return {
+        success: false,
+      };
+
+    const postData = {
+      statut: formData.get("statut"),
+      customer_id: 126,
+    };
+
+    console.log("to post", postData);
+
+    const res = await apiClient.post(
+      `/api/default/sav_status/create/126`,
+      postData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (res.status === 201) {
+      revalidatePath("/profile/reglages/sav");
+
+      return {
+        success: true,
+        message: "Votre identifiant a été ajouté avec succès.",
+      };
+    } else {
+      return {
+        success: false,
+        error: `Erreur survenue: ${res.status}`,
+      };
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Axios error occurred:",
+        error.response?.data || error.message
+      );
+
+      return {
+        success: false,
+        error: String(error.message),
+      };
+    } else {
+      console.error("Unexpected error:", error);
+      return {
+        success: false,
+        error: String(error),
+      };
+    }
+  }
+};
+
+export const deleteCustomStatus = async (id: number): Promise<PostResponse> => {
+  try {
+    const token = await getToken();
+
+    if (!token)
+      return {
+        success: false,
+      };
+
+    const res = await apiClient.post(
+      `/api/default/sav_status/delete/126`,
+      { id },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (res.status === 200) {
+      revalidatePath("/profile/reglages/sav");
+
+      return {
+        success: true,
+      };
+    } else {
+      return {
+        success: false,
+        error: `Erreur survenue: ${res.status}`,
+      };
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Axios error occurred:",
+        error.response?.data || error.message
+      );
+
+      return {
+        success: false,
+        error: String(error.message),
+      };
+    } else {
+      console.error("Unexpected error:", error);
+      return {
+        success: false,
+        error: String(error),
+      };
+    }
   }
 };

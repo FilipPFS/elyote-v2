@@ -1,16 +1,21 @@
 "use client";
 
 import { formatSavStatus } from "@/lib/utils";
-import { SavEvolutionData } from "@/types";
+import { CustomSavStatus, SavEvolutionData } from "@/types";
 import clsx from "clsx";
 import { useFormatter, useTranslations } from "next-intl";
 
 type Props = {
   savEvolution: SavEvolutionData[];
   savDate: string;
+  customStatuses: CustomSavStatus[];
 };
 
-const SavEvolutionTable = ({ savEvolution, savDate }: Props) => {
+const SavEvolutionTable = ({
+  savEvolution,
+  savDate,
+  customStatuses,
+}: Props) => {
   const format = useFormatter();
   const t = useTranslations("sav");
 
@@ -27,40 +32,85 @@ const SavEvolutionTable = ({ savEvolution, savDate }: Props) => {
       <div className="flex flex-col gap-1.5">
         {savEvolution && savEvolution.length > 0 && (
           <>
-            {savEvolution.map((item) => (
-              <div key={item.id} className="flex flex-col gap-0.5">
-                <div className="flex w-full gap-3 items-stretch">
-                  <div
-                    className={clsx(
-                      "flex self-stretch items-center w-1/2 p-2 rounded shadow",
-                      "bg-gray-100"
+            {savEvolution.map((item) => {
+              const statusNumber = Number(item.status);
+
+              const isStandardStatus = statusNumber >= 0 && statusNumber <= 5;
+
+              if (isStandardStatus) {
+                return (
+                  <div key={item.id} className="flex flex-col gap-0.5">
+                    <div className="flex w-full gap-3 items-stretch">
+                      <div
+                        className={clsx(
+                          "flex self-stretch items-center w-1/2 p-2 rounded shadow",
+                          "bg-gray-100"
+                        )}
+                      >
+                        {format.dateTime(new Date(item.created_at), "short")}
+                      </div>
+                      <div
+                        className={clsx(
+                          "flex self-stretch items-center w-1/2 p-2 rounded shadow",
+                          formatSavStatus(String(item.status)).classNames
+                        )}
+                      >
+                        {t(
+                          `statues.${formatSavStatus(String(item.status)).key}`
+                        )}
+                      </div>
+                    </div>
+                    {item.details && (
+                      <div
+                        className={clsx(
+                          "p-2 rounded shadow",
+                          formatSavStatus(String(item.status)).classNames
+                        )}
+                      >
+                        {item.details}
+                      </div>
                     )}
-                  >
-                    {format.dateTime(new Date(item.created_at), "short")}
                   </div>
-                  <div
-                    className={clsx(
-                      "flex self-stretch items-center w-1/2 p-2 rounded shadow",
-                      formatSavStatus(String(item.status)).classNames
+                );
+              } else {
+                return (
+                  <div key={item.id} className="flex flex-col gap-0.5">
+                    <div className="flex w-full gap-3 items-stretch">
+                      <div
+                        className={clsx(
+                          "flex self-stretch items-center w-1/2 p-2 rounded shadow",
+                          "bg-gray-100"
+                        )}
+                      >
+                        {format.dateTime(new Date(item.created_at), "short")}
+                      </div>
+                      <div
+                        className={clsx(
+                          "flex self-stretch items-center w-1/2 p-2 rounded shadow, bg-violet-400 text-white"
+                        )}
+                      >
+                        {
+                          customStatuses.find((el) => el.id === item.status)
+                            ?.statut
+                        }
+                      </div>
+                    </div>
+                    {item.details && (
+                      <div
+                        className={clsx(
+                          "p-2 rounded shadow bg-violet-400  text-white"
+                        )}
+                      >
+                        {item.details}
+                      </div>
                     )}
-                  >
-                    {t(`statues.${formatSavStatus(String(item.status)).key}`)}
                   </div>
-                </div>
-                {item.details && (
-                  <div
-                    className={clsx(
-                      "p-2 rounded shadow",
-                      formatSavStatus(String(item.status)).classNames
-                    )}
-                  >
-                    {item.details}
-                  </div>
-                )}
-              </div>
-            ))}
+                );
+              }
+            })}
           </>
         )}
+
         <div className="flex w-full gap-3 items-stretch">
           <div
             className={clsx(

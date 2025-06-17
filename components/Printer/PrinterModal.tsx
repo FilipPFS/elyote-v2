@@ -13,6 +13,7 @@ import { FaEdit } from "react-icons/fa";
 import { FiPlusCircle } from "react-icons/fi";
 import PrinterSelects from "./PrinterSelects";
 import { useTranslations } from "next-intl";
+import Modal from "../Global/Modal";
 
 type Props = {
   label: string;
@@ -90,17 +91,6 @@ const PrinterModal = ({ data, printerList }: Props) => {
     }
   };
 
-  const [isMounted, setIsMounted] = useState(visible);
-
-  useEffect(() => {
-    if (visible) {
-      setIsMounted(true);
-    } else {
-      const timer = setTimeout(() => setIsMounted(false), 300); // Match transition duration
-      return () => clearTimeout(timer);
-    }
-  }, [visible]);
-
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between gap-3">
@@ -144,70 +134,42 @@ const PrinterModal = ({ data, printerList }: Props) => {
           />
         </button>
       </div>
-      <div
-        className={clsx(
-          "fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 ease-in-out",
-          isMounted ? "opacity-100" : "opacity-0 pointer-events-none"
-        )}
-      >
-        <div
-          className={clsx(
-            "fixed inset-0 bg-white/70 transition-opacity duration-300 ease-in-out",
-            isMounted ? "opacity-100" : "opacity-0"
-          )}
-          onClick={() => setVisible(false)}
-        />
-        {isMounted && (
-          <div
-            className={clsx(
-              "relative bg-white p-6 rounded-lg shadow-lg border-2 border-gray-100 w-[95%] md:w-4/5 transition-all duration-300 ease-in-out transform",
-              visible
-                ? "opacity-100 scale-100 translate-y-0"
-                : "opacity-0 scale-95 translate-y-4"
-            )}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="modal-title"
-          >
-            <div className="flex flex-col gap-3">
-              <div className="flex justify-between items-center">
-                <h3 id="modal-title" className="font-bold">
-                  {t(`frKeys.${data?.option}`)}
-                </h3>
-                <button
-                  className="cursor-pointer"
-                  onClick={() => setVisible(false)}
-                >
-                  <IoCloseCircleOutline size={20} />
-                </button>
-              </div>
-              <form
-                onSubmit={handleSubmit}
-                className="flex flex-col md:flex-row w-full items-center gap-3"
-              >
-                <PrinterSelects
-                  selectedPrinter={selectedPrinter}
-                  setSelectedPrinter={setSelectedPrinter}
-                  values={values}
-                  setValues={setValues}
-                  printerList={printerList}
-                />
-                <div className="flex flex-col gap-1">
-                  <h4 className="md:block text-sm opacity-0 hidden">
-                    Imprimante
-                  </h4>
-                  <ElButton
-                    disabled={isSubmitting}
-                    icon={isSubmitting ? <CustomSpinner /> : undefined}
-                    label={t("modal.saveBtn")}
-                    classNames="px-4 !h-8 md:w-fit w-full"
-                  />
-                </div>
-              </form>
-            </div>
+      <Modal visible={visible} setVisible={setVisible}>
+        <div className="flex flex-col gap-3">
+          <div className="flex justify-between items-center">
+            <h3 id="modal-title" className="font-bold">
+              {t(`frKeys.${data?.option}`)}
+            </h3>
+            <button
+              className="cursor-pointer"
+              onClick={() => setVisible(false)}
+            >
+              <IoCloseCircleOutline size={20} />
+            </button>
           </div>
-        )}
-      </div>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col md:flex-row w-full items-center gap-3"
+          >
+            <PrinterSelects
+              selectedPrinter={selectedPrinter}
+              setSelectedPrinter={setSelectedPrinter}
+              values={values}
+              setValues={setValues}
+              printerList={printerList}
+            />
+            <div className="flex flex-col gap-1">
+              <h4 className="md:block text-sm opacity-0 hidden">Imprimante</h4>
+              <ElButton
+                disabled={isSubmitting}
+                icon={isSubmitting ? <CustomSpinner /> : undefined}
+                label={t("modal.saveBtn")}
+                classNames="px-4 !h-8 md:w-fit w-full"
+              />
+            </div>
+          </form>
+        </div>
+      </Modal>
     </div>
   );
 };

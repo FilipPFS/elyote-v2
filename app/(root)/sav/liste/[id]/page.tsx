@@ -4,8 +4,17 @@ import SavUpdateForm from "@/components/SavUpdateForm";
 import SavUpdateStatus from "@/components/SavUpdateStatus";
 import { pdfContent } from "@/constants/data";
 import { getMaterialById } from "@/lib/actions/actions.material";
-import { getSavById, getSavEvolutionById } from "@/lib/actions/actions.sav";
-import { MaterialData, SavData, SavEvolutionData } from "@/types";
+import {
+  getCustomStatuses,
+  getSavById,
+  getSavEvolutionById,
+} from "@/lib/actions/actions.sav";
+import {
+  CustomSavStatus,
+  MaterialData,
+  SavData,
+  SavEvolutionData,
+} from "@/types";
 import React from "react";
 
 type Props = {
@@ -19,8 +28,10 @@ const SingleSavPage = async ({ params }: Props) => {
   const savEvolutionFetch: { sav_evolution: SavEvolutionData[] } =
     await getSavEvolutionById(id);
   const savEvolution = savEvolutionFetch?.sav_evolution;
+  const customsStatuses: CustomSavStatus[] = await getCustomStatuses();
 
   console.log("evolution", savEvolution);
+  console.log("custom", customsStatuses);
 
   let materialUsed: MaterialData | undefined = undefined;
 
@@ -48,10 +59,11 @@ const SingleSavPage = async ({ params }: Props) => {
       />
       <div className="flex flex-col gap-4 w-full md:w-2/5">
         <GeneratePdf pdfObject={pdfObject} rentalPage={false} />
-        <SavUpdateStatus id={id} />
+        <SavUpdateStatus id={id} customStatuses={customsStatuses} />
         <SavEvolutionTable
           savEvolution={savEvolution}
           savDate={singleSav.created_at}
+          customStatuses={customsStatuses}
         />
       </div>
     </div>

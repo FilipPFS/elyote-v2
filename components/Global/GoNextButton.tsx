@@ -1,13 +1,21 @@
 import Link from "next/link";
-import React from "react";
+import React, { JSX } from "react";
 import ElButton from "../custom/ElButton";
 
-const GoNextButton = ({ link, label }: { link: string; label: string }) => {
+const GoNextButton = ({
+  link,
+  label,
+  icon,
+}: {
+  link: string;
+  label: string;
+  icon?: JSX.Element;
+}) => {
   return (
     <Link href={link}>
       <ElButton
         label={label}
-        // icon={<TiArrowLeft size={20} />}
+        icon={icon}
         classNames="px-4 !h-9 !text-[12px] w-full md:w-fit"
       />
     </Link>

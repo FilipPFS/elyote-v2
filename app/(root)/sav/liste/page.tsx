@@ -8,17 +8,19 @@ import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { filterSavOptions, savTableHeaders } from "@/constants";
 import {
+  getCustomStatuses,
   getSavs,
   getSavsByFilter,
   getSavsByQuery,
   getSavSuppliers,
 } from "@/lib/actions/actions.sav";
 import { formatSavStatus } from "@/lib/utils";
-import { SavData, SearchParamProps } from "@/types";
+import { CustomSavStatus, SavData, SearchParamProps } from "@/types";
 import clsx from "clsx";
 import { getFormatter, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import React, { Suspense } from "react";
+import { FiPlusCircle, FiSettings } from "react-icons/fi";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 const Sav = async ({ searchParams }: SearchParamProps) => {
@@ -30,6 +32,7 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
   const status = (awaitedSearchParams.status as string) || "";
   const savSuppliers = await getSavSuppliers();
   const savTranslations = await getTranslations("sav");
+  const customStatuses: CustomSavStatus[] = await getCustomStatuses();
 
   if (query) {
     const savData: { savs: SavData[] } = await getSavsByQuery(query);
@@ -81,7 +84,18 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
               />
             </div>
           </div>
-          <GoNextButton label="Ajout un SAV" link="/sav/ajout" />
+          <div className="flex items-center gap-3">
+            <GoNextButton
+              icon={<FiSettings />}
+              label="Gérer les statuts SAV"
+              link="/profile/reglages/sav"
+            />
+            <GoNextButton
+              icon={<FiPlusCircle />}
+              label="Ajout un SAV"
+              link="/sav/ajout"
+            />
+          </div>
         </div>
       </section>
       {query.length > 1 && (
@@ -92,7 +106,7 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
       <TableExample
         translationsKey="sav.tableHeaders"
         tableHeaders={savTableHeaders}
-        classNames="!block"
+        classNames="hidden md:block"
         tableBody={
           <>
             {savs && savs.length > 0 ? (
@@ -108,13 +122,23 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
                     <TableCell>
                       {format.dateTime(new Date(item.created_at), "long")}
                     </TableCell>
-                    <TableCell
-                      className={formatSavStatus(item.status).classNames}
-                    >
-                      {savTranslations(
-                        `statues.${formatSavStatus(item.status).key}`
-                      )}
-                    </TableCell>
+                    {Number(item.status) >= 0 && Number(item.status) <= 5 ? (
+                      <TableCell
+                        className={formatSavStatus(item.status).classNames}
+                      >
+                        {savTranslations(
+                          `statues.${formatSavStatus(item.status).key}`
+                        )}
+                      </TableCell>
+                    ) : (
+                      <TableCell className="bg-violet-400 text-white">
+                        {
+                          customStatuses.find(
+                            (el) => el.id === Number(item.status)
+                          )?.statut
+                        }
+                      </TableCell>
+                    )}
                     <TableCell>
                       <Link href={`/sav/liste/${item.id}`}>
                         {savTranslations("seeDetails")}
@@ -143,16 +167,31 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
                   <section className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
                       <h2 className="font-semibold">{item.client}</h2>
-                      <small
-                        className={clsx(
-                          formatSavStatus(item.status).classNames,
-                          "rounded-sm py-0.5 px-2"
-                        )}
-                      >
-                        {savTranslations(
-                          `statues.${formatSavStatus(item.status).key}`
-                        )}
-                      </small>
+                      {Number(item.status) >= 0 && Number(item.status) <= 5 ? (
+                        <small
+                          className={clsx(
+                            formatSavStatus(item.status).classNames,
+                            "rounded-sm py-0.5 px-2"
+                          )}
+                        >
+                          {savTranslations(
+                            `statues.${formatSavStatus(item.status).key}`
+                          )}
+                        </small>
+                      ) : (
+                        <small
+                          className={clsx(
+                            "bg-violet-400 text-white",
+                            "rounded-sm py-0.5 px-2"
+                          )}
+                        >
+                          {
+                            customStatuses.find(
+                              (el) => el.id === Number(item.status)
+                            )?.statut
+                          }
+                        </small>
+                      )}
                     </div>
                     <Link href={`/sav/liste/${item.id}`}>
                       <MdKeyboardArrowRight size={20} />

@@ -9,12 +9,14 @@ import { useActionState, useEffect } from "react";
 import { updateSavStatus } from "@/lib/actions/actions.sav";
 import { toast } from "react-toastify";
 import { useTranslations } from "next-intl";
+import { CustomSavStatus } from "@/types";
 
 type Props = {
   id: string;
+  customStatuses: CustomSavStatus[];
 };
 
-const SavUpdateStatus = ({ id }: Props) => {
+const SavUpdateStatus = ({ id, customStatuses }: Props) => {
   const [state, action, isPending] = useActionState(updateSavStatus, {});
   const t = useTranslations("sav");
 
@@ -43,11 +45,20 @@ const SavUpdateStatus = ({ id }: Props) => {
           <option value="" disabled>
             {t("updatePage.savStatus.select")}
           </option>
-          {filterSavOptions.slice(1).map((item) => (
-            <option key={item.filterKey} value={item.filterKey}>
-              {t(`statues.${item.label}`)}
-            </option>
-          ))}
+          <optgroup label="Statuts par défaut">
+            {filterSavOptions.slice(1).map((item) => (
+              <option key={item.filterKey} value={item.filterKey}>
+                {t(`statues.${item.label}`)}
+              </option>
+            ))}
+          </optgroup>
+          <optgroup label="Statuts par défaut">
+            {customStatuses.map((item) => (
+              <option key={item.id} value={String(item.id)}>
+                {item.statut}
+              </option>
+            ))}
+          </optgroup>
         </ElSelect>
         <ElInput
           name="details"

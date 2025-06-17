@@ -141,6 +141,12 @@ export type SavEvolutionData = {
   created_at: string;
 };
 
+export type CustomSavStatus = {
+  id: number;
+  customer_id: number;
+  statut: string;
+};
+
 export type PdfType = {
   pdfType: "SAV" | "Rental";
   content: Record<string, unknown> | Array<Record<string, unknown>>;
