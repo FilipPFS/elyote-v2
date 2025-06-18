@@ -104,7 +104,13 @@
     "viewOptions": "Voir les options",
     "hideOptions": "Masquer les options"
   },
+  "basicModal": {
+    "confirmBtn": "Confirmer",
+    "confirmationAction": "Etes-vous sûr de voulouir effectuer cette action"
+  },
   "yes": "Oui",
   "no": "Non",
+  "editBtn": "Modifier",
+  "deleteBtn": "Supprimer",
   "dataNotAvailable": "Données non disponibles."
 }

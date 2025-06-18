@@ -602,6 +602,67 @@ export const addNewCustomStatus = async (
   }
 };
 
+export const updateCustomStatus = async (
+  id: number,
+  statut: string
+): Promise<PostResponse> => {
+  try {
+    const token = await getToken();
+
+    if (!token)
+      return {
+        success: false,
+      };
+
+    const postData = {
+      statut,
+      id,
+    };
+
+    const res = await apiClient.post(
+      `/api/default/sav_status/update/126`,
+      postData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (res.status === 200) {
+      revalidatePath("/profile/reglages/sav");
+
+      return {
+        success: true,
+        message: "Votre identifiant a été modifié avec succès.",
+      };
+    } else {
+      return {
+        success: false,
+        error: `Erreur survenue: ${res.status}`,
+      };
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Axios error occurred:",
+        error.response?.data || error.message
+      );
+
+      return {
+        success: false,
+        error: String(error.message),
+      };
+    } else {
+      console.error("Unexpected error:", error);
+      return {
+        success: false,
+        error: String(error),
+      };
+    }
+  }
+};
+
 export const deleteCustomStatus = async (id: number): Promise<PostResponse> => {
   try {
     const token = await getToken();

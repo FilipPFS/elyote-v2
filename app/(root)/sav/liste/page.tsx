@@ -73,7 +73,7 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
               <FilterContact
                 keyString="status"
                 filterOptions={filterSavOptions}
-                translationKey="sav.statues"
+                translationKey="sav.statuses"
               />
             </div>
             <div>
@@ -87,12 +87,12 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
           <div className="flex items-center gap-3">
             <GoNextButton
               icon={<FiSettings />}
-              label="Gérer les statuts SAV"
+              label={savTranslations("manageStatusesBtn")}
               link="/profile/reglages/sav"
             />
             <GoNextButton
               icon={<FiPlusCircle />}
-              label="Ajout un SAV"
+              label={savTranslations("addSavBtn")}
               link="/sav/ajout"
             />
           </div>
@@ -111,41 +111,50 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
           <>
             {savs && savs.length > 0 ? (
               <>
-                {savs.map((item) => (
-                  <TableRowCustom key={item.id} href={`/sav/liste/${item.id}`}>
-                    <TableCell className="font-medium">{item.client}</TableCell>
-                    <TableCell>{item.supplier}</TableCell>
-                    <TableCell>{item.product}</TableCell>
-                    <TableCell>
-                      {format.dateTime(new Date(item.updated_at), "long")}
-                    </TableCell>
-                    <TableCell>
-                      {format.dateTime(new Date(item.created_at), "long")}
-                    </TableCell>
-                    {Number(item.status) >= 0 && Number(item.status) <= 5 ? (
-                      <TableCell
-                        className={formatSavStatus(item.status).classNames}
-                      >
-                        {savTranslations(
-                          `statues.${formatSavStatus(item.status).key}`
-                        )}
+                {savs.map((item) => {
+                  const customStatus = customStatuses.find(
+                    (el) => el.id === Number(item.status)
+                  );
+
+                  return (
+                    <TableRowCustom
+                      key={item.id}
+                      href={`/sav/liste/${item.id}`}
+                    >
+                      <TableCell className="font-medium">
+                        {item.client}
                       </TableCell>
-                    ) : (
-                      <TableCell className="bg-violet-400 text-white">
-                        {
-                          customStatuses.find(
-                            (el) => el.id === Number(item.status)
-                          )?.statut
-                        }
+                      <TableCell>{item.supplier}</TableCell>
+                      <TableCell>{item.product}</TableCell>
+                      <TableCell>
+                        {format.dateTime(new Date(item.updated_at), "long")}
                       </TableCell>
-                    )}
-                    <TableCell>
-                      <Link href={`/sav/liste/${item.id}`}>
-                        {savTranslations("seeDetails")}
-                      </Link>
-                    </TableCell>
-                  </TableRowCustom>
-                ))}
+                      <TableCell>
+                        {format.dateTime(new Date(item.created_at), "long")}
+                      </TableCell>
+                      {Number(item.status) >= 0 && Number(item.status) <= 5 ? (
+                        <TableCell
+                          className={formatSavStatus(item.status).classNames}
+                        >
+                          {savTranslations(
+                            `statuses.${formatSavStatus(item.status).key}`
+                          )}
+                        </TableCell>
+                      ) : (
+                        <TableCell className="bg-violet-400 text-white">
+                          {customStatus
+                            ? customStatus.statut
+                            : "Statut introuvable"}
+                        </TableCell>
+                      )}
+                      <TableCell>
+                        <Link href={`/sav/liste/${item.id}`}>
+                          {savTranslations("seeDetails")}
+                        </Link>
+                      </TableCell>
+                    </TableRowCustom>
+                  );
+                })}
               </>
             ) : (
               <>
@@ -161,74 +170,79 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
       <div className="lg:hidden flex flex-col gap-3">
         {savs && savs.length > 0 ? (
           <>
-            {savs.map((item) => (
-              <MobileCard key={item.id}>
-                <div className="flex flex-col gap-4">
-                  <section className="flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                      <h2 className="font-semibold">{item.client}</h2>
-                      {Number(item.status) >= 0 && Number(item.status) <= 5 ? (
-                        <small
-                          className={clsx(
-                            formatSavStatus(item.status).classNames,
-                            "rounded-sm py-0.5 px-2"
-                          )}
-                        >
-                          {savTranslations(
-                            `statues.${formatSavStatus(item.status).key}`
-                          )}
-                        </small>
-                      ) : (
-                        <small
-                          className={clsx(
-                            "bg-violet-400 text-white",
-                            "rounded-sm py-0.5 px-2"
-                          )}
-                        >
-                          {
-                            customStatuses.find(
-                              (el) => el.id === Number(item.status)
-                            )?.statut
-                          }
-                        </small>
-                      )}
-                    </div>
-                    <Link href={`/sav/liste/${item.id}`}>
-                      <MdKeyboardArrowRight size={20} />
-                    </Link>
-                  </section>
-                  <section className="flex justify-between items-center">
-                    <div className="flex flex-col gap-1">
-                      <small>
-                        {savTranslations("tableHeaders.supplier")}:{" "}
-                        <span className="font-semibold">{item.supplier}</span>
-                      </small>
-                      <small>
-                        {savTranslations("tableHeaders.product")}:{" "}
-                        <span className="font-semibold">{item.product}</span>
-                      </small>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <small>
-                        {savTranslations("tableHeaders.updated")} :{" "}
-                        <span className="font-semibold">
-                          {" "}
-                          {format.dateTime(new Date(item.updated_at), "long")}
-                        </span>
-                      </small>
+            {savs.map((item) => {
+              const customStatus = customStatuses.find(
+                (el) => el.id === Number(item.status)
+              );
 
-                      <small>
-                        {savTranslations("tableHeaders.created")} :{" "}
-                        <span className="font-semibold">
-                          {" "}
-                          {format.dateTime(new Date(item.created_at), "long")}
-                        </span>
-                      </small>
-                    </div>
-                  </section>
-                </div>
-              </MobileCard>
-            ))}
+              return (
+                <MobileCard key={item.id}>
+                  <div className="flex flex-col gap-4">
+                    <section className="flex justify-between items-center">
+                      <div className="flex items-center gap-3">
+                        <h2 className="font-semibold">{item.client}</h2>
+                        {Number(item.status) >= 0 &&
+                        Number(item.status) <= 5 ? (
+                          <small
+                            className={clsx(
+                              formatSavStatus(item.status).classNames,
+                              "rounded-sm py-0.5 px-2"
+                            )}
+                          >
+                            {savTranslations(
+                              `statuses.${formatSavStatus(item.status).key}`
+                            )}
+                          </small>
+                        ) : (
+                          <small
+                            className={clsx(
+                              "bg-violet-400 text-white",
+                              "rounded-sm py-0.5 px-2"
+                            )}
+                          >
+                            {customStatus
+                              ? customStatus.statut
+                              : "Statut introuvable"}
+                          </small>
+                        )}
+                      </div>
+                      <Link href={`/sav/liste/${item.id}`}>
+                        <MdKeyboardArrowRight size={20} />
+                      </Link>
+                    </section>
+                    <section className="flex justify-between items-center">
+                      <div className="flex flex-col gap-1">
+                        <small>
+                          {savTranslations("tableHeaders.supplier")}:{" "}
+                          <span className="font-semibold">{item.supplier}</span>
+                        </small>
+                        <small>
+                          {savTranslations("tableHeaders.product")}:{" "}
+                          <span className="font-semibold">{item.product}</span>
+                        </small>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <small>
+                          {savTranslations("tableHeaders.updated")} :{" "}
+                          <span className="font-semibold">
+                            {" "}
+                            {format.dateTime(new Date(item.updated_at), "long")}
+                          </span>
+                        </small>
+
+                        <small>
+                          {savTranslations("tableHeaders.created")} :{" "}
+                          <span className="font-semibold">
+                            {" "}
+                            {format.dateTime(new Date(item.created_at), "long")}
+                          </span>
+                        </small>
+                      </div>
+                    </section>
+                  </div>
+                </MobileCard>
+              );
+            })}
           </>
         ) : (
           <>

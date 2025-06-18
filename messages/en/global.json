@@ -104,7 +104,13 @@
     "viewOptions": "View options",
     "hideOptions": "Hide options"
   },
+  "basicModal": {
+    "confirmBtn": "Confirm",
+    "confirmationAction": "Are you sure you want to perform this action"
+  },
   "yes": "Yes",
   "no": "No",
+  "editBtn": "Edit",
+  "deleteBtn": "Delete",
   "dataNotAvailable": "Data not available."
 }

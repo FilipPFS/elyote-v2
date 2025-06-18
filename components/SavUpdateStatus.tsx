@@ -48,7 +48,7 @@ const SavUpdateStatus = ({ id, customStatuses }: Props) => {
           <optgroup label="Statuts par défaut">
             {filterSavOptions.slice(1).map((item) => (
               <option key={item.filterKey} value={item.filterKey}>
-                {t(`statues.${item.label}`)}
+                {t(`statuses.${item.label}`)}
               </option>
             ))}
           </optgroup>

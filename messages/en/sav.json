@@ -1,5 +1,7 @@
 {
   "title": "SAV Management",
+  "addSavBtn": "Add a SAV",
+  "manageStatusesBtn": "Manage SAV statuses",
   "seeDetails": "See details",
   "searchPlaceholder": "Search in SAV",
   "tableHeaders": {
@@ -19,7 +21,7 @@
     "byStatus": "By status",
     "bySupplier": "By supplier"
   },
-  "statues": {
+  "statuses": {
     "all": "All",
     "first": "SAV to do",
     "second": "Waiting for Supplier/Manufacturer",
@@ -74,6 +76,19 @@
     "savEvolution": {
       "status": "Status"
     }
+  },
+  "settingsPage": {
+    "title": "SAV Settings",
+    "miniTitle": "SAV Statuses",
+    "defaultTitle": "Default Statuses",
+    "customTitle": "Customizable Statuses",
+    "addBtn": "Add a status",
+    "editStatus": "Edit status name",
+    "addStauts": "Add a status",
+    "statusPlaceholder": "Status name",
+    "deleteNotification": "Your status has been deleted.",
+    "editNotification": "Your status has been updated.",
+    "addNotification": "Your status has been added."
   },
   "zodValidation": {
     "clientRequired": "Client is required",

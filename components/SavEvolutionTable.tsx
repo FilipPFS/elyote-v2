@@ -56,7 +56,7 @@ const SavEvolutionTable = ({
                         )}
                       >
                         {t(
-                          `statues.${formatSavStatus(String(item.status)).key}`
+                          `statuses.${formatSavStatus(String(item.status)).key}`
                         )}
                       </div>
                     </div>
@@ -73,6 +73,10 @@ const SavEvolutionTable = ({
                   </div>
                 );
               } else {
+                const customStatus = customStatuses.find(
+                  (el) => el.id === Number(item.status)
+                );
+
                 return (
                   <div key={item.id} className="flex flex-col gap-0.5">
                     <div className="flex w-full gap-3 items-stretch">
@@ -89,10 +93,9 @@ const SavEvolutionTable = ({
                           "flex self-stretch items-center w-1/2 p-2 rounded shadow, bg-violet-400 text-white"
                         )}
                       >
-                        {
-                          customStatuses.find((el) => el.id === item.status)
-                            ?.statut
-                        }
+                        {customStatus
+                          ? customStatus.statut
+                          : "Statut introuvable"}
                       </div>
                     </div>
                     {item.details && (
@@ -126,7 +129,7 @@ const SavEvolutionTable = ({
               formatSavStatus(String(0)).classNames
             )}
           >
-            {t(`statues.${formatSavStatus(String(0)).key}`)}
+            {t(`statuses.${formatSavStatus(String(0)).key}`)}
           </div>
         </div>
       </div>

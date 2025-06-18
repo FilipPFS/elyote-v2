@@ -1,5 +1,7 @@
 {
   "title": "Gestion des SAV",
+  "addSavBtn": "Ajouter un SAV",
+  "manageStatusesBtn": "Gérer les statuts SAV",
   "seeDetails": "Voir détails",
   "searchPlaceholder": "Rechercher sur le SAV",
   "tableHeaders": {
@@ -19,7 +21,7 @@
     "byStatus": "Par statut",
     "bySupplier": "Par fournisseur"
   },
-  "statues": {
+  "statuses": {
     "all": "Tous",
     "first": "SAV à faire",
     "second": "En attente Fournisseur/Fabricant",
@@ -74,6 +76,19 @@
     "savEvolution": {
       "status": "Statut"
     }
+  },
+  "settingsPage": {
+    "title": "Reglages SAV",
+    "miniTitle": "Les statuts SAV",
+    "defaultTitle": "Les statuts par défaut",
+    "customTitle": "Les statuts personnalisables",
+    "addBtn": "Ajouter un statut",
+    "editStatus": "Modifier le nom du statut",
+    "addStauts": "Ajouter un statut",
+    "statusPlaceholder": "Nom du statut",
+    "deleteNotification": "Votre statut a été supprimé.",
+    "editNotification": "Votre statut a été modifié.",
+    "addNotification": "Votre statut a été ajouté."
   },
   "zodValidation": {
     "clientRequired": "Client est obligatoire",

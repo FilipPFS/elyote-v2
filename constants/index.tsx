@@ -397,29 +397,36 @@ export const filterSavOptions = [
   {
     label: "all",
     filterKey: "all",
+    color: "green",
   },
   {
     label: "first",
     filterKey: "0",
+    color: "red",
   },
   {
     label: "second",
     filterKey: "1",
+    color: "orange",
   },
   {
     label: "third",
     filterKey: "2",
+    color: "blue",
   },
   {
     label: "fourth",
     filterKey: "3",
+    color: "yellow",
   },
   {
     label: "fifth",
     filterKey: "4",
+    color: "gray",
   },
   {
     label: "sixth",
     filterKey: "5",
+    color: "green",
   },
 ];
