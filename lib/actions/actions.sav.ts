@@ -14,7 +14,7 @@ import {
   savFilesValidation,
   savUpdateFormSchemaValidation,
 } from "../validation";
-import { SavData } from "@/types";
+import { CustomSavStatus, SavData } from "@/types";
 
 export interface SavEvolutionResponse {
   success?: boolean;
@@ -512,7 +512,7 @@ export const getSavsByFilter = async ({
   }
 };
 
-export const getCustomStatuses = async () => {
+export const getCustomStatuses = async (allowAll: boolean) => {
   try {
     const token = await getToken();
 
@@ -528,7 +528,15 @@ export const getCustomStatuses = async () => {
     });
 
     if (res.status === 200) {
-      return res.data.records;
+      if (allowAll) {
+        return res.data.records;
+      } else {
+        const records = res.data.records.filter(
+          (item: CustomSavStatus) => item.soft_delete !== "0"
+        );
+
+        return records;
+      }
     } else {
       console.log("Unexpected status:", res.status);
       return null;
@@ -539,10 +547,15 @@ export const getCustomStatuses = async () => {
   }
 };
 
-export const addNewCustomStatus = async (
-  state: PostResponse,
-  formData: FormData
-): Promise<PostResponse> => {
+export const addNewCustomStatus = async ({
+  statut,
+  colorFont,
+  colorBackground,
+}: {
+  statut: string;
+  colorFont: string;
+  colorBackground: string;
+}): Promise<PostResponse> => {
   try {
     const token = await getToken();
 
@@ -552,7 +565,9 @@ export const addNewCustomStatus = async (
       };
 
     const postData = {
-      statut: formData.get("statut"),
+      statut,
+      color_background: colorBackground,
+      color_font: colorFont,
       customer_id: 126,
     };
 
@@ -602,10 +617,17 @@ export const addNewCustomStatus = async (
   }
 };
 
-export const updateCustomStatus = async (
-  id: number,
-  statut: string
-): Promise<PostResponse> => {
+export const updateCustomStatus = async ({
+  statut,
+  id,
+  colorFont,
+  colorBackground,
+}: {
+  statut: string;
+  id: number;
+  colorFont: string;
+  colorBackground: string;
+}): Promise<PostResponse> => {
   try {
     const token = await getToken();
 
@@ -617,6 +639,8 @@ export const updateCustomStatus = async (
     const postData = {
       statut,
       id,
+      color_font: colorFont,
+      color_background: colorBackground,
     };
 
     const res = await apiClient.post(

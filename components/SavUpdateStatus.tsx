@@ -52,7 +52,7 @@ const SavUpdateStatus = ({ id, customStatuses }: Props) => {
               </option>
             ))}
           </optgroup>
-          <optgroup label="Statuts par défaut">
+          <optgroup label="Statuts personnalisé">
             {customStatuses.map((item) => (
               <option key={item.id} value={String(item.id)}>
                 {item.statut}

@@ -145,6 +145,9 @@ export type CustomSavStatus = {
   id: number;
   customer_id: number;
   statut: string;
+  soft_delete: string;
+  color_background: string;
+  color_font: string;
 };
 
 export type PdfType = {

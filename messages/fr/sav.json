@@ -88,7 +88,9 @@
     "statusPlaceholder": "Nom du statut",
     "deleteNotification": "Votre statut a été supprimé.",
     "editNotification": "Votre statut a été modifié.",
-    "addNotification": "Votre statut a été ajouté."
+    "addNotification": "Votre statut a été ajouté.",
+    "backgroundColor": "Couleur de fond",
+    "textColor": "Couleur de texte"
   },
   "zodValidation": {
     "clientRequired": "Client est obligatoire",

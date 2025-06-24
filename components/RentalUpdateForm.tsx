@@ -135,7 +135,6 @@ const RentalUpdateForm = ({
 
   return (
     <div className="w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md flex flex-col gap-8">
-      <GoBackButton link="/locations/liste" />
       <div className="flex sm:flex-row flex-col sm:items-center gap-2 justify-between">
         <h1
           className={clsx(
@@ -204,7 +203,7 @@ const RentalUpdateForm = ({
                 type="text"
                 disabled
                 classNames="disabled:cursor-not-allowed"
-                parentClassNames="bg-gray-300 cursor-not-allowed"
+                parentClassNames="!bg-gray-200 cursor-not-allowed"
                 id="date-input"
                 defaultValue={startDate}
               />
@@ -215,7 +214,7 @@ const RentalUpdateForm = ({
                 type="text"
                 disabled
                 classNames="disabled:cursor-not-allowed"
-                parentClassNames="bg-gray-300 cursor-not-allowed"
+                parentClassNames="!bg-gray-200 cursor-not-allowed"
                 id="date-input"
                 defaultValue={endDate}
               />
@@ -226,7 +225,7 @@ const RentalUpdateForm = ({
                 type="text"
                 disabled
                 classNames="disabled:cursor-not-allowed"
-                parentClassNames="bg-gray-300 cursor-not-allowed"
+                parentClassNames="!bg-gray-200 cursor-not-allowed"
                 className="p-2 border rounded w-full"
                 defaultValue={days}
               />
@@ -237,7 +236,7 @@ const RentalUpdateForm = ({
               placeholder="Prix"
               disabled
               classNames="disabled:cursor-not-allowed"
-              parentClassNames="bg-gray-300 cursor-not-allowed"
+              parentClassNames="!bg-gray-200 cursor-not-allowed"
               icon={<MdEuro className="text-blue-700" />}
               defaultValue={singleRental.rental_price}
             />
@@ -279,6 +278,7 @@ const RentalUpdateForm = ({
             label={tRental("updatePage.updateBtn")}
           />
         </div>
+        <GoBackButton link="/locations/liste" />
       </form>
     </div>
   );

@@ -88,7 +88,9 @@
     "statusPlaceholder": "Status name",
     "deleteNotification": "Your status has been deleted.",
     "editNotification": "Your status has been updated.",
-    "addNotification": "Your status has been added."
+    "addNotification": "Your status has been added.",
+    "backgroundColor": "Background color",
+    "textColor": "Text color"
   },
   "zodValidation": {
     "clientRequired": "Client is required",

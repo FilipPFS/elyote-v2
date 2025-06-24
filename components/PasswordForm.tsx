@@ -37,7 +37,6 @@ const PasswordForm = ({
       action={action}
       className="flex flex-col justify-between gap-8 w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md "
     >
-      <GoBackButton link="/identifiants/liste" />
       <div className="flex flex-col gap-4 ">
         <h1 className="text-xl font-semibold">
           {updatePage ? t("titleUpdate") : t("titleAdd")}
@@ -109,6 +108,7 @@ const PasswordForm = ({
           />
         )}
       </div>
+      <GoBackButton link="/identifiants/liste" />
     </form>
   );
 };

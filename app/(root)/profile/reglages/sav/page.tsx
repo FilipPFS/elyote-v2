@@ -1,15 +1,19 @@
 import MainPage from "@/components/Mobile/MainPage";
-import AddStatusForm from "@/components/Sav/AddStatusForm";
 import SavStatusUpdateForm from "@/components/Sav/SavStatusUpdateForm";
+import StatusForm from "@/components/Sav/StatusForm";
 import { filterSavOptions } from "@/constants";
 import { getCustomStatuses } from "@/lib/actions/actions.sav";
 import { CustomSavStatus } from "@/types";
 import { getTranslations } from "next-intl/server";
 import React from "react";
+import { FaPlusCircle } from "react-icons/fa";
 import { GrStatusDisabled } from "react-icons/gr";
 
 const ReglagesSav = async () => {
-  const savStatuses: CustomSavStatus[] = await getCustomStatuses();
+  const savStatuses: CustomSavStatus[] = await getCustomStatuses(false);
+
+  console.log("sav", savStatuses);
+
   const t = await getTranslations("sav");
 
   const colorMap: Record<string, string> = {
@@ -30,7 +34,7 @@ const ReglagesSav = async () => {
             </span>
             {t("settingsPage.miniTitle")}
           </h2>
-          <AddStatusForm />
+          <StatusForm icon={<FaPlusCircle />} updatePage={false} />
         </div>
         <div className="flex bg-white p-3 py-5 md:p-6 rounded-lg shadow flex-col gap-10 md:gap-6">
           <section className="flex flex-col gap-4">
@@ -54,7 +58,7 @@ const ReglagesSav = async () => {
             <h3 className="text-[17px] font-semibold">
               {t("settingsPage.customTitle")}
             </h3>
-            {savStatuses.map((item) => (
+            {savStatuses?.map((item) => (
               <SavStatusUpdateForm key={item.id} item={item} />
             ))}
           </section>

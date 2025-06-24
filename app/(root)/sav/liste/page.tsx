@@ -32,7 +32,7 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
   const status = (awaitedSearchParams.status as string) || "";
   const savSuppliers = await getSavSuppliers();
   const savTranslations = await getTranslations("sav");
-  const customStatuses: CustomSavStatus[] = await getCustomStatuses();
+  const customStatuses: CustomSavStatus[] = await getCustomStatuses(true);
 
   if (query) {
     const savData: { savs: SavData[] } = await getSavsByQuery(query);
@@ -141,7 +141,12 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
                           )}
                         </TableCell>
                       ) : (
-                        <TableCell className="bg-violet-400 text-white">
+                        <TableCell
+                          style={{
+                            backgroundColor: customStatus?.color_background,
+                            color: customStatus?.color_font,
+                          }}
+                        >
                           {customStatus
                             ? customStatus.statut
                             : "Statut introuvable"}
@@ -195,10 +200,11 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
                           </small>
                         ) : (
                           <small
-                            className={clsx(
-                              "bg-violet-400 text-white",
-                              "rounded-sm py-0.5 px-2"
-                            )}
+                            style={{
+                              backgroundColor: customStatus?.color_background,
+                              color: customStatus?.color_font,
+                            }}
+                            className={clsx("rounded-sm py-0.5 px-2")}
                           >
                             {customStatus
                               ? customStatus.statut

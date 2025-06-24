@@ -80,7 +80,6 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
 
   return (
     <div className="w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md flex flex-col gap-8">
-      <GoBackButton link="/sav/liste" />
       <h1 className="text-xl font-semibold">
         {t("updatePage.title")}: {savData.code_sav}
       </h1>
@@ -170,6 +169,8 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
                     name="bill_number"
                     icon={<TbFileInvoice className="text-blue-700" />}
                     defaultValue={savData.bill_number}
+                    disabled
+                    parentClassNames="!bg-gray-200 cursor-not-allowed"
                   />
                 </div>
               )}
@@ -186,6 +187,8 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
                 name="deadline"
                 icon={<PiClockCountdownBold className="text-blue-700" />}
                 defaultValue={savData.deadline || ""}
+                parentClassNames="!bg-gray-200 cursor-not-allowed"
+                disabled
               />
             </div>
             <ElInput
@@ -278,6 +281,7 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
             classNames="self-center w-2/3 lg:w-1/3"
             label={t("updatePage.btnUpdate")}
           />
+          <GoBackButton link="/sav/liste" />
         </form>
       </div>
     </div>

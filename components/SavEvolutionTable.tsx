@@ -1,23 +1,18 @@
-"use client";
-
+import { getCustomStatuses } from "@/lib/actions/actions.sav";
 import { formatSavStatus } from "@/lib/utils";
 import { CustomSavStatus, SavEvolutionData } from "@/types";
 import clsx from "clsx";
-import { useFormatter, useTranslations } from "next-intl";
+import { getFormatter, getTranslations } from "next-intl/server";
 
 type Props = {
   savEvolution: SavEvolutionData[];
   savDate: string;
-  customStatuses: CustomSavStatus[];
 };
 
-const SavEvolutionTable = ({
-  savEvolution,
-  savDate,
-  customStatuses,
-}: Props) => {
-  const format = useFormatter();
-  const t = useTranslations("sav");
+const SavEvolutionTable = async ({ savEvolution, savDate }: Props) => {
+  const format = await getFormatter();
+  const t = await getTranslations("sav");
+  const customStatuses: CustomSavStatus[] = await getCustomStatuses(true);
 
   return (
     <div className="flex flex-col text-sm md:text-[10px] gap-2 bg-gray-200 shadow-sm p-4 rounded-sm">
@@ -89,8 +84,12 @@ const SavEvolutionTable = ({
                         {format.dateTime(new Date(item.created_at), "short")}
                       </div>
                       <div
+                        style={{
+                          backgroundColor: customStatus?.color_background,
+                          color: customStatus?.color_font,
+                        }}
                         className={clsx(
-                          "flex self-stretch items-center w-1/2 p-2 rounded shadow, bg-violet-400 text-white"
+                          "flex self-stretch items-center w-1/2 p-2 rounded shadow"
                         )}
                       >
                         {customStatus
@@ -100,9 +99,11 @@ const SavEvolutionTable = ({
                     </div>
                     {item.details && (
                       <div
-                        className={clsx(
-                          "p-2 rounded shadow bg-violet-400  text-white"
-                        )}
+                        style={{
+                          backgroundColor: customStatus?.color_background,
+                          color: customStatus?.color_font,
+                        }}
+                        className={clsx("p-2 rounded shadow")}
                       >
                         {item.details}
                       </div>

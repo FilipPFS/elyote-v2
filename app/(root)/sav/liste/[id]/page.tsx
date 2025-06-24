@@ -28,10 +28,7 @@ const SingleSavPage = async ({ params }: Props) => {
   const savEvolutionFetch: { sav_evolution: SavEvolutionData[] } =
     await getSavEvolutionById(id);
   const savEvolution = savEvolutionFetch?.sav_evolution;
-  const customsStatuses: CustomSavStatus[] = await getCustomStatuses();
-
-  console.log("evolution", savEvolution);
-  console.log("custom", customsStatuses);
+  const customsStatuses: CustomSavStatus[] = await getCustomStatuses(false);
 
   let materialUsed: MaterialData | undefined = undefined;
 
@@ -63,7 +60,6 @@ const SingleSavPage = async ({ params }: Props) => {
         <SavEvolutionTable
           savEvolution={savEvolution}
           savDate={singleSav.created_at}
-          customStatuses={customsStatuses}
         />
       </div>
     </div>

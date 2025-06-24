@@ -18,7 +18,10 @@ const ElInput = ({ icon, classNames, parentClassNames, ...rest }: Props) => {
       {icon && <span>{icon}</span>}
       <input
         {...rest}
-        className={clsx("focus:outline-none  w-full", classNames)}
+        className={clsx(
+          "focus:outline-none disabled:bg-gray-200 disabled:cursor-not-allowed w-full",
+          classNames
+        )}
       />
     </div>
   );

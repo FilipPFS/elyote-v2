@@ -4,28 +4,21 @@ import { CustomSavStatus } from "@/types";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { IoCloseCircleOutline, IoTrashOutline } from "react-icons/io5";
+import { IoTrashOutline } from "react-icons/io5";
 import Modal from "../Global/Modal";
-import ElInput from "../custom/ElInput";
 import ElButton from "../custom/ElButton";
-import {
-  deleteCustomStatus,
-  updateCustomStatus,
-} from "@/lib/actions/actions.sav";
+import { deleteCustomStatus } from "@/lib/actions/actions.sav";
 import { toast } from "react-toastify";
 import CustomSpinner from "../custom/Spinner";
+import StatusForm from "./StatusForm";
 
 type Props = {
   item: CustomSavStatus;
 };
 
 const SavStatusUpdateForm = ({ item }: Props) => {
-  const [visible, setVisible] = useState(false);
-  const [newStatus, setNewStatus] = useState(item.statut);
   const [confirmCheck, setConfirmCheck] = useState(false);
   const [deletion, setDeletion] = useState(false);
-  const [updating, setUpdating] = useState(false);
-  const checkStatusLength = newStatus.length >= 3;
 
   const tGlobal = useTranslations("global");
   const tSav = useTranslations("sav");
@@ -46,41 +39,22 @@ const SavStatusUpdateForm = ({ item }: Props) => {
     }
   };
 
-  const updateStatus = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setUpdating(true);
-
-    const res = await updateCustomStatus(item.id, newStatus);
-
-    if (res.success) {
-      toast.info(tSav("settingsPage.editNotification"));
-      setVisible(false);
-      setUpdating(false);
-    }
-
-    if (res.error) {
-      toast.error(res.error);
-      setUpdating(false);
-    }
-  };
-
   return (
     <div className="flex flex-col gap-3 md:items-center md:flex-row justify-between">
       {/* Status Badge */}
-      <div className="bg-indigo-100 border border-indigo-300 text-indigo-800 flex flex-col gap-0 px-3 py-1.5 rounded-sm">
-        <h3 className="font-semibold text-base">Statut: {item.statut}</h3>
+      <div
+        style={{ backgroundColor: item.color_background }}
+        className={`flex flex-col gap-0 px-3 py-1.5 rounded-sm`}
+      >
+        <h3 style={{ color: item.color_font }} className={`text-sm`}>
+          Statut: {item.statut}
+        </h3>
       </div>
 
       {/* Action Buttons */}
       <div className="flex items-center max-sm:justify-center gap-3">
         {/* Edit Button */}
-        <button
-          className="flex cursor-pointer items-center gap-2 bg-gray-100 hover:bg-blue-100 text-gray-700 px-4 py-1 rounded-full border border-gray-300 transition"
-          onClick={() => setVisible((prev) => !prev)}
-        >
-          <small className="font-semibold block">{tGlobal("editBtn")}</small>
-          <FaEdit className="block" />
-        </button>
+        <StatusForm item={item} updatePage={true} icon={<FaEdit />} />
 
         {/* Delete Button */}
         <button
@@ -113,34 +87,6 @@ const SavStatusUpdateForm = ({ item }: Props) => {
               onClick={() => setConfirmCheck(false)}
             />
           </div>
-        </div>
-      </Modal>
-
-      {/* Edit Modal */}
-      <Modal visible={visible} setVisible={setVisible}>
-        <div className="flex flex-col gap-3">
-          <div className="flex justify-between items-center">
-            <h4 className="font-semibold">{tSav("settingsPage.editStatus")}</h4>
-            <button
-              className="cursor-pointer text-gray-500 hover:text-gray-700 transition"
-              onClick={() => setVisible(false)}
-            >
-              <IoCloseCircleOutline size={20} />
-            </button>
-          </div>
-          <form className="flex items-center gap-4" onSubmit={updateStatus}>
-            <ElInput
-              value={newStatus}
-              placeholder={tSav("settingsPage.statusPlaceholder")}
-              name="status"
-              onChange={(e) => setNewStatus(e.target.value)}
-            />
-            <ElButton
-              label={tGlobal("basicModal.confirmBtn")}
-              classNames="px-6"
-              disabled={updating || !checkStatusLength}
-            />
-          </form>
         </div>
       </Modal>
     </div>
