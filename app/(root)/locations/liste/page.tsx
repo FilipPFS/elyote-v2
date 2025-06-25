@@ -14,8 +14,7 @@ import { FaCheck, FaXmark } from "react-icons/fa6";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 const LocationsListe = async () => {
-  const data: { rentals: RentalData[] } = await getRentals();
-  const rentals = data?.rentals;
+  const rentals: RentalData[] = await getRentals();
   const tRental = await getTranslations("rentals");
   const tCredentials = await getTranslations("credentials");
   const format = await getFormatter();

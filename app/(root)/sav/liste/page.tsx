@@ -1,5 +1,6 @@
 import FilterContact from "@/components/FilterContact";
 import GoNextButton from "@/components/Global/GoNextButton";
+import Pagination from "@/components/Global/Pagination";
 import MainPage from "@/components/Mobile/MainPage";
 import MobileCard from "@/components/Mobile/MobileCard";
 import Search from "@/components/Search";
@@ -28,9 +29,12 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
   const format = await getFormatter();
   const awaitedSearchParams = await searchParams;
   const query = (awaitedSearchParams.query as string) || "";
+  const page = Number(awaitedSearchParams.page) || 1;
   const supplier = (awaitedSearchParams.supplier as string) || "";
   const status = (awaitedSearchParams.status as string) || "";
   const savSuppliers = await getSavSuppliers();
+  let totalPages = 1;
+
   const savTranslations = await getTranslations("sav");
   const customStatuses: CustomSavStatus[] = await getCustomStatuses(true);
 
@@ -45,8 +49,11 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
 
     savs = filteredData?.sav;
   } else {
-    const savData: { sav: SavData[] } = await getSavs();
-    savs = savData?.sav;
+    const savData = await getSavs({ limit: 3, page: page });
+    if (savData) {
+      savs = savData.data.sav;
+      totalPages = savData.pagesNumber;
+    }
   }
 
   return (
@@ -171,7 +178,6 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
           </>
         }
       />
-
       <div className="lg:hidden flex flex-col gap-3">
         {savs && savs.length > 0 ? (
           <>
@@ -256,6 +262,7 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
           </>
         )}
       </div>
+      <Pagination totalPages={totalPages} page={page} />
     </MainPage>
   );
 };

@@ -21,7 +21,13 @@ export interface SavEvolutionResponse {
   error?: string;
 }
 
-export const getSavs = async () => {
+export const getSavs = async ({
+  limit = 8,
+  page,
+}: {
+  limit: number;
+  page: number;
+}) => {
   try {
     const token = await getToken();
 
@@ -30,14 +36,30 @@ export const getSavs = async () => {
       return;
     }
 
-    const res = await apiClient.get("/api/sav/read/127", {
+    const offset = (page - 1) * limit;
+
+    // Count all SAV docs
+    const savDocs = await apiClient.get(`/api/sav/read/127/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
+    // SAV docs based on query
+    const res = await apiClient.get(
+      `/api/sav/read/127/?offset=${offset}&number_per_page=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
     if (res.status === 200) {
-      return res.data;
+      return {
+        data: res.data as { sav: SavData[] },
+        pagesNumber: Math.ceil(savDocs.data.sav.length / limit),
+      };
     } else {
       console.log("Unexpected status:", res.status);
       return null;
@@ -404,7 +426,13 @@ export const getSavSuppliers = async () => {
     });
 
     if (res.status === 200) {
-      return res.data.sav.map((item: SavData) => item.supplier);
+      const suppliers = [
+        ...new Set(res.data.sav.map((item: SavData) => item.supplier)),
+      ];
+
+      console.log(suppliers);
+
+      return suppliers as string[];
     } else {
       console.log("Unexpected status:", res.status);
       return null;

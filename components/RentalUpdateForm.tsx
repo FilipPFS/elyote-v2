@@ -18,7 +18,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import Link from "next/link";
 import clsx from "clsx";
 import { FaCheck, FaXmark } from "react-icons/fa6";
-import { updateRental } from "@/lib/actions/actions.rental";
+import { deleteRental, updateRental } from "@/lib/actions/actions.rental";
 import ChangeRentalStatusForm from "./ChangeRentalStatusForm";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -131,6 +131,17 @@ const RentalUpdateForm = ({
       code_bv: "",
     },
     pdfType: "Rental" as "SAV" | "Rental",
+  };
+
+  const deleteLocation = async () => {
+    const res = await deleteRental(String(singleRental.id));
+
+    if (res.success) {
+      toast.success("Supprimé avec succès.");
+      router.push("/locations/liste");
+    } else {
+      toast.error("Erreur");
+    }
   };
 
   return (
@@ -269,7 +280,7 @@ const RentalUpdateForm = ({
             defaultValue={singleRental.comment}
           />
         </div>
-        <div className="flex flex-col items-center gap-4 lg:gap-7">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-4 lg:gap-7">
           <ElButton
             type="submit"
             disabled={isPending}
@@ -277,9 +288,16 @@ const RentalUpdateForm = ({
             classNames="w-2/3 lg:w-1/4"
             label={tRental("updatePage.updateBtn")}
           />
+          <div
+            role="button"
+            className="w-2/3 lg:w-1/4 bg-red-500 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2 justify-center text-sm cursor-pointer transition-all duration-500 hover:bg-red-800 text-white rounded-md h-10"
+            onClick={deleteLocation}
+          >
+            Supprimer
+          </div>
         </div>
-        <GoBackButton link="/locations/liste" />
       </form>
+      <GoBackButton link="/locations/liste" />
     </div>
   );
 };

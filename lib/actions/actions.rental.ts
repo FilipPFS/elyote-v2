@@ -26,7 +26,9 @@ export const getRentals = async () => {
     });
 
     if (res.status === 200) {
-      return res.data;
+      return res.data.rentals.filter(
+        (item: RentalData) => item.deleted_at === null
+      );
     } else {
       console.log("Unexpected status:", res.status);
       return null;
@@ -249,6 +251,55 @@ export const updateRental = async (
     );
 
     console.log("status", res.status);
+
+    if (res.status === 200) {
+      revalidatePath("/locations/liste");
+
+      return {
+        success: true,
+      };
+    } else {
+      return {
+        success: false,
+        error: "Erreur arrivé. Ressayez.",
+      };
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Axios error occurred:",
+        error.response?.data || error.message
+      );
+
+      return {
+        success: false,
+        error: String(error.message),
+      };
+    } else {
+      console.error("Unexpected error:", error);
+      return {
+        success: false,
+        error: String(error),
+      };
+    }
+  }
+};
+
+export const deleteRental = async (id: string): Promise<PostResponse> => {
+  try {
+    const token = await getToken();
+
+    if (!token)
+      return {
+        success: false,
+        error: "Vous devez être authentifié.",
+      };
+
+    const res = await apiClient.post(`/api/rental/delete/126/${id}`, "", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (res.status === 200) {
       revalidatePath("/locations/liste");

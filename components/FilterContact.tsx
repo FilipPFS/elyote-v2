@@ -11,7 +11,7 @@ type Props = {
     label?: string;
     filterKey: string;
   }[];
-  oneKeyFilters?: string[];
+  oneKeyFilters?: string[] | null;
   keyString: string;
 };
 

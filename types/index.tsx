@@ -81,6 +81,7 @@ export type MaterialData = {
 export type RentalData = {
   id: number;
   created_at: string;
+  deleted_at: string | null;
   customer_id: string;
   id_material: number;
   client: string;

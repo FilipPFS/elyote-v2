@@ -5,6 +5,7 @@ import axios from "axios";
 import { apiClient } from "../axios";
 import { createNewPasswordValidation } from "../validation";
 import { getTranslations } from "next-intl/server";
+import { PasswordData } from "@/types";
 
 export interface PostResponse {
   success?: boolean;
@@ -183,7 +184,13 @@ export const updateCredential = async (
   }
 };
 
-export const getCredentials = async () => {
+export const getCredentials = async ({
+  limit = 8,
+  page,
+}: {
+  limit: number;
+  page: number;
+}) => {
   try {
     const token = await getToken();
 
@@ -192,14 +199,29 @@ export const getCredentials = async () => {
       return;
     }
 
-    const res = await apiClient.get(`/api/passwords/read/127`, {
+    const offset = (page - 1) * limit;
+
+    // Count all credentials docs
+    const credentialsDocs = await apiClient.get(`/api/passwords/read/127`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
+    const res = await apiClient.get(
+      `/api/passwords/read/127?offset=${offset}&number_per_page=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
     if (res.status === 200) {
-      return res.data;
+      return {
+        data: res.data as { passwords: PasswordData[] },
+        pagesNumber: Math.ceil(credentialsDocs.data.passwords.length / limit),
+      };
     }
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
