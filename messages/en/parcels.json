@@ -1,0 +1,46 @@
+{
+  "title": "Parcels",
+  "filterStatus": "Filter by status",
+  "addLink": "Add a parcel",
+  "statuses": {
+    "all": "All",
+    "stored": "Stored",
+    "shipped": "Shipped/Delivered"
+  },
+  "viewParcel": "View parcel",
+  "headers": {
+    "packageId": "Package ID",
+    "packageCount": "Number of packages",
+    "location": "Location",
+    "type": "Type",
+    "status": "Status",
+    "createdAt": "Created At",
+    "updatedAt": "Last Updated",
+    "deliveryOrShipping": "Delivery/Shipping"
+  },
+  "addPage": {
+    "title": "Add a parcel",
+    "quantityPlaceholder": "Number of parcels",
+    "select": "No location selected",
+    "selectBtn": "Save location",
+    "addBtn": "Add",
+    "notifications": {
+      "added": "Your parcel has been added",
+      "quantityCondition": "Please enter a quantity."
+    }
+  },
+  "cardPage": {
+    "source": "Preparation source",
+    "deliveryDate": "Delivery date",
+    "buttons": {
+      "ship": "Ship",
+      "deliver": "Deliver the parcel",
+      "print": "Print parcel label",
+      "delete": "Delete preparation"
+    },
+    "notifications": {
+      "delivered": "Successfully delivered",
+      "deleted": "Successfully deleted"
+    }
+  }
+}

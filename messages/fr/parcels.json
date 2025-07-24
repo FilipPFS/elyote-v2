@@ -1,0 +1,46 @@
+{
+  "title": "Colis",
+  "filterStatus": "Filtrer par statut",
+  "addLink": "Ajouter un colis",
+  "statuses": {
+    "all": "Tous",
+    "stored": "Entreposé",
+    "shipped": "Livré/Expedié"
+  },
+  "viewParcel": "Voir colis",
+  "headers": {
+    "packageId": "Id Colis",
+    "packageCount": "Nbre de colis",
+    "location": "Emplacement",
+    "type": "Type",
+    "status": "Statut",
+    "createdAt": "Création",
+    "updatedAt": "Dernière MAJ",
+    "deliveryOrShipping": "Livraison/expédition"
+  },
+  "addPage": {
+    "title": "Ajouter un colis",
+    "quantityPlaceholder": "Nombre de colis",
+    "select": "Aucun emplacement chois",
+    "selectBtn": "Enregistrer l'emplacement",
+    "addBtn": "Ajouter",
+    "notifications": {
+      "added": "Votre colis a été ajouté",
+      "quantityCondition": "Veuillez entrer une quantité."
+    }
+  },
+  "cardPage": {
+    "source": "Source de la préparation",
+    "deliveryDate": "Date de livraison",
+    "buttons": {
+      "ship": "Expedier",
+      "deliver": "Livrer le colis",
+      "print": "Imprimer une étiquette colis",
+      "delete": "Supprimer la préparation"
+    },
+    "notifications": {
+      "delivered": "Livré avec succès",
+      "deleted": "Supprimé avec succès."
+    }
+  }
+}

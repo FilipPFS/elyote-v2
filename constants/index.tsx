@@ -1,4 +1,15 @@
-import { FiPhone, FiSmartphone, FiTool } from "react-icons/fi";
+import {
+  FiClock,
+  FiHash,
+  FiInfo,
+  FiMapPin,
+  FiPackage,
+  FiPhone,
+  FiRefreshCw,
+  FiSmartphone,
+  FiTag,
+  FiTool,
+} from "react-icons/fi";
 import { GiSpy } from "react-icons/gi";
 import { GrCubes } from "react-icons/gr";
 import { IoMailOutline } from "react-icons/io5";
@@ -215,6 +226,41 @@ export const passwordTableHeaders: tableHeader[] = [
   { label: "login", icon: <FiUser /> },
   { label: "access", icon: <MdOutlineLock /> },
   { label: "action", icon: <FiSearch /> }, // Align right for Action
+];
+
+export const packageTableHeaders: tableHeader[] = [
+  {
+    label: "packageId",
+    icon: <FiPackage />,
+  },
+  {
+    label: "packageCount",
+    icon: <FiHash />,
+  },
+  {
+    label: "location",
+    icon: <FiMapPin />,
+  },
+  {
+    label: "type",
+    icon: <FiTag />,
+  },
+  {
+    label: "status",
+    icon: <FiInfo />,
+  },
+  {
+    label: "createdAt",
+    icon: <FiClock />,
+  },
+  {
+    label: "updatedAt",
+    icon: <FiRefreshCw />,
+  },
+  {
+    label: "deliveryOrShipping",
+    icon: <FiTruck />,
+  },
 ];
 
 export const contactsTableHeaders: tableHeader[] = [

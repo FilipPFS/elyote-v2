@@ -1,6 +1,5 @@
 "use client";
 
-import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -27,20 +26,16 @@ const FilterContact = ({
   const t = useTranslations(translationKey);
 
   const onSelectCategory = (category: string) => {
-    let newUrl = "";
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("page"); // Always remove 'page' parameter
+
     if (category && category !== "all") {
-      newUrl = formUrlQuery({
-        params: searchParams.toString(),
-        key: keyString,
-        value: category,
-      });
+      params.set(keyString, category);
     } else {
-      newUrl = removeKeysFromQuery({
-        params: searchParams.toString(),
-        keysToRemove: [keyString],
-      });
+      params.delete(keyString);
     }
 
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
     router.push(newUrl, { scroll: false });
   };
 

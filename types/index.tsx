@@ -234,3 +234,17 @@ export type PrintHistory = {
   created_at: string;
   updated_at: string;
 };
+
+export type PackageData = {
+  id: number;
+  parent_type: string;
+  parent_id: string;
+  customer_id: number;
+  statut: number;
+  items_qty: number;
+  emplacement: string;
+  entrepot_id: number;
+  date_creation: string; // or Date if you're converting it
+  date_maj: string; // or Date
+  date_livraison: string | null; // nullable
+};
