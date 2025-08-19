@@ -5,23 +5,30 @@ import ElSelect from "../custom/ElSelect";
 import { FaLocationDot } from "react-icons/fa6";
 import ElButton from "../custom/ElButton";
 import GoBackButton from "../Global/GoBackButton";
-import { PackageData } from "@/types";
+import { ListeEntrepots, PackageData } from "@/types";
 import { useFormatter, useTranslations } from "next-intl";
 import clsx from "clsx";
-import { deleteParcelById, updateParcel } from "@/lib/actions/actions.parcels";
+import {
+  deleteParcelById,
+  updateParcel,
+  updateParcelEmplacement,
+} from "@/lib/actions/actions.parcels";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import CustomSpinner from "../custom/Spinner";
 
 type Props = {
   parcel: PackageData;
+  listeEntrepots: ListeEntrepots;
 };
 
-const ParcelCard = ({ parcel }: Props) => {
+const ParcelCard = ({ parcel, listeEntrepots }: Props) => {
   const format = useFormatter();
   const [status, setStatus] = useState(parcel.statut);
+  const [emplacement, setEmplacement] = useState(parcel.emplacement);
   const router = useRouter();
   const [updating, setUpdating] = useState(false);
+  const [updatingEmplacement, setUpdatingEmplacement] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const t = useTranslations("parcels");
 
@@ -33,6 +40,20 @@ const ParcelCard = ({ parcel }: Props) => {
       setUpdating(false);
       setStatus(1);
       toast.success(t("cardPage.notifications.delivered"));
+    }
+  };
+
+  const handleUpdateParcelEmplacement = async () => {
+    setUpdatingEmplacement(true);
+    const res = await updateParcelEmplacement({
+      id: String(parcel.id),
+      emplacement,
+    });
+
+    if (res?.success) {
+      setUpdatingEmplacement(false);
+      toast.success("L'emplacement a été mis à jour.");
+      router.push("/cmd/colis");
     }
   };
 
@@ -98,17 +119,29 @@ const ParcelCard = ({ parcel }: Props) => {
         {status === 0 && (
           <form className="flex flex-col lg:flex-row items-center justify-between m-2 gap-4 lg:gap-7">
             <ElSelect
-              defaultValue={t("addPage.select")}
-              name="firstname"
+              value={emplacement}
+              onChange={(e) => setEmplacement(e.target.value)}
+              name="emplacement"
               icon={<FaLocationDot className="text-blue-700" />}
             >
               <option disabled>{t("addPage.select")}</option>
+              {listeEntrepots.map((item) => {
+                const chemin = item.chemin;
+
+                const cheminValue = chemin.join(" / ");
+                return (
+                  <option key={item.id_entrepot} value={item.id_entrepot}>
+                    {cheminValue}
+                  </option>
+                );
+              })}
             </ElSelect>
             <ElButton
               label={t("addPage.selectBtn")}
               type="submit"
-              //   disabled={isPending}
-              //   icon={isPending ? <CustomSpinner /> : undefined}
+              disabled={updatingEmplacement}
+              icon={updatingEmplacement ? <CustomSpinner /> : undefined}
+              onClick={handleUpdateParcelEmplacement}
               classNames="self-center w-2/5"
             />
           </form>
@@ -134,7 +167,7 @@ const ParcelCard = ({ parcel }: Props) => {
               type="submit"
               disabled={updating}
               icon={updating ? <CustomSpinner /> : undefined}
-              classNames="self-center w-full bg-orange-400"
+              classNames="self-center w-full bg-orange-400 hover:bg-orange-500"
               onClick={handleUpdateStatus}
             />
             <ElButton
@@ -142,7 +175,7 @@ const ParcelCard = ({ parcel }: Props) => {
               type="submit"
               //   disabled={isPending}
               //   icon={isPending ? <CustomSpinner /> : undefined}
-              classNames="self-center w-full bg-gray-700"
+              classNames="self-center w-full bg-gray-700 hover:bg-gray-800"
             />
             <ElButton
               label={t("cardPage.buttons.delete")}
@@ -150,7 +183,7 @@ const ParcelCard = ({ parcel }: Props) => {
               disabled={deleting}
               icon={deleting ? <CustomSpinner /> : undefined}
               onClick={handleDeleteParcel}
-              classNames="self-center w-full bg-red-700"
+              classNames="self-center w-full bg-red-700 hover:bg-red-800"
             />
           </>
         )}

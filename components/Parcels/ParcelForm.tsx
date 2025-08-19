@@ -11,9 +11,15 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import CustomSpinner from "../custom/Spinner";
 import { useTranslations } from "next-intl";
+import { ListeEntrepots } from "@/types";
 
-const ParcelForm = () => {
+type Props = {
+  listeEntrepots: ListeEntrepots;
+};
+
+const ParcelForm = ({ listeEntrepots }: Props) => {
   const [itemQuantity, setItemQuantity] = useState<null | number>(null);
+  const [emplacement, setEmplacement] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const t = useTranslations("parcels");
@@ -27,14 +33,36 @@ const ParcelForm = () => {
       setIsSubmitting(false);
       toast.error(t("addPage.notifications.quantityCondition"));
       return;
+    } else if (!emplacement) {
+      setIsSubmitting(false);
+      toast.error("Emplacement est obligatoire");
+      return;
     }
 
-    const res = await createParcel(itemQuantity);
+    const parentIdOfEmplacement = listeEntrepots.find(
+      (i) => String(i.id_entrepot) === emplacement
+    )?.parent_id;
+
+    if (!parentIdOfEmplacement) {
+      setIsSubmitting(false);
+      toast.error("Emplacement est obligatoire");
+      return;
+    }
+
+    const res = await createParcel({
+      itemQuantity,
+      emplacement,
+      parentId: Number(parentIdOfEmplacement),
+    });
 
     if (res?.success) {
       toast.success(t("addPage.notifications.added"));
       setIsSubmitting(false);
       router.push("/cmd/colis");
+    } else {
+      setIsSubmitting(false);
+      toast.error("Erreur survenue");
+      return;
     }
   };
 
@@ -60,11 +88,22 @@ const ParcelForm = () => {
           </div>
           <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-7">
             <ElSelect
-              defaultValue={t("addPage.select")}
-              name="firstname"
+              value={emplacement}
+              onChange={(e) => setEmplacement(e.target.value)}
+              name="emplacement"
               icon={<FaLocationDot className="text-blue-700" />}
             >
-              <option disabled>{t("addPage.select")}</option>
+              <option value="" disabled hidden>
+                Aucun emplacement choisi
+              </option>
+              {listeEntrepots.map((item) => {
+                const cheminValue = item.chemin.join(" / ");
+                return (
+                  <option key={item.id_entrepot} value={item.id_entrepot}>
+                    {cheminValue}
+                  </option>
+                );
+              })}
             </ElSelect>
           </div>
         </div>

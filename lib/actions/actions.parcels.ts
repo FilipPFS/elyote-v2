@@ -6,14 +6,47 @@ import { getToken } from "./actions.global";
 import { PackageData } from "@/types";
 import { revalidatePath } from "next/cache";
 
+export const getStorageZone = async () => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.log("Token expiré.");
+      return;
+    }
+
+    const res = await apiClient.get(`/api/default/storage_zone/read/666`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 200) {
+      return res.data;
+    }
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+    } else {
+      console.error("Unknown error:", error);
+    }
+  }
+};
+
 export const getParcels = async ({
   limit = 8,
   page,
   status,
+  type,
 }: {
   limit: number;
   page: number;
   status: string;
+  type: string;
 }) => {
   try {
     const token = await getToken();
@@ -26,16 +59,18 @@ export const getParcels = async ({
     const offset = (page - 1) * limit;
 
     const response = await apiClient.get(
-      `/api/default/colis/read/126${status ? `&statut=${status}` : ""}`,
+      `/api/default/parcel/read/126${status ? `&statut=${status}` : ""}${
+        type ? `&type=${type}` : ""
+      }`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
 
     const res = await apiClient.get(
-      `/api/default/colis/read/126?offset=${offset}&number_per_page=${limit}${
+      `/api/default/parcel/read/126?offset=${offset}&number_per_page=${limit}${
         status ? `&statut=${status}` : ""
-      }`,
+      }${type ? `&type=${type}` : ""}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -81,7 +116,7 @@ export const getParcelById = async (id: string) => {
       return;
     }
 
-    const res = await apiClient.get(`/api/default/colis/read_one/126/${id}`, {
+    const res = await apiClient.get(`/api/default/parcel/read_one/126/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -101,7 +136,15 @@ export const getParcelById = async (id: string) => {
   }
 };
 
-export const createParcel = async (itemQuantity: number) => {
+export const createParcel = async ({
+  itemQuantity,
+  emplacement,
+  parentId,
+}: {
+  itemQuantity: number;
+  emplacement: string;
+  parentId: number;
+}) => {
   try {
     const token = await getToken();
 
@@ -112,15 +155,17 @@ export const createParcel = async (itemQuantity: number) => {
 
     const dataToSend = {
       parent_type: "manuel",
-      parent_id: 1,
+      parent_id: parentId > 0 ? parentId : 1,
       statut: 0,
       items_qty: itemQuantity,
-      emplacement: "reserve",
-      entrepot_id: 1,
+      emplacement,
+      entrepot_id: emplacement,
     };
 
+    console.log("DATA SEND", dataToSend);
+
     const res = await apiClient.post(
-      `/api/default/colis/create/126`,
+      `/api/default/parcel/create/126`,
       dataToSend,
       {
         headers: {
@@ -165,7 +210,7 @@ export const updateParcel = async (id: string) => {
 
     const dataToSend = {
       parent_type: parcel.parent_type,
-      parent_id: parcel.parent_id,
+      parent_id: 1,
       statut: 1,
       items_qty: parcel.items_qty,
       emplacement: "Livré",
@@ -173,7 +218,7 @@ export const updateParcel = async (id: string) => {
     };
 
     const res = await apiClient.post(
-      `/api/default/colis/update/126/${id}`,
+      `/api/default/parcel/update/126/${id}`,
       dataToSend,
       {
         headers: {
@@ -183,6 +228,67 @@ export const updateParcel = async (id: string) => {
     );
 
     if (res.status === 200) {
+      return {
+        success: true,
+      };
+    }
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+      return {
+        success: false,
+      };
+    } else {
+      console.error("Unknown error:", error);
+      return { success: false };
+    }
+  }
+};
+
+export const updateParcelEmplacement = async ({
+  emplacement,
+  id,
+}: {
+  emplacement: string;
+  id: string;
+}) => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.log("Token expiré.");
+      return { success: false };
+    }
+
+    const parcel: PackageData = await getParcelById(id);
+
+    const dataToSend = {
+      parent_type: parcel.parent_type,
+      parent_id: 1,
+      statut: 0,
+      items_qty: parcel.items_qty,
+      emplacement: emplacement,
+      entrepot_id: emplacement,
+    };
+
+    console.log("data", dataToSend);
+
+    const res = await apiClient.post(
+      `/api/default/parcel/update/126/${id}`,
+      dataToSend,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (res.status === 200) {
+      revalidatePath("/cmd/colis");
       return {
         success: true,
       };
@@ -218,7 +324,7 @@ export const deleteParcelById = async (id: string) => {
     };
 
     const res = await apiClient.post(
-      `/api/default/colis/delete/126/${id}`,
+      `/api/default/parcel/delete/126/${id}`,
       dataToSend,
       {
         headers: { Authorization: `Bearer ${token}` },

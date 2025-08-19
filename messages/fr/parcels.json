@@ -1,6 +1,7 @@
 {
   "title": "Colis",
   "filterStatus": "Filtrer par statut",
+  "filterType": "Filtrer par type",
   "addLink": "Ajouter un colis",
   "statuses": {
     "all": "Tous",

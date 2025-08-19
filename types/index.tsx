@@ -248,3 +248,11 @@ export type PackageData = {
   date_maj: string; // or Date
   date_livraison: string | null; // nullable
 };
+
+type Entrepot = {
+  chemin: string[];
+  id_entrepot: number;
+  parent_id: string;
+};
+
+export type ListeEntrepots = Entrepot[];

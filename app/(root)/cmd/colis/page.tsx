@@ -7,8 +7,8 @@ import TableRowCustom from "@/components/Table/TableRowCustom";
 import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { packageTableHeaders } from "@/constants";
-import { getParcels } from "@/lib/actions/actions.parcels";
-import { PackageData, SearchParamProps } from "@/types";
+import { getParcels, getStorageZone } from "@/lib/actions/actions.parcels";
+import { ListeEntrepots, PackageData, SearchParamProps } from "@/types";
 import { getFormatter, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import React from "react";
@@ -18,8 +18,10 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 const CommandesColis = async ({ searchParams }: SearchParamProps) => {
   const awaitedSearchParams = await searchParams;
   const format = await getFormatter();
+  const listeEntrepots: ListeEntrepots = await getStorageZone();
   const t = await getTranslations("parcels");
   const status = (awaitedSearchParams.status as string) || "";
+  const type = (awaitedSearchParams.type as string) || "";
 
   const page = Number(awaitedSearchParams.page) || 1;
   let totalPages = 1;
@@ -28,6 +30,7 @@ const CommandesColis = async ({ searchParams }: SearchParamProps) => {
     limit: 10,
     page: page,
     status: status,
+    type: type,
   });
   const packages: PackageData[] = packagesData?.data;
 
@@ -35,7 +38,7 @@ const CommandesColis = async ({ searchParams }: SearchParamProps) => {
     totalPages = packagesData.pagesNumber;
   }
 
-  const filterOptions = [
+  const filterStatusOptions = [
     {
       label: t("statuses.all"),
       filterKey: "all",
@@ -50,12 +53,40 @@ const CommandesColis = async ({ searchParams }: SearchParamProps) => {
     },
   ];
 
+  const filterTypeOptions = [
+    {
+      label: t("statuses.all"),
+      filterKey: "all",
+    },
+    {
+      label: "Pick&Collect",
+      filterKey: "drive",
+    },
+    {
+      label: "Commande",
+      filterKey: "cmd",
+    },
+    {
+      label: "Commande RDC",
+      filterKey: "cmd-rdc",
+    },
+  ];
+
   return (
     <MainPage title={t("title")}>
       <div className="flex sm:flex-row flex-col gap-3 sm:items-center justify-between">
-        <div className="flex md:flex-row flex-col md:items-center gap-2">
-          <h2 className="font-semibold">{t("filterStatus")}</h2>
-          <FilterContact keyString="status" filterOptions={filterOptions} />
+        <div className="flex items-center gap-3">
+          <div className="flex md:flex-row flex-col md:items-center gap-2">
+            <h2 className="font-semibold">{t("filterStatus")}</h2>
+            <FilterContact
+              keyString="status"
+              filterOptions={filterStatusOptions}
+            />
+          </div>
+          <div className="flex md:flex-row flex-col md:items-center gap-2">
+            <h2 className="font-semibold">{t("filterType")}</h2>
+            <FilterContact keyString="type" filterOptions={filterTypeOptions} />
+          </div>
         </div>
         <GoNextButton
           label={t("addLink")}
@@ -80,7 +111,13 @@ const CommandesColis = async ({ searchParams }: SearchParamProps) => {
                       {item.items_qty}
                     </TableCell>
                     <TableCell className="font-medium">
-                      {item.emplacement}
+                      {item.emplacement === "Livré"
+                        ? "Livré"
+                        : listeEntrepots
+                            .find(
+                              (i) => String(i.id_entrepot) === item.emplacement
+                            )
+                            ?.chemin.join(" / ")}
                     </TableCell>
                     <TableCell className="font-medium">
                       {item.parent_type}
@@ -90,13 +127,15 @@ const CommandesColis = async ({ searchParams }: SearchParamProps) => {
                       {item.statut === 1 && t("statuses.shipped")}
                     </TableCell>
                     <TableCell className="font-medium">
-                      {item.date_creation}
+                      {format.dateTime(new Date(item.date_creation), "long")}
                     </TableCell>
                     <TableCell className="font-medium">
-                      {item.date_maj}
+                      {format.dateTime(new Date(item.date_maj), "long")}
                     </TableCell>
                     <TableCell className="font-medium">
-                      {item.date_livraison ? item.date_livraison : "N/A"}
+                      {item.date_livraison
+                        ? format.dateTime(new Date(item.date_livraison), "long")
+                        : "N/A"}
                     </TableCell>
                     <TableCell className="font-medium">
                       <Link

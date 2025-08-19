@@ -1,6 +1,7 @@
 {
   "title": "Parcels",
   "filterStatus": "Filter by status",
+  "filterType": "Filter by type",
   "addLink": "Add a parcel",
   "statuses": {
     "all": "All",
