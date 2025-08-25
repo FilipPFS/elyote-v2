@@ -256,3 +256,12 @@ type Entrepot = {
 };
 
 export type ListeEntrepots = Entrepot[];
+
+export type TemplateType = {
+  id: number;
+  subject: string;
+  content: string;
+  type: "sms" | "mail";
+  customer_id: number;
+  customer_type: string;
+};

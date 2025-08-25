@@ -15,7 +15,7 @@ export const getStorageZone = async () => {
       return;
     }
 
-    const res = await apiClient.get(`/api/default/storage_zone/read/666`, {
+    const res = await apiClient.get(`/api/storage_zone/read/666`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -59,7 +59,7 @@ export const getParcels = async ({
     const offset = (page - 1) * limit;
 
     const response = await apiClient.get(
-      `/api/default/parcel/read/126${status ? `&statut=${status}` : ""}${
+      `/api/parcel/read/126${status ? `&statut=${status}` : ""}${
         type ? `&type=${type}` : ""
       }`,
       {
@@ -68,7 +68,7 @@ export const getParcels = async ({
     );
 
     const res = await apiClient.get(
-      `/api/default/parcel/read/126?offset=${offset}&number_per_page=${limit}${
+      `/api/parcel/read/126?offset=${offset}&number_per_page=${limit}${
         status ? `&statut=${status}` : ""
       }${type ? `&type=${type}` : ""}`,
       {
@@ -116,7 +116,7 @@ export const getParcelById = async (id: string) => {
       return;
     }
 
-    const res = await apiClient.get(`/api/default/parcel/read_one/126/${id}`, {
+    const res = await apiClient.get(`/api/parcel/read_one/126/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -164,15 +164,11 @@ export const createParcel = async ({
 
     console.log("DATA SEND", dataToSend);
 
-    const res = await apiClient.post(
-      `/api/default/parcel/create/126`,
-      dataToSend,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await apiClient.post(`/api/parcel/create/126`, dataToSend, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (res.status === 201) {
       revalidatePath("/cmd/colis");
@@ -218,7 +214,7 @@ export const updateParcel = async (id: string) => {
     };
 
     const res = await apiClient.post(
-      `/api/default/parcel/update/126/${id}`,
+      `/api/parcel/update/126/${id}`,
       dataToSend,
       {
         headers: {
@@ -278,7 +274,7 @@ export const updateParcelEmplacement = async ({
     console.log("data", dataToSend);
 
     const res = await apiClient.post(
-      `/api/default/parcel/update/126/${id}`,
+      `/api/parcel/update/126/${id}`,
       dataToSend,
       {
         headers: {
@@ -324,7 +320,7 @@ export const deleteParcelById = async (id: string) => {
     };
 
     const res = await apiClient.post(
-      `/api/default/parcel/delete/126/${id}`,
+      `/api/parcel/delete/126/${id}`,
       dataToSend,
       {
         headers: { Authorization: `Bearer ${token}` },

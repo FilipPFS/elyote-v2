@@ -6,6 +6,36 @@ import { getTranslations } from "next-intl/server";
 import axios from "axios";
 import { PdfType } from "@/types";
 
+type ErrorResponse = {
+  success: false;
+  error: string;
+};
+
+export type ApiResponse = {
+  success?: boolean;
+  errors?: Record<string, string[] | undefined>;
+  error?: string;
+};
+
+export async function handleError(error: unknown): Promise<ErrorResponse> {
+  if (axios.isAxiosError(error)) {
+    console.error(
+      "Axios error occurred:",
+      error.response?.data || error.message
+    );
+    return {
+      success: false,
+      error: String(error.message),
+    };
+  } else {
+    console.error("Unexpected error:", error);
+    return {
+      success: false,
+      error: String(error),
+    };
+  }
+}
+
 type SignInType = {
   success: boolean;
   customerData?: Record<string, string>;

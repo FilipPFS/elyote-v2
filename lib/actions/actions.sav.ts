@@ -549,7 +549,7 @@ export const getCustomStatuses = async (allowAll: boolean) => {
       return null;
     }
 
-    const res = await apiClient.get(`/api/default/sav_status/read/126`, {
+    const res = await apiClient.get(`/api/sav_status/read/126`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -601,15 +601,11 @@ export const addNewCustomStatus = async ({
 
     console.log("to post", postData);
 
-    const res = await apiClient.post(
-      `/api/default/sav_status/create/126`,
-      postData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await apiClient.post(`/api/sav_status/create/126`, postData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (res.status === 201) {
       revalidatePath("/profile/reglages/sav");
@@ -671,15 +667,11 @@ export const updateCustomStatus = async ({
       color_background: colorBackground,
     };
 
-    const res = await apiClient.post(
-      `/api/default/sav_status/update/126`,
-      postData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await apiClient.post(`/api/sav_status/update/126`, postData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (res.status === 200) {
       revalidatePath("/profile/reglages/sav");
@@ -725,7 +717,7 @@ export const deleteCustomStatus = async (id: number): Promise<PostResponse> => {
       };
 
     const res = await apiClient.post(
-      `/api/default/sav_status/delete/126`,
+      `/api/sav_status/delete/126`,
       { id },
       {
         headers: {

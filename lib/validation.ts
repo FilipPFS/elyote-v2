@@ -136,3 +136,13 @@ export const savUpdateFormSchemaValidation = z
 export const savFilesValidation = z.object({
   files: z.array(z.instanceof(File)).optional(),
 });
+
+const contactMethods = ["mail", "sms"] as const;
+
+export const templateFormSchemaValidation = z.object({
+  type: z.enum(contactMethods, {
+    required_error: "Veuillez séléctionner l'option.",
+  }),
+  subject: z.string().min(1, "Le sujet est obligatoire."),
+  content: z.string().min(1, "Le contenu est obligatoire."),
+});
