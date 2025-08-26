@@ -9,15 +9,29 @@ type Props = {
 
 const TemplateCard = ({ template }: Props) => {
   return (
-    <div className="bg-gray-50 relative shadow-md rounded-md p-4 pt-6 flex flex-col gap-2">
-      <h3 className="text-lg font-bold">Objet: {template.subject}</h3>
-      <p>Contenu: {template.content}</p>
-      <Link href={""} className="absolute top-1.5 right-1.5">
-        <button className="cursor-pointer">
+    <Link
+      href={`/template/${template.id}`}
+      className="block h-full transition-all hover:scale-95 duration-300"
+    >
+      <div className="bg-gray-50 relative shadow-md h-full rounded-md p-4 pt-6 flex flex-col gap-2">
+        <h3 className="text-sm flex flex-col gap-0.5">
+          <span className="font-semibold">Objet:</span>
+          <span>{template.subject}</span>
+        </h3>
+
+        <p className="text-sm flex gap-0.5 flex-col">
+          <span className="font-semibold">Contenu:</span>
+          <span>
+            {template.content.length > 50
+              ? template.content.slice(0, 50) + "..."
+              : template.content}
+          </span>
+        </p>
+        <button className="cursor-pointer absolute top-1.5 right-1.5">
           <FaRegEdit size={15} />
         </button>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 };
 
