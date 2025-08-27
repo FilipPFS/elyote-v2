@@ -46,6 +46,62 @@ export const getTemplates = async (): Promise<{
   }
 };
 
+export const getMailTemplates = async (): Promise<{
+  mail: TemplateType[];
+}> => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.log("Unauthorized.");
+      return { mail: [] }; // 👈 fallback
+    }
+
+    const resMail = await apiClient.get(`/api/communication_templates/mail`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (resMail.status === 200) {
+      return {
+        mail: resMail.data as TemplateType[],
+      };
+    } else {
+      return { mail: [] }; // 👈 fallback on failure
+    }
+  } catch (error) {
+    handleError(error);
+    return { mail: [] }; // 👈 fallback on error
+  }
+};
+
+export const getSmsTemplates = async (): Promise<{
+  sms: TemplateType[];
+}> => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      console.log("Unauthorized.");
+      return { sms: [] }; // 👈 fallback
+    }
+
+    const resSms = await apiClient.get(`/api/communication_templates/sms`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (resSms.status === 200) {
+      return {
+        sms: resSms.data as TemplateType[],
+      };
+    } else {
+      return { sms: [] }; // 👈 fallback on failure
+    }
+  } catch (error) {
+    handleError(error);
+    return { sms: [] }; // 👈 fallback on error
+  }
+};
+
 export const getTemplateById = async (id: string) => {
   try {
     const token = await getToken();
