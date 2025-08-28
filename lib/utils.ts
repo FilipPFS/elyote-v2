@@ -87,32 +87,32 @@ export const formatSavStatus = (status: string) => {
   if (status === "0")
     object = {
       key: "first",
-      classNames: "text-white bg-red-500",
+      classNames: "text-white bg-red-500 dark:bg-gray-900",
     };
   else if (status === "1")
     object = {
       key: "second",
-      classNames: "text-white bg-orange-500",
+      classNames: "text-white bg-orange-500 dark:bg-orange-900",
     };
   else if (status === "2")
     object = {
       key: "third",
-      classNames: "text-white bg-blue-800",
+      classNames: "text-white bg-blue-800 dark:bg-blue-950",
     };
   else if (status === "3")
     object = {
       key: "fourth",
-      classNames: "text-white bg-orange-400",
+      classNames: "text-white bg-orange-400 dark:bg-orange-700",
     };
   else if (status === "4")
     object = {
       key: "fifth",
-      classNames: "text-white bg-gray-500",
+      classNames: "text-white bg-gray-500 dark:bg-orange-700",
     };
   else if (status === "5")
     object = {
       key: "sixth",
-      classNames: "text-white bg-green-600",
+      classNames: "text-white bg-green-600 dark:bg-green-800",
     };
 
   return object;

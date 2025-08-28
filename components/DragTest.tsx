@@ -125,7 +125,7 @@ const DragTest = () => {
         {order.map((slot) => (
           <div key={slot} data-swapy-slot={slot} className="relative">
             <div data-swapy-item={slot}>
-              <div className="absolute  bg-white h-7 mt-5  right-0 top-0 cursor-pointer rounded-t-md flex items-center px-5 sm:px-6">
+              <div className="absolute bg-white dark:bg-gray-800 h-7 mt-5  right-0 top-0 cursor-pointer rounded-t-md flex items-center px-5 sm:px-6">
                 <span>
                   <SlCursorMove />
                 </span>

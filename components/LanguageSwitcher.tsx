@@ -21,7 +21,7 @@ const LanguageSwitcher = () => {
     <select
       value={currentLocale}
       onChange={handleChange}
-      className="bg-white p-1.5 rounded-md shadow-sm font-semibold"
+      className="bg-white dark:bg-gray-800 p-1.5 rounded-md shadow-sm font-semibold"
     >
       <option className="font-semibold" value="en">
         EN

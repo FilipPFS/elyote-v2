@@ -79,7 +79,7 @@ const SavUpdateForm = ({ savData, materialName }: Props) => {
   }, [state, router, t, tGlobal]);
 
   return (
-    <div className="w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md flex flex-col gap-8">
+    <div className="w-full lg:w-2/3 bg-white dark:bg-gray-950 p-6 lg:p-10 rounded-md flex flex-col gap-8">
       <h1 className="text-xl font-semibold">
         {t("updatePage.title")}: {savData.code_sav}
       </h1>

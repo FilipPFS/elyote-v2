@@ -77,7 +77,7 @@ const StatusForm = ({ item, updatePage, icon }: Props) => {
   return (
     <>
       <button
-        className="flex cursor-pointer items-center gap-2 bg-gray-100 hover:bg-blue-100 text-gray-700 px-4 py-1 rounded-full border border-gray-300 transition"
+        className="flex cursor-pointer items-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-blue-100 text-gray-700 dark:text-gray-300 px-4 py-1 rounded-full border border-gray-300 dark:border-gray-800 transition"
         onClick={() => setVisible(true)}
       >
         {icon}
@@ -120,7 +120,7 @@ const StatusForm = ({ item, updatePage, icon }: Props) => {
                 </label>
                 <input
                   type="color"
-                  className="p-1 h-10 w-full md:w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                  className="p-1 h-10 w-full md:w-14 block bg-white dark:bg-gray-700 dark:border-gray-950 border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none"
                   id="hs-color-input"
                   value={bgColor}
                   onChange={(e) => setBgColor(e.target.value)}
@@ -137,7 +137,7 @@ const StatusForm = ({ item, updatePage, icon }: Props) => {
                 </label>
                 <input
                   type="color"
-                  className="p-1 h-10 w-full md:w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                  className="p-1 h-10 w-full md:w-14 block bg-white dark:bg-gray-700 dark:border-gray-950 border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none"
                   id="hs-color-font-input"
                   value={fontColor}
                   onChange={(e) => setFontColor(e.target.value)}

@@ -7,7 +7,7 @@ import LanguageSwitcher from "../LanguageSwitcher";
 import Link from "next/link";
 const MobileHeader = () => {
   return (
-    <div className="sticky z-[20] top-0 flex items-center bg-white justify-between sm:hidden h-[100px] px-7">
+    <div className="sticky z-[20] top-0 flex items-center bg-white dark:bg-gray-950 justify-between sm:hidden h-[100px] px-7">
       <MobileSidebar />
       <Link href={"/"}>
         <Image

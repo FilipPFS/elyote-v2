@@ -21,7 +21,7 @@ const HeaderIcon = ({ icon, customContent, notification }: Props) => {
         {notification && notification}
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="bg-white p-4 font-primary"
+        className="bg-white dark:bg-gray-900 p-4 font-primary"
         side="bottom"
         sideOffset={14}
       >

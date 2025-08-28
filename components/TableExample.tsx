@@ -32,11 +32,11 @@ const TableExample = ({
   return (
     <div
       className={clsx(
-        "hidden lg:block w-full overflow-auto border p-3 bg-white rounded-lg shadow dark:border-gray-800",
+        "hidden lg:block w-full overflow-auto border p-3 bg-white dark:bg-gray-800 rounded-lg shadow dark:border-gray-800",
         classNames
       )}
     >
-      <Table className="bg-white rounded-md">
+      <Table className="bg-white dark:bg-gray-800 rounded-md">
         <TableHeader>
           <TableRow>
             {tableHeaders.map((header, index) => (

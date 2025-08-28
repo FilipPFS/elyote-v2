@@ -32,6 +32,7 @@ const CommandesColis = async ({ searchParams }: SearchParamProps) => {
     status: status,
     type: type,
   });
+
   const packages: PackageData[] = packagesData?.data;
 
   if (packagesData) {
@@ -74,7 +75,7 @@ const CommandesColis = async ({ searchParams }: SearchParamProps) => {
 
   return (
     <MainPage title={t("title")}>
-      <div className="flex sm:flex-row flex-col gap-3 sm:items-center justify-between">
+      <div className="flex relative sm:flex-row flex-col gap-3 sm:items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex md:flex-row flex-col md:items-center gap-2">
             <h2 className="font-semibold">{t("filterStatus")}</h2>

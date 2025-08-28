@@ -32,7 +32,7 @@ const SavUpdateStatus = ({ id, customStatuses }: Props) => {
   }, [state]);
 
   return (
-    <div className="p-6 bg-yellow-200 rounded-md h-fit">
+    <div className="p-6 bg-yellow-200 dark:bg-gray-950 rounded-md h-fit">
       <h2 className="font-semibold">{t("updatePage.savStatus.title")}</h2>
       <form action={action} className="mt-3 flex flex-col gap-2">
         <input type="hidden" defaultValue={id} name="id" />

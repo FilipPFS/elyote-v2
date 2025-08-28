@@ -48,7 +48,7 @@ const MaterialForm = ({
   return (
     <form
       action={action}
-      className="flex flex-col justify-between gap-8 w-full lg:w-2/3 bg-white p-6 lg:p-10 h-fit rounded-md "
+      className="flex flex-col justify-between gap-8 w-full lg:w-2/3 bg-white dark:bg-gray-950 p-6 lg:p-10 h-fit rounded-md "
     >
       <div className="flex flex-col gap-4 ">
         <h1 className="text-xl font-semibold">

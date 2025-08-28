@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 
 type Props = {
   translationKey?: string;
@@ -21,13 +21,14 @@ const FilterContact = ({
   oneKeyFilters,
 }: Props) => {
   const [category, setCategory] = useState("");
+  const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
   const t = useTranslations(translationKey);
 
   const onSelectCategory = (category: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.delete("page"); // Always remove 'page' parameter
+    params.delete("page");
 
     if (category && category !== "all") {
       params.set(keyString, category);
@@ -36,22 +37,26 @@ const FilterContact = ({
     }
 
     const newUrl = `${window.location.pathname}?${params.toString()}`;
-    router.push(newUrl, { scroll: false });
+
+    // 🚀 useTransition makes route change non-blocking
+    startTransition(() => {
+      router.push(newUrl, { scroll: false });
+    });
   };
 
   return (
-    <select
-      className="border-gray-400 bg-white border-[1.5px] rounded-sm flex items-center gap-3 py-1 px-4 md:w-fit w-full"
-      value={category}
-      onChange={(e) => {
-        const selectedCategory = e.target.value;
-        setCategory(selectedCategory);
-        onSelectCategory(selectedCategory);
-      }}
-    >
-      {filterOptions && (
-        <>
-          {filterOptions.map((item, index) => (
+    <div className="flex items-center gap-2">
+      <select
+        className="border-gray-400 dark:border-gray-800 bg-white dark:bg-gray-900 border-[1.5px] rounded-sm py-1 px-4 md:w-fit w-full"
+        value={category}
+        onChange={(e) => {
+          const selectedCategory = e.target.value;
+          setCategory(selectedCategory);
+          onSelectCategory(selectedCategory);
+        }}
+      >
+        {filterOptions &&
+          filterOptions.map((item, index) => (
             <option key={index} value={item.filterKey}>
               {item.label ? (
                 <>{translationKey ? t(item.label) : item.label}</>
@@ -60,19 +65,25 @@ const FilterContact = ({
               )}
             </option>
           ))}
-        </>
+        {oneKeyFilters && (
+          <>
+            <option value="all">Tous</option>
+            {oneKeyFilters.map((item, index) => (
+              <option key={index} value={item}>
+                {item}
+              </option>
+            ))}
+          </>
+        )}
+      </select>
+
+      {isPending && (
+        <div className="flex items-center gap-4 fixed top-20 left-1/2 -translate-x-1/2">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500" />
+          <span className="">Chargement...</span>
+        </div>
       )}
-      {oneKeyFilters && (
-        <>
-          <option value={"all"}>Tous</option>
-          {oneKeyFilters.map((item, index) => (
-            <option key={index} value={item}>
-              {item}
-            </option>
-          ))}
-        </>
-      )}
-    </select>
+    </div>
   );
 };
 

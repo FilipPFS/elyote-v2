@@ -69,7 +69,7 @@ const ParcelCard = ({ parcel, listeEntrepots }: Props) => {
   };
 
   return (
-    <div className="flex flex-col justify-between w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md ">
+    <div className="flex flex-col justify-between w-full lg:w-2/3 bg-white dark:bg-gray-950 p-6 lg:p-10 rounded-md ">
       <div className="flex flex-col gap-4">
         <h1 className="text-xl font-semibold">
           {t("title")}: {parcel.id}
@@ -77,13 +77,13 @@ const ParcelCard = ({ parcel, listeEntrepots }: Props) => {
         <div className="flex gap-8">
           <div className="flex flex-col gap-2 w-1/2">
             <span>{t("cardPage.source")}</span>
-            <span className="bg-zinc-100 w-full py-2 rounded-md shadow-sm px-2">
+            <span className="bg-zinc-100 dark:bg-zinc-800 w-full py-2 rounded-md shadow-sm px-2">
               {parcel.parent_type}
             </span>
           </div>
           <div className="flex flex-col gap-2 w-1/2">
             <span>{t("addPage.quantityPlaceholder")}</span>
-            <span className="bg-zinc-100 w-full py-2 rounded-md shadow-sm px-2">
+            <span className="bg-zinc-100 dark:bg-zinc-800 w-full py-2 rounded-md shadow-sm px-2">
               {parcel.items_qty}
             </span>
           </div>
@@ -91,13 +91,13 @@ const ParcelCard = ({ parcel, listeEntrepots }: Props) => {
         <div className="flex gap-8">
           <div className="flex flex-col gap-2 w-1/2">
             <span>{t("headers.createdAt")}</span>
-            <span className="bg-zinc-100 w-full py-2 rounded-md shadow-sm px-2">
+            <span className="bg-zinc-100 dark:bg-zinc-800 w-full py-2 rounded-md shadow-sm px-2">
               {format.dateTime(new Date(parcel.date_creation), "long")}
             </span>
           </div>
           <div className="flex flex-col gap-2 w-1/2">
             <span>{t("headers.updatedAt")}</span>
-            <span className="bg-zinc-100 w-full py-2 rounded-md shadow-sm px-2">
+            <span className="bg-zinc-100 dark:bg-zinc-800 w-full py-2 rounded-md shadow-sm px-2">
               {format.dateTime(new Date(parcel.date_maj), "long")}
             </span>
           </div>
@@ -105,13 +105,13 @@ const ParcelCard = ({ parcel, listeEntrepots }: Props) => {
         <div className="flex gap-8">
           <div className="flex flex-col gap-2 w-1/2">
             <span>{t("headers.status")}</span>
-            <span className="bg-zinc-100 w-full py-2 rounded-md shadow-sm px-2">
+            <span className="bg-zinc-100 dark:bg-zinc-800 w-full py-2 rounded-md shadow-sm px-2">
               {status === 0 && "Entreposé"} {status === 1 && "Livre/Expedié"}
             </span>
           </div>
           <div className="flex flex-col gap-2 w-1/2">
             <span>{t("cardPage.deliveryDate")}</span>
-            <span className="bg-zinc-100 w-full py-2 rounded-md shadow-sm px-2">
+            <span className="bg-zinc-100 dark:bg-zinc-800 w-full py-2 rounded-md shadow-sm px-2">
               {parcel.date_livraison ? parcel.date_livraison : "N/A"}
             </span>
           </div>

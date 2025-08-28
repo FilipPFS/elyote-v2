@@ -36,7 +36,7 @@ const ReglagesSav = async () => {
           </h2>
           <StatusForm icon={<FaPlusCircle />} updatePage={false} />
         </div>
-        <div className="flex bg-white p-3 py-5 md:p-6 rounded-lg shadow flex-col gap-10 md:gap-6">
+        <div className="flex bg-white dark:bg-gray-950 p-3 py-5 md:p-6 rounded-lg shadow flex-col gap-10 md:gap-6">
           <section className="flex flex-col gap-4">
             <h3 className="text-[17px] font-semibold">
               {t("settingsPage.defaultTitle")}

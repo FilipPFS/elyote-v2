@@ -38,7 +38,7 @@ const Modal = ({ visible, setVisible, children }: Props) => {
       {isMounted && (
         <div
           className={clsx(
-            "relative bg-white p-6 rounded-lg shadow-lg border-2 border-gray-100 w-[95%] md:w-4/5 transition-all duration-300 ease-in-out transform",
+            "relative bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg border-2 border-gray-100 dark:border-gray-700 w-[95%] md:w-4/5 transition-all duration-300 ease-in-out transform",
             visible
               ? "opacity-100 scale-100 translate-y-0"
               : "opacity-0 scale-95 translate-y-4"

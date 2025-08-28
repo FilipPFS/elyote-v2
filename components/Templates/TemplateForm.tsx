@@ -136,7 +136,7 @@ const TemplateForm = ({ updatePage, templateData }: Props) => {
       {/* Formulaire */}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col justify-between w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md"
+        className="flex flex-col justify-between w-full lg:w-2/3 bg-white dark:bg-gray-950 p-6 lg:p-10 rounded-md"
       >
         <div className="flex flex-col gap-4">
           <h1 className="text-xl font-semibold">
@@ -187,7 +187,7 @@ const TemplateForm = ({ updatePage, templateData }: Props) => {
                 key={tag}
                 type="button"
                 onClick={() => insertTag(tag)}
-                className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-sm"
+                className="px-3 py-1 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 rounded text-sm"
               >
                 {tag}
               </button>
@@ -215,17 +215,17 @@ const TemplateForm = ({ updatePage, templateData }: Props) => {
       </form>
 
       {/* Aperçu */}
-      <div className="flex-1 bg-gray-50 p-6 rounded-md border">
+      <div className="flex-1 bg-gray-50 dark:bg-gray-950 p-6 rounded-md border">
         <h2 className="text-lg font-semibold mb-4">Aperçu</h2>
         {formData.type && (
-          <p className="mb-2 text-sm text-gray-600">
+          <p className="mb-2 text-sm text-gray-600 dark:text-gray-200">
             Type : <span className="font-medium">{formData.type}</span>
           </p>
         )}
         <h3 className="text-xl font-bold">
           {replaceTags(formData?.subject) || "Titre de l’aperçu"}
         </h3>
-        <p className="mt-2 text-gray-700 whitespace-pre-line">
+        <p className="mt-2 text-gray-700 dark:text-gray-300 whitespace-pre-line">
           {replaceTags(formData?.content) || "Votre contenu apparaîtra ici..."}
         </p>
       </div>

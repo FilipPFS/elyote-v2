@@ -4,6 +4,7 @@ import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,14 +29,16 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={`${poppins.variable}`}>
         <NextIntlClientProvider>
-          <div className="font-primary">
-            {children}
-            <ToastContainer
-              position="bottom-right"
-              autoClose={4000}
-              theme="colored"
-            />
-          </div>
+          <ThemeProvider>
+            <div className="font-primary dark:bg-gray-900 bg-gray-100">
+              {children}
+              <ToastContainer
+                position="bottom-right"
+                autoClose={4000}
+                theme="colored"
+              />
+            </div>
+          </ThemeProvider>{" "}
         </NextIntlClientProvider>
       </body>
     </html>

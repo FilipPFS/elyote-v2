@@ -19,7 +19,7 @@ const ContactClient = () => {
               <Link
                 key={item.label}
                 href={item.link}
-                className="shadow-sm transition-all duration-500 hover:shadow-lg bg-white w-[30%] rounded-lg p-4 flex flex-col gap-3 items-center text-center"
+                className="shadow-sm transition-all duration-500 hover:shadow-lg bg-white dark:bg-gray-900 w-[30%] rounded-lg p-4 flex flex-col gap-3 items-center text-center"
               >
                 <span className="text-lg sm:text-2xl">{item.icon}</span>
                 <span className="max-sm:text-sm leading-none font-semibold">

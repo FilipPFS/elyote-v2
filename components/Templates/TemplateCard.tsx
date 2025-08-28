@@ -13,7 +13,7 @@ const TemplateCard = ({ template }: Props) => {
       href={`/template/${template.id}`}
       className="block h-full transition-all hover:scale-95 duration-300"
     >
-      <div className="bg-gray-50 relative shadow-md h-full rounded-md p-4 pt-6 flex flex-col gap-2">
+      <div className="bg-gray-50 dark:bg-gray-800 relative shadow-md h-full rounded-md p-4 pt-6 flex flex-col gap-2">
         <h3 className="text-sm flex flex-col gap-0.5">
           <span className="font-semibold">Objet:</span>
           <span>{template.subject}</span>

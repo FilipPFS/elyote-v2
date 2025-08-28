@@ -5,7 +5,11 @@ type Props = {
 };
 
 const MobileCard = ({ children }: Props) => {
-  return <div className="bg-white p-3 rounded-md shadow-sm">{children}</div>;
+  return (
+    <div className="bg-white dark:bg-gray-800 p-3 rounded-md shadow-sm">
+      {children}
+    </div>
+  );
 };
 
 export default MobileCard;

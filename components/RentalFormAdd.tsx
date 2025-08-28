@@ -138,7 +138,7 @@ const RentalFormAdd = ({ materials }: Props) => {
   };
 
   return (
-    <div className="w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md flex flex-col gap-8">
+    <div className="w-full lg:w-2/3 bg-white dark:bg-gray-950 p-6 lg:p-10 rounded-md flex flex-col gap-8">
       <h1 className="text-xl font-semibold">{tRental("addPage.title")}</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-8">
         {firstPartVisible ? (

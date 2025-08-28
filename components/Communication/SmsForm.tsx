@@ -57,7 +57,7 @@ const SmsForm = ({ sms }: Props) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col justify-between w-full lg:w-2/3 bg-white p-6 lg:p-10 rounded-md"
+      className="flex flex-col justify-between w-full lg:w-2/3 bg-white dark:bg-gray-950 p-6 lg:p-10 rounded-md"
     >
       <div className="flex flex-col gap-4">
         <h1 className="text-xl font-semibold">Envoyer un SMS</h1>

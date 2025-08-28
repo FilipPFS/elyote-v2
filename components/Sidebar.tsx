@@ -14,7 +14,7 @@ const Sidebar = () => {
   return (
     <aside
       className={clsx(
-        "hidden sticky z-20 top-0 remove-scrollbar h-screen bg-white transition-all px-4 py-3 overflow-y-auto duration-300 sm:flex flex-col",
+        "hidden sticky z-20 top-0 remove-scrollbar h-screen bg-white dark:bg-gray-950 transition-all px-4 py-3 overflow-y-auto duration-300 sm:flex flex-col",
         expanded ? "min-w-[230px] max-w-[230px]" : "min-w-[80px] max-w-[80px]"
       )}
     >

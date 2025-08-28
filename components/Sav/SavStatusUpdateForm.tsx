@@ -58,7 +58,7 @@ const SavStatusUpdateForm = ({ item }: Props) => {
 
         {/* Delete Button */}
         <button
-          className="flex cursor-pointer items-center gap-2 bg-red-100 hover:bg-red-200 text-red-700 px-4 py-1 rounded-full border border-red-300 transition"
+          className="flex cursor-pointer items-center gap-2 bg-red-100 dark:bg-gray-700 dark:hover:bg-gray-800 hover:bg-red-200 text-red-700 dark:text-red-300 px-4 py-1 rounded-full border border-red-300 dark:border-red-800 transition"
           onClick={() => setConfirmCheck(true)}
         >
           <small className="font-semibold block">{tGlobal("deleteBtn")}</small>
