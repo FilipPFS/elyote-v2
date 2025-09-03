@@ -9,7 +9,7 @@ interface ElTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 const ElTextarea = forwardRef<HTMLTextAreaElement, ElTextareaProps>(
   ({ icon, classNames, ...props }, ref) => {
     return (
-      <div className="border-gray-400 dark:border-none bg-white dark:bg-gray-800 border-[1.5px] h-fit min-h-22 rounded-sm w-full flex items-center gap-3 px-4">
+      <div className="border-gray-400 dark:border-none text-base small:text-sm big:text-lg weight:font-bold bg-white dark:bg-gray-800 border-[1.5px] h-fit min-h-22 rounded-sm w-full flex items-center gap-3 px-4">
         {icon && <span>{icon}</span>}
         <textarea
           ref={ref}

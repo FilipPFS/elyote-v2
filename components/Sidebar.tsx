@@ -7,9 +7,17 @@ import { useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import NavLink from "./NavLink";
 import Link from "next/link";
+import { useUserSettings } from "@/context/UserSettingsContext";
+
 const Sidebar = () => {
   const [expanded, setExpanded] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+  const { allowedIds } = useUserSettings();
+
+  const filteredNavItems = navItems.filter((item) =>
+    allowedIds.includes(item.labelKey)
+  );
 
   return (
     <aside
@@ -38,7 +46,7 @@ const Sidebar = () => {
           </span>
         </Link>
 
-        {navItems.map((item) => (
+        {filteredNavItems.map((item) => (
           <NavLink
             key={item.labelKey}
             item={item}

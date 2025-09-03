@@ -9,7 +9,7 @@ const GoBackButton = ({ link }: { link: string }) => {
       <ElButton
         label="Retour à la liste"
         icon={<TiArrowLeft size={20} />}
-        classNames="px-4 mt-4 !h-8 !text-[12px]"
+        classNames="px-4 mt-4 !h-8 text-[12px]"
       />
     </Link>
   );

@@ -9,7 +9,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
     <div className="flex relative min-h-screen sm:flex-row flex-col gap-4">
       <MobileHeader />
       <Sidebar />
-      <main className="flex-1 flex flex-col max-sm:pb-48">
+      <main className="flex-1 flex dark:bg-gray-900  bg-gray-100 flex-col max-sm:pb-48">
         <Header />
         {children}
       </main>

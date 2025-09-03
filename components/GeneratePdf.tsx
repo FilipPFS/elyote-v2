@@ -155,7 +155,7 @@ const GeneratePdf = ({
             {tGlobal("pdfModal.btn")}
           </div>
         </AlertDialogTrigger>
-        <AlertDialogContent className="md:max-w-[700px]! flex flex-col gap-4 font-primary">
+        <AlertDialogContent className="md:max-w-[700px]! flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <AlertDialogTitle>{tGlobal("pdfModal.title")}</AlertDialogTitle>
             <AlertDialogAction className="cursor-pointer">

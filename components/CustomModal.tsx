@@ -33,7 +33,7 @@ const CustomModal = ({
       <AlertDialogTrigger className="cursor-pointer">
         {icon ? icon : jsxBtn}
       </AlertDialogTrigger>
-      <AlertDialogContent className={clsx("font-primary", classNames)}>
+      <AlertDialogContent className={clsx("", classNames)}>
         <AlertDialogTitle>{title}</AlertDialogTitle>
         {customContent}
         <AlertDialogFooter className="flex justify-center items-center">

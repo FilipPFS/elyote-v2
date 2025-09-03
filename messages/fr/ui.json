@@ -1,0 +1,28 @@
+{
+  "title": "Réglages de mon profil",
+  "menuTitle": "Personnalisation du menu",
+  "uiTitle": "Personnalisation de l'interface",
+  "modes": {
+    "darkMode": {
+      "title": "Mode Sombre",
+      "desc": "Active ou désactive le thème sombre de l'application pour réduire la fatigue visuelle."
+    },
+    "boldMode": {
+      "title": "Mode Gras",
+      "desc": "Augmente ou réduit l'épaisseur des textes pour améliorer la lisibilité selon vos préférences."
+    },
+    "textSize": {
+      "title": "Taille du texte",
+      "desc": "Choisissez la taille générale du texte dans l'application pour un confort de lecture optimal.",
+      "options": {
+        "small": "Petit",
+        "normal": "Normal",
+        "big": "Grand"
+      }
+    },
+    "font": {
+      "title": "Police",
+      "desc": "Changez la police principale de l'application pour un style visuel qui vous plaît."
+    }
+  }
+}

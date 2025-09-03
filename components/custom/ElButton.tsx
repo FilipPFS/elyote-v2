@@ -13,7 +13,7 @@ const ElButton = ({ icon, classNames, label, disabled, onClick }: Props) => {
       disabled={disabled}
       onClick={onClick}
       className={clsx(
-        "bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2 justify-center text-sm cursor-pointer transition-all duration-500 hover:bg-blue-800 text-white rounded-md h-10",
+        "bg-blue-700 disabled:bg-gray-400 px-4 weight:font-bold text-base small:text-sm big:text-lg disabled:cursor-not-allowed flex items-center gap-2 justify-center cursor-pointer transition-all duration-500 hover:bg-blue-800 text-white rounded-md h-10",
         classNames
       )}
     >

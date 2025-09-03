@@ -60,7 +60,9 @@ const SmsForm = ({ sms }: Props) => {
       className="flex flex-col justify-between w-full lg:w-2/3 bg-white dark:bg-gray-950 p-6 lg:p-10 rounded-md"
     >
       <div className="flex flex-col gap-4">
-        <h1 className="text-xl font-semibold">Envoyer un SMS</h1>
+        <h1 className="text-xl font-semibold weight:font-bold">
+          Envoyer un SMS
+        </h1>
         <ElSelect
           name="templateId"
           value={formData.templateId}

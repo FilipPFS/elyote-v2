@@ -36,7 +36,7 @@ const TableExample = ({
         classNames
       )}
     >
-      <Table className="bg-white dark:bg-gray-800 rounded-md">
+      <Table className="bg-white text-base small:text-sm big:text-lg w-full dark:bg-gray-800 rounded-md">
         <TableHeader>
           <TableRow>
             {tableHeaders.map((header, index) => (
@@ -54,7 +54,9 @@ const TableExample = ({
             ))}
           </TableRow>
         </TableHeader>
-        <TableBody>{tableBody}</TableBody>
+        <TableBody className="font-medium weight:font-bold">
+          {tableBody}
+        </TableBody>
       </Table>
     </div>
   );

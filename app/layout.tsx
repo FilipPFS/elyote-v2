@@ -1,15 +1,25 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
-import { ThemeProvider } from "@/context/ThemeContext";
+import { Poppins, Inter, Roboto } from "next/font/google";
+import { UserSettingsProvider } from "@/context/UserSettingsContext";
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   variable: "--font-poppins",
+  weight: ["400", "500", "600", "700"],
+});
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+});
+const roboto = Roboto({
+  subsets: ["latin"],
+  variable: "--font-roboto",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -27,10 +37,12 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className={`${poppins.variable}`}>
+      <body
+        className={`${poppins.variable} ${inter.variable} ${roboto.variable}`}
+      >
         <NextIntlClientProvider>
-          <ThemeProvider>
-            <div className="font-primary dark:bg-gray-900 bg-gray-100">
+          <UserSettingsProvider>
+            <div className="font-poppins font-inter:font-inter weight:font-bold text-base small:text-sm big:text-lg font-roboto:font-roboto dark:bg-gray-900 bg-gray-100">
               {children}
               <ToastContainer
                 position="bottom-right"
@@ -38,7 +50,7 @@ export default async function RootLayout({
                 theme="colored"
               />
             </div>
-          </ThemeProvider>{" "}
+          </UserSettingsProvider>
         </NextIntlClientProvider>
       </body>
     </html>

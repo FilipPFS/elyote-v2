@@ -46,9 +46,7 @@ const SavStatusUpdateForm = ({ item }: Props) => {
         style={{ backgroundColor: item.color_background }}
         className={`flex flex-col gap-0 px-3 py-1.5 rounded-sm`}
       >
-        <h3 style={{ color: item.color_font }} className={`text-sm`}>
-          Statut: {item.statut}
-        </h3>
+        <h3 style={{ color: item.color_font }}>Statut: {item.statut}</h3>
       </div>
 
       {/* Action Buttons */}

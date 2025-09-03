@@ -277,13 +277,11 @@ const RentalFormAdd = ({ materials }: Props) => {
       </form>
 
       {firstPartVisible && (
-        <button
-          type="button"
+        <ElButton
+          label={tRental("addPage.form.priceCalc")}
           className="bg-blue-700 disabled:bg-gray-400 flex items-center gap-2 justify-center text-sm cursor-pointer transition-all duration-500 hover:bg-blue-800 text-white rounded-md h-10 self-center w-2/3 lg:w-1/4"
           onClick={handleVisibility}
-        >
-          {tRental("addPage.form.priceCalc")}
-        </button>
+        />
       )}
     </div>
   );

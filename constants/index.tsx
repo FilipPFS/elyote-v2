@@ -34,12 +34,14 @@ import { CgOptions } from "react-icons/cg";
 
 export const navItems = [
   {
+    id: 0,
     link: "/",
-    labelKey: "dashboard", // Use a key instead of "Dashboard"
+    labelKey: "dashboard",
     subLinks: [],
     icon: <RxDashboard />,
   },
   {
+    id: 1,
     link: "/cartes-copies",
     labelKey: "cartesCopies",
     subLinks: [
@@ -57,6 +59,7 @@ export const navItems = [
     icon: <LuClipboardList />,
   },
   {
+    id: 2,
     link: "/bmi",
     labelKey: "bmi",
     subLinks: [
@@ -69,12 +72,14 @@ export const navItems = [
     icon: <RiComputerLine />,
   },
   {
+    id: 3,
     link: "/balisage",
     labelKey: "balisage",
     subLinks: [],
     icon: <RiGalleryLine />,
   },
   {
+    id: 4,
     link: "/communication",
     labelKey: "communication",
     subLinks: [
@@ -86,6 +91,7 @@ export const navItems = [
     icon: <FiSmartphone />,
   },
   {
+    id: 5,
     link: "/identifiants",
     labelKey: "identifiants",
     subLinks: [
@@ -95,6 +101,7 @@ export const navItems = [
     icon: <GiSpy />,
   },
   {
+    id: 6,
     link: "/repertoire",
     labelKey: "repertoire",
     subLinks: [
@@ -104,6 +111,7 @@ export const navItems = [
     icon: <LuIdCard />,
   },
   {
+    id: 7,
     link: "/sav",
     labelKey: "sav",
     subLinks: [
@@ -113,6 +121,7 @@ export const navItems = [
     icon: <FiTool />,
   },
   {
+    id: 8,
     link: "/parc-materiel",
     labelKey: "parcMateriel",
     subLinks: [
@@ -122,6 +131,7 @@ export const navItems = [
     icon: <LuPrinter />,
   },
   {
+    id: 9,
     link: "/locations",
     labelKey: "locations",
     subLinks: [
@@ -131,21 +141,20 @@ export const navItems = [
     icon: <GrCubes />,
   },
   {
+    id: 10,
     link: "/cmd",
     labelKey: "commandes",
     subLinks: [
       { labelKey: "commandes_orderBook", link: "/cmd/cahier" },
       { labelKey: "commandes_schoolLists", link: "/cmd/rdc-liste" },
-      {
-        labelKey: "commandes_clickCollect",
-        link: "/cmd/click-collect-liste",
-      },
+      { labelKey: "commandes_clickCollect", link: "/cmd/click-collect-liste" },
       { labelKey: "commandes_serviceSpaces", link: "/cmd/print-liste" },
       { labelKey: "commandes_shipping", link: "/cmd/colis" },
     ],
     icon: <FaBarcode />,
   },
   {
+    id: 11,
     link: "/outils",
     labelKey: "outils",
     subLinks: [],
@@ -163,7 +172,7 @@ export const accountLinks = [
     key: "statistics",
   },
   {
-    link: "#",
+    link: "/profile/reglages/interface",
     key: "profileSettings",
   },
   {

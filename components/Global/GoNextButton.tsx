@@ -16,7 +16,7 @@ const GoNextButton = ({
       <ElButton
         label={label}
         icon={icon}
-        classNames="px-4 !h-9 !text-[12px] w-full md:w-fit"
+        classNames="px-4 !h-9 w-full md:w-fit"
       />
     </Link>
   );

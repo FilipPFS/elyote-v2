@@ -15,7 +15,7 @@ const SavEvolutionTable = async ({ savEvolution, savDate }: Props) => {
   const customStatuses: CustomSavStatus[] = await getCustomStatuses(true);
 
   return (
-    <div className="flex flex-col text-sm md:text-[10px] gap-2 bg-gray-200 dark:bg-gray-950 shadow-sm p-4 rounded-sm">
+    <div className="flex flex-col gap-2 bg-gray-200 dark:bg-gray-950 shadow-sm p-4 rounded-sm">
       <div className="flex items-center gap-3">
         <div className="font-bold text-gray-800 dark:text-gray-200 w-1/2 rounded uppercase bg-gray-300 dark:bg-gray-900 p-2">
           Date

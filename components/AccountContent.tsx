@@ -31,7 +31,7 @@ const AccountContent = ({ setOpen }: Props) => {
             key={item.key}
             href={item.link}
             onClick={setOpen ? () => setOpen(false) : undefined}
-            className="font-semibold transition-all duration-300 hover:bg-gray-200 w-full px-4 p-1.5 rounded-sm"
+            className="font-semibold transition-all duration-300 hover:bg-gray-200 dark:hover:bg-gray-700 w-full px-4 p-1.5 rounded-sm"
           >
             {t(item.key)}
           </Link>

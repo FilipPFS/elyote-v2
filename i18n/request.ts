@@ -16,6 +16,7 @@ export default getRequestConfig(async () => {
     sav: (await import(`@/messages/${locale}/sav.json`)).default,
     printer: (await import(`@/messages/${locale}/printer.json`)).default,
     parcels: (await import(`@/messages/${locale}/parcels.json`)).default,
+    ui: (await import(`@/messages/${locale}/ui.json`)).default,
     credentials: (await import(`@/messages/${locale}/credentials.json`))
       .default,
   };

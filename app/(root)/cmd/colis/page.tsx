@@ -105,13 +105,9 @@ const CommandesColis = async ({ searchParams }: SearchParamProps) => {
               <>
                 {packages.map((item) => (
                   <TableRowCustom key={item.id} href={`/cmd/colis/${item.id}`}>
-                    <TableCell className="font-medium w-20">
-                      {item.id}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {item.items_qty}
-                    </TableCell>
-                    <TableCell className="font-medium">
+                    <TableCell className=" w-20">{item.id}</TableCell>
+                    <TableCell className="">{item.items_qty}</TableCell>
+                    <TableCell className="">
                       {item.emplacement === "Livré"
                         ? "Livré"
                         : listeEntrepots
@@ -120,25 +116,23 @@ const CommandesColis = async ({ searchParams }: SearchParamProps) => {
                             )
                             ?.chemin.join(" / ")}
                     </TableCell>
-                    <TableCell className="font-medium">
-                      {item.parent_type}
-                    </TableCell>
-                    <TableCell className="font-medium">
+                    <TableCell className="">{item.parent_type}</TableCell>
+                    <TableCell className="">
                       {item.statut === 0 && t("statuses.stored")}{" "}
                       {item.statut === 1 && t("statuses.shipped")}
                     </TableCell>
-                    <TableCell className="font-medium">
+                    <TableCell className="">
                       {format.dateTime(new Date(item.date_creation), "long")}
                     </TableCell>
-                    <TableCell className="font-medium">
+                    <TableCell className="">
                       {format.dateTime(new Date(item.date_maj), "long")}
                     </TableCell>
-                    <TableCell className="font-medium">
+                    <TableCell className="">
                       {item.date_livraison
                         ? format.dateTime(new Date(item.date_livraison), "long")
                         : "N/A"}
                     </TableCell>
-                    <TableCell className="font-medium">
+                    <TableCell className="">
                       <Link
                         href={`/cmd/colis/${item.id}`}
                         className="hover:underline transition-all duration-300"
@@ -152,7 +146,7 @@ const CommandesColis = async ({ searchParams }: SearchParamProps) => {
             ) : (
               <>
                 <TableRow>
-                  <TableCell>No data</TableCell>
+                  <TableCell>Aucun colis disponible.</TableCell>
                 </TableRow>
               </>
             )}

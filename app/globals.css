@@ -3,6 +3,42 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@custom-variant big {
+  &:where([data-big="on"] *) {
+    @slot;
+  }
+}
+
+@custom-variant small {
+  &:where([data-small="on"] *) {
+    @slot;
+  }
+}
+
+@custom-variant weight {
+  &:where([data-weight="on"] *) {
+    @slot;
+  }
+}
+
+@custom-variant font-poppins {
+  &:where([data-font="poppins"] *) {
+    @slot;
+  }
+}
+
+@custom-variant font-inter {
+  &:where([data-font="inter"] *) {
+    @slot;
+  }
+}
+
+@custom-variant font-roboto {
+  &:where([data-font="roboto"] *) {
+    @slot;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -104,7 +140,10 @@ body {
 }
 
 @theme inline {
-  --font-primary: var(--font-poppins);
+  --text-dynamic: var(--text-color, #000);
+  --font-poppins: var(--font-poppins);
+  --font-roboto: var(--font-roboto);
+  --font-inter: var(--font-inter);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -146,6 +185,7 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

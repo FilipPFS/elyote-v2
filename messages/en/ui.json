@@ -1,0 +1,28 @@
+{
+  "title": "My Profile Settings",
+  "menuTitle": "Menu Customization",
+  "uiTitle": "Interface Customization",
+  "modes": {
+    "darkMode": {
+      "title": "Dark Mode",
+      "desc": "Enable or disable the application's dark theme to reduce eye strain."
+    },
+    "boldMode": {
+      "title": "Bold Mode",
+      "desc": "Increase or decrease text thickness to improve readability according to your preferences."
+    },
+    "textSize": {
+      "title": "Text Size",
+      "desc": "Choose the general text size in the application for optimal reading comfort.",
+      "options": {
+        "small": "Small",
+        "normal": "Normal",
+        "big": "Large"
+      }
+    },
+    "font": {
+      "title": "Font",
+      "desc": "Change the application's main font for a visual style you prefer."
+    }
+  }
+}

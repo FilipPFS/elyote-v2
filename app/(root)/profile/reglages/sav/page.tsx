@@ -38,7 +38,7 @@ const ReglagesSav = async () => {
         </div>
         <div className="flex bg-white dark:bg-gray-950 p-3 py-5 md:p-6 rounded-lg shadow flex-col gap-10 md:gap-6">
           <section className="flex flex-col gap-4">
-            <h3 className="text-[17px] font-semibold">
+            <h3 className="small:text-base text-lg big:text-xl font-semibold">
               {t("settingsPage.defaultTitle")}
             </h3>
             <div className="flex gap-4 flex-wrap">
@@ -47,7 +47,7 @@ const ReglagesSav = async () => {
                   key={item.filterKey}
                   className={`${
                     colorMap[item.color] || "bg-gray-400"
-                  } py-1.5 px-4 text-sm rounded md:w-fit w-full text-white`}
+                  } py-1.5 px-4 rounded md:w-fit w-full text-white`}
                 >
                   {t(`statuses.${item.label}`)}
                 </span>
@@ -55,7 +55,7 @@ const ReglagesSav = async () => {
             </div>
           </section>
           <section className="flex flex-col gap-4">
-            <h3 className="text-[17px] font-semibold">
+            <h3 className="small:text-base text-lg big:text-xl font-semibold">
               {t("settingsPage.customTitle")}
             </h3>
             {savStatuses?.map((item) => (

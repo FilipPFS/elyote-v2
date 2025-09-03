@@ -47,7 +47,8 @@ const FilterContact = ({
   return (
     <div className="flex items-center gap-2">
       <select
-        className="border-gray-400 dark:border-gray-800 bg-white dark:bg-gray-900 border-[1.5px] rounded-sm py-1 px-4 md:w-fit w-full"
+        disabled={isPending} // ✅ disable while pending
+        className="border-gray-400 dark:border-gray-800 bg-white dark:bg-gray-900 border-[1.5px] rounded-sm py-1 px-4 md:w-fit w-full disabled:opacity-50 disabled:cursor-wait"
         value={category}
         onChange={(e) => {
           const selectedCategory = e.target.value;
@@ -58,11 +59,11 @@ const FilterContact = ({
         {filterOptions &&
           filterOptions.map((item, index) => (
             <option key={index} value={item.filterKey}>
-              {item.label ? (
-                <>{translationKey ? t(item.label) : item.label}</>
-              ) : (
-                <>{item.filterKey}</>
-              )}
+              {item.label
+                ? translationKey
+                  ? t(item.label)
+                  : item.label
+                : item.filterKey}
             </option>
           ))}
         {oneKeyFilters && (

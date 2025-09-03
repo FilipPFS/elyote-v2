@@ -71,12 +71,12 @@ const NavLink = ({
             </DropdownMenuTrigger>
             <DropdownMenuContent
               sideOffset={-36}
-              className="bg-white dark:bg-gray-900 border-none ml-20 p-3 font-primary"
+              className="bg-white dark:bg-gray-900 font-poppins border-none ml-20 p-3"
             >
               <div className="flex flex-col gap-3">
                 {item.subLinks.map((subLink) => (
                   <Link
-                    className="text-[11px] font-bold transition-all duration-500 hover:text-blue-800"
+                    className="font-bold transition-all duration-500 hover:text-blue-800"
                     key={subLink.labelKey}
                     href={subLink.link}
                   >
