@@ -41,7 +41,7 @@ export const UserSettingsProvider = ({
   // Load allowedIds from localStorage
   useEffect(() => {
     const stored = localStorage.getItem("allowedIds");
-    if (stored) {
+    if (stored && stored.length > 0) {
       setAllowedIds(JSON.parse(stored));
     } else {
       setAllowedIds(navItems.map((item) => item.labelKey));

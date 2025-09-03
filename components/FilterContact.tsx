@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 
 type Props = {
   translationKey?: string;
@@ -12,6 +12,8 @@ type Props = {
   }[];
   oneKeyFilters?: string[] | null;
   keyString: string;
+  startTransition: React.TransitionStartFunction;
+  isPending: boolean;
 };
 
 const FilterContact = ({
@@ -19,9 +21,10 @@ const FilterContact = ({
   filterOptions,
   keyString,
   oneKeyFilters,
+  startTransition,
+  isPending,
 }: Props) => {
   const [category, setCategory] = useState("");
-  const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
   const t = useTranslations(translationKey);
@@ -79,7 +82,7 @@ const FilterContact = ({
       </select>
 
       {isPending && (
-        <div className="flex items-center gap-4 fixed top-20 left-1/2 -translate-x-1/2">
+        <div className="md:hidden flex items-center gap-4 fixed top-28 left-1/2 -translate-x-1/2">
           <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500" />
           <span className="">Chargement...</span>
         </div>

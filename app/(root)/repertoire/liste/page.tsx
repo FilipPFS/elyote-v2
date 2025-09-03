@@ -1,8 +1,6 @@
-import FilterContact from "@/components/FilterContact";
 import MainPage from "@/components/Mobile/MainPage";
 import MobileCard from "@/components/Mobile/MobileCard";
 import Search from "@/components/Search";
-import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { contactsTableHeaders } from "@/constants";
 import {
@@ -16,9 +14,8 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import { filterContactOptions } from "@/constants";
 import TableRowCustom from "@/components/Table/TableRowCustom";
-import GoNextButton from "@/components/Global/GoNextButton";
+import ContactTable from "@/components/Contact/ContactTable";
 
 const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
   const awaitedSearchParams = await searchParams;
@@ -58,23 +55,12 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
         </Suspense>
       }
     >
-      <div className="flex md:flex-row flex-col md:items-center gap-3 justify-between">
-        <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold">{tContacts("sortKey")}:</h2>
-          <FilterContact
-            keyString="category"
-            translationKey="contacts.filterKeys"
-            filterOptions={filterContactOptions}
-          />
-        </div>
-        <GoNextButton label="Ajouter un contact" link="/repertoire/ajout" />
-      </div>
       {query.length > 1 && (
         <span className="text-gray-500 font-semibold">
           {tGlobal("result")} : {query}
         </span>
       )}
-      <TableExample
+      <ContactTable
         tableHeaders={contactsTableHeaders}
         translationsKey="contacts.tableHeaders"
         headerClassnames="w-1/4"

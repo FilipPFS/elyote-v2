@@ -1,10 +1,8 @@
-import FilterContact from "@/components/FilterContact";
-import GoNextButton from "@/components/Global/GoNextButton";
 import Pagination from "@/components/Global/Pagination";
+import ParcelTable from "@/components/Global/ParcelTable";
 import MainPage from "@/components/Mobile/MainPage";
 import MobileCard from "@/components/Mobile/MobileCard";
 import TableRowCustom from "@/components/Table/TableRowCustom";
-import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { packageTableHeaders } from "@/constants";
 import { getParcels, getStorageZone } from "@/lib/actions/actions.parcels";
@@ -12,7 +10,6 @@ import { ListeEntrepots, PackageData, SearchParamProps } from "@/types";
 import { getFormatter, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import React from "react";
-import { FaArrowRight } from "react-icons/fa6";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 const CommandesColis = async ({ searchParams }: SearchParamProps) => {
@@ -39,63 +36,9 @@ const CommandesColis = async ({ searchParams }: SearchParamProps) => {
     totalPages = packagesData.pagesNumber;
   }
 
-  const filterStatusOptions = [
-    {
-      label: t("statuses.all"),
-      filterKey: "all",
-    },
-    {
-      label: t("statuses.stored"),
-      filterKey: "0",
-    },
-    {
-      label: t("statuses.shipped"),
-      filterKey: "1",
-    },
-  ];
-
-  const filterTypeOptions = [
-    {
-      label: t("statuses.all"),
-      filterKey: "all",
-    },
-    {
-      label: "Pick&Collect",
-      filterKey: "drive",
-    },
-    {
-      label: "Commande",
-      filterKey: "cmd",
-    },
-    {
-      label: "Commande RDC",
-      filterKey: "cmd-rdc",
-    },
-  ];
-
   return (
     <MainPage title={t("title")}>
-      <div className="flex relative sm:flex-row flex-col gap-3 sm:items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex md:flex-row flex-col md:items-center gap-2">
-            <h2 className="font-semibold">{t("filterStatus")}</h2>
-            <FilterContact
-              keyString="status"
-              filterOptions={filterStatusOptions}
-            />
-          </div>
-          <div className="flex md:flex-row flex-col md:items-center gap-2">
-            <h2 className="font-semibold">{t("filterType")}</h2>
-            <FilterContact keyString="type" filterOptions={filterTypeOptions} />
-          </div>
-        </div>
-        <GoNextButton
-          label={t("addLink")}
-          link="/cmd/colis/ajout"
-          icon={<FaArrowRight />}
-        />
-      </div>
-      <TableExample
+      <ParcelTable
         tableHeaders={packageTableHeaders}
         translationsKey="parcels.headers"
         headerClassnames="w-1/5 first:w-16"

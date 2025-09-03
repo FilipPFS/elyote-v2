@@ -1,13 +1,11 @@
-import FilterContact from "@/components/FilterContact";
-import GoNextButton from "@/components/Global/GoNextButton";
 import Pagination from "@/components/Global/Pagination";
 import MainPage from "@/components/Mobile/MainPage";
 import MobileCard from "@/components/Mobile/MobileCard";
+import SavTable from "@/components/Sav/SavTable";
 import Search from "@/components/Search";
 import TableRowCustom from "@/components/Table/TableRowCustom";
-import TableExample from "@/components/TableExample";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { filterSavOptions, savTableHeaders } from "@/constants";
+import { savTableHeaders } from "@/constants";
 import {
   getCustomStatuses,
   getSavs,
@@ -21,7 +19,6 @@ import clsx from "clsx";
 import { getFormatter, getTranslations } from "next-intl/server";
 import Link from "next/link";
 import React, { Suspense } from "react";
-import { FiPlusCircle, FiSettings } from "react-icons/fi";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 const Sav = async ({ searchParams }: SearchParamProps) => {
@@ -69,48 +66,13 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
         </Suspense>
       }
     >
-      <section className="flex flex-col gap-2">
-        <h2 className="text-lg font-semibold">
-          {savTranslations("filterKeys.title")}:
-        </h2>
-        <div className="flex md:flex-row flex-col gap-3 md:justify-between md:items-end">
-          <div className="flex md:flex-row flex-col gap-2 md:gap-5">
-            <div>
-              <h3>{savTranslations("filterKeys.byStatus")}</h3>
-              <FilterContact
-                keyString="status"
-                filterOptions={filterSavOptions}
-                translationKey="sav.statuses"
-              />
-            </div>
-            <div>
-              <h3>{savTranslations("filterKeys.bySupplier")}</h3>
-              <FilterContact
-                keyString="supplier"
-                oneKeyFilters={savSuppliers}
-              />
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <GoNextButton
-              icon={<FiSettings />}
-              label={savTranslations("manageStatusesBtn")}
-              link="/profile/reglages/sav"
-            />
-            <GoNextButton
-              icon={<FiPlusCircle />}
-              label={savTranslations("addSavBtn")}
-              link="/sav/ajout"
-            />
-          </div>
-        </div>
-      </section>
       {query.length > 1 && (
         <span className="text-gray-500 font-semibold">
           Résultat pour: {query}
         </span>
       )}
-      <TableExample
+      <SavTable
+        savSuppliers={savSuppliers}
         translationsKey="sav.tableHeaders"
         tableHeaders={savTableHeaders}
         classNames="hidden md:block"

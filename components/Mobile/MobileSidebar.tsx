@@ -21,7 +21,10 @@ const MobileSidebar = () => {
       <SheetTrigger>
         <HiBars3 size={30} />
       </SheetTrigger>
-      <SheetContent side="left" className="p-4 pt-6">
+      <SheetContent
+        side="left"
+        className="p-4 pt-6 font-poppins:font-poppins font-inter:font-inter font-roboto:font-roboto"
+      >
         <SheetTitle hidden>Mobile Navigation Sidebar</SheetTitle>
         <SheetDescription hidden>
           Mobile Sidebar Navigation with Links
