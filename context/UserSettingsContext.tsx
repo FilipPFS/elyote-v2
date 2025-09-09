@@ -1,7 +1,6 @@
 "use client";
 
-import { navItems } from "@/constants";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 type Modes = {
   darkMode: boolean;
@@ -10,7 +9,7 @@ type Modes = {
   font: "poppins" | "inter" | "roboto";
 };
 
-const defaultModes: Modes = {
+export const defaultModes: Modes = {
   darkMode: false,
   weightMode: false,
   sizeMode: "normal",
@@ -24,6 +23,9 @@ type UserSettingsContextType = {
   toggleMode: (key: keyof Omit<Modes, "font" | "sizeMode">) => void;
   changeFont: (font: Modes["font"]) => void;
   changeSize: (size: Modes["sizeMode"]) => void;
+  initializeSettings: (settings: Modes, ids: string[]) => void; // 👈 ajout
+  saveStyleSettings: (settings: Modes) => void;
+  saveMenuSettings: (ids: string[]) => void; // 👈 ajout
 };
 
 const UserSettingsContext = createContext<UserSettingsContextType | undefined>(
@@ -38,44 +40,30 @@ export const UserSettingsProvider = ({
   const [allowedIds, setAllowedIds] = useState<string[]>([]);
   const [modes, setModes] = useState<Modes>(defaultModes);
 
-  // Load allowedIds from localStorage
+  // Charger depuis localStorage au démarrage (pas d’appel API !)
   useEffect(() => {
-    const stored = localStorage.getItem("allowedIds");
-    if (stored && stored.length > 0) {
-      setAllowedIds(JSON.parse(stored));
-    } else {
-      setAllowedIds(navItems.map((item) => item.labelKey));
+    const storedModes = localStorage.getItem("appModes");
+    const storedIds = localStorage.getItem("allowedIds");
+
+    if (storedModes) {
+      const parsedModes: Modes = JSON.parse(storedModes);
+      setModes(parsedModes);
+      applyModes(parsedModes);
     }
-  }, []);
 
-  // Save allowedIds
-  useEffect(() => {
-    localStorage.setItem("allowedIds", JSON.stringify(allowedIds));
-  }, [allowedIds]);
-
-  // Load modes from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem("appModes");
-    if (saved) {
-      const parsed: Modes = JSON.parse(saved);
-      setModes(parsed);
-      applyModes(parsed);
-    } else {
-      applyModes(defaultModes);
+    if (storedIds) {
+      setAllowedIds(JSON.parse(storedIds));
     }
   }, []);
 
   const applyModes = (m: Modes) => {
-    // Dark mode
-    if (m.darkMode) document.documentElement.classList.add("dark");
-    else document.documentElement.classList.remove("dark");
+    document.documentElement.classList.toggle("dark", m.darkMode);
+    document.documentElement.setAttribute(
+      "data-weight",
+      m.weightMode ? "on" : ""
+    );
+    document.documentElement.setAttribute("data-font", m.font);
 
-    // Weight mode
-    if (m.weightMode)
-      document.documentElement.setAttribute("data-weight", "on");
-    else document.documentElement.removeAttribute("data-weight");
-
-    // Size mode
     if (m.sizeMode === "big") {
       document.documentElement.setAttribute("data-big", "on");
       document.documentElement.removeAttribute("data-small");
@@ -86,9 +74,6 @@ export const UserSettingsProvider = ({
       document.documentElement.removeAttribute("data-big");
       document.documentElement.removeAttribute("data-small");
     }
-
-    // Font
-    document.documentElement.setAttribute("data-font", m.font);
   };
 
   const toggleMode = (key: keyof Omit<Modes, "font" | "sizeMode">) => {
@@ -112,6 +97,28 @@ export const UserSettingsProvider = ({
     localStorage.setItem("appModes", JSON.stringify(newModes));
   };
 
+  // 👇 appelée uniquement après le login
+  const initializeSettings = (settings: Modes, ids: string[]) => {
+    setModes(settings);
+    applyModes(settings);
+    setAllowedIds(ids);
+
+    localStorage.setItem("appModes", JSON.stringify(settings));
+    localStorage.setItem("allowedIds", JSON.stringify(ids));
+  };
+
+  const saveStyleSettings = (settings: Modes) => {
+    setModes(settings);
+    applyModes(settings);
+
+    localStorage.setItem("appModes", JSON.stringify(settings));
+  };
+
+  const saveMenuSettings = (ids: string[]) => {
+    setAllowedIds(ids);
+    localStorage.setItem("allowedIds", JSON.stringify(ids));
+  };
+
   return (
     <UserSettingsContext.Provider
       value={{
@@ -121,6 +128,9 @@ export const UserSettingsProvider = ({
         toggleMode,
         changeFont,
         changeSize,
+        initializeSettings,
+        saveMenuSettings,
+        saveStyleSettings,
       }}
     >
       {children}

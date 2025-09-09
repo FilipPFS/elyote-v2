@@ -42,7 +42,7 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider>
           <UserSettingsProvider>
-            <div className="font-poppins font-inter:font-inter weight:font-bold text-base small:text-sm big:text-lg font-roboto:font-roboto dark:bg-gray-900 bg-gray-100">
+            <div className="dark:bg-gray-900 bg-gray-100 font-poppins">
               {children}
               <ToastContainer
                 position="bottom-right"

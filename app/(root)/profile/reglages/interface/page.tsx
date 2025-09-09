@@ -9,12 +9,18 @@ import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import ToggleModes from "@/components/Interface/ToggleModes";
+import { addUserMenu } from "@/lib/actions/userSettings.actions";
+import CustomSpinner from "@/components/custom/Spinner";
 
 const ReglgagesInterface = () => {
   const tGlobal = useTranslations("global");
   const tUi = useTranslations("ui");
   const { allowedIds, setAllowedIds } = useUserSettings();
+  const { saveMenuSettings } = useUserSettings();
   const [stateIds, setStateIds] = useState<string[]>([]);
+  const [pending, setPending] = useState(false);
+  const [resetPending, setResetPending] = useState(false);
+  const navigation = navItems.map((item) => item.labelKey);
 
   useEffect(() => {
     setStateIds(allowedIds);
@@ -28,11 +34,33 @@ const ReglgagesInterface = () => {
     );
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setAllowedIds(stateIds);
-    console.log("Saved allowedIds:", stateIds);
+    setPending(true);
+    const res = await addUserMenu(95, stateIds);
 
-    toast.success("Le menu est mis à jour.");
+    if (res?.success) {
+      saveMenuSettings(stateIds);
+      setPending(false);
+      toast.success("Mis à jour avec succès.");
+    } else {
+      toast.error("Une erreur est survenue.");
+    }
+  };
+
+  const resetMenu = async () => {
+    setResetPending(true);
+    const res = await addUserMenu(95, navigation);
+
+    if (res?.success) {
+      setResetPending(false);
+      setAllowedIds(navigation);
+      setStateIds(navigation);
+      saveMenuSettings(navigation);
+      toast.success("Mis à jour avec succès.");
+    } else {
+      toast.error("Une erreur est survenue.");
+    }
   };
 
   return (
@@ -59,7 +87,18 @@ const ReglgagesInterface = () => {
                 </div>
               );
             })}
-            <ElButton label="Enregistrer" onClick={handleSave} />
+            <ElButton
+              label="Enregistrer"
+              onClick={handleSave}
+              disabled={pending}
+              icon={pending ? <CustomSpinner /> : undefined}
+            />
+            <ElButton
+              label="Réinitialiser"
+              onClick={resetMenu}
+              disabled={resetPending}
+              icon={resetPending ? <CustomSpinner /> : undefined}
+            />
           </div>
         </div>
         <div className="flex flex-col gap-4 w-full md:w-1/3">

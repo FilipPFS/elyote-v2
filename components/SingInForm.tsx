@@ -10,6 +10,12 @@ import { FiUser } from "react-icons/fi";
 import { MdStorefront } from "react-icons/md";
 import { IoMdKey } from "react-icons/io";
 import { useTranslations } from "next-intl";
+import { useUserSettings } from "@/context/UserSettingsContext";
+import {
+  getUserMenu,
+  getUserSettings,
+} from "@/lib/actions/userSettings.actions";
+import { navItems } from "@/constants";
 
 const SingInForm = () => {
   const [state, action, isPending] = useActionState(signIn, {
@@ -18,26 +24,56 @@ const SingInForm = () => {
   });
 
   const t = useTranslations("global.signInForm");
-
   const router = useRouter();
+  const { initializeSettings } = useUserSettings();
 
   useEffect(() => {
-    if (state.success && state.customerData) {
-      Object.entries(state.customerData).forEach(([key, value]) => {
-        localStorage.setItem(key, value);
-      });
-      if (state.printerOptions) {
-        document.cookie = `printer_options=${encodeURIComponent(
-          JSON.stringify(state.printerOptions)
-        )}; path=/; max-age=${60 * 60 * 24 * 7}`; // expire dans 7 jours
+    const loadSettings = async () => {
+      if (state.success && state.customerData) {
+        // Sauvegarde les infos utilisateur
+        Object.entries(state.customerData).forEach(([key, value]) => {
+          localStorage.setItem(key, value);
+        });
+
+        if (state.printerOptions) {
+          document.cookie = `printer_options=${encodeURIComponent(
+            JSON.stringify(state.printerOptions)
+          )}; path=/; max-age=${60 * 60 * 24 * 7}`;
+        }
+
+        try {
+          const menu = await getUserMenu(95);
+          const settings = await getUserSettings(95);
+
+          console.log("settings", settings);
+
+          // ⚡ attendre que initializeSettings soit appliqué
+          await initializeSettings(
+            settings || {
+              darkMode: false,
+              weightMode: false,
+              sizeMode: "normal",
+              font: "poppins",
+            },
+            menu && menu.length > 0
+              ? menu
+              : navItems.map((item) => item.labelKey)
+          );
+
+          toast.success("Connexion réussie.");
+          router.push("/");
+        } catch (err) {
+          console.error("Failed to load settings:", err);
+        }
       }
-      router.push("/");
-      toast.success("Connexion réussi.");
-    }
-    if (state.error) {
-      toast.error(`${state.error.toString()}`);
-    }
-  }, [state, router]);
+
+      if (state.error) {
+        toast.error(`${state.error.toString()}`);
+      }
+    };
+
+    loadSettings();
+  }, [state, router, initializeSettings]);
 
   return (
     <form action={action} className="flex flex-col gap-3 w-full">
