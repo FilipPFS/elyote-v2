@@ -2,9 +2,11 @@
 
 import { cookies } from "next/headers";
 import { apiClient } from "../axios";
-import { getTranslations } from "next-intl/server";
 import axios from "axios";
 import { PdfType } from "@/types";
+import { signInSchema } from "../validation";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { redirect } from "next/navigation";
 
 type ErrorResponse = {
   success: false;
@@ -15,6 +17,7 @@ export type ApiResponse = {
   success?: boolean;
   errors?: Record<string, string[] | undefined>;
   error?: string;
+  customers?: number[];
 };
 
 export async function handleError(error: unknown): Promise<ErrorResponse> {
@@ -36,30 +39,33 @@ export async function handleError(error: unknown): Promise<ErrorResponse> {
   }
 }
 
-type SignInType = {
-  success: boolean;
-  customerData?: Record<string, string>;
-  printerOptions?: string[];
-  error?: string;
-};
+// type SignInType = {
+//   success: boolean;
+//   customerData?: Record<string, string>;
+//   printerOptions?: string[];
+//   error?: string;
+// };
 
 export const signIn = async (
-  prevState: SignInType,
+  prevState: ApiResponse,
   formData: FormData
-): Promise<SignInType> => {
+): Promise<ApiResponse> => {
   try {
-    const t = await getTranslations("global.signInForm");
-    const data = {
-      username: process.env.API_ELYOTE_USERNAME,
-      user_id: formData.get("user_id"),
-      password: process.env.API_ELYOTE_PASSWORD,
-    };
+    const secret = process.env.SECRET_KEY!;
 
-    if (data.user_id !== "666") {
-      return { success: false, error: t("credentials.invalid") };
+    const data = Object.fromEntries(formData);
+    const result = signInSchema.safeParse(data);
+
+    if (!result.success) {
+      console.log(result.error.formErrors.fieldErrors);
+
+      return {
+        success: false,
+        errors: result.error.formErrors.fieldErrors,
+      };
     }
 
-    const res = await apiClient.post("/api/token", data);
+    const res = await apiClient.post("/api/auth/login", result.data);
 
     if (res.status === 200) {
       const accessToken = res.data.access_token;
@@ -73,27 +79,25 @@ export const signIn = async (
         path: "/",
       });
 
+      const decoded = jwt.verify(accessToken, secret) as JwtPayload & {
+        customers?: number[];
+      };
+
+      const { customers } = decoded;
+
+      if (customers && customers.length > 0 && customers.length < 2) {
+        cookieStore.set("store-code", String(customers[0]), {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          maxAge: 60 * 60, // 1 hour
+          sameSite: "strict",
+          path: "/",
+        });
+      }
+
       return {
         success: true,
-        customerData: {
-          customer_social_reason: "SARL du parc",
-          customer_capital: "48956.32",
-          customer_address: "25 rue du paradis",
-          customer_zipcode: "77120",
-          customer_city: "Coulommiers",
-          customer_rcs_city: "Meaux",
-          customer_rcs_number: "405 236 598",
-        },
-        printerOptions: [
-          "balisage_affiche_prix",
-          "balisage_fiche_technique",
-          "etiquette_colis",
-          "etiquette_prix",
-          "ticket",
-          "ticket_service",
-          "document",
-          "bordereau_transport",
-        ],
+        customers: decoded.customers,
       };
     } else {
       return { success: false, error: "Invalid response status" };
@@ -102,9 +106,71 @@ export const signIn = async (
     console.error("Error during sign in:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Sign-in failed",
+      error:
+        error instanceof Error
+          ? "Identifiants ou mot de passe incorects"
+          : "Sign-in failed",
     };
   }
+};
+
+export const setRefreshToken = async () => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  const secret = process.env.SECRET_KEY!;
+
+  if (!token || !secret) return { success: false };
+
+  const res = await apiClient.post("/api/auth/refresh-token", {
+    access_token: token,
+  });
+
+  if (res.status !== 200) return { success: false, error: "Invalid status" };
+
+  const accessToken = res.data.access_token;
+  cookieStore.set("token", accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60, // 1 hour
+    sameSite: "strict",
+    path: "/",
+  });
+
+  const decoded = jwt.verify(accessToken, secret) as JwtPayload & {
+    customers?: number[];
+  };
+
+  const { customers } = decoded;
+  const previousStore = cookieStore.get("store-code")?.value;
+  const isValidStore =
+    customers && previousStore && customers.includes(Number(previousStore));
+
+  // 🧱 CASE 1 — restore previous store-code if still valid
+  if (isValidStore) {
+    cookieStore.set("store-code", previousStore, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60,
+      sameSite: "strict",
+      path: "/",
+    });
+  }
+  // 🧱 CASE 2 — if user has exactly one store, auto-set it
+  else if (customers && customers.length === 1) {
+    cookieStore.set("store-code", String(customers[0]), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60,
+      sameSite: "strict",
+      path: "/",
+    });
+  }
+  // 🧱 CASE 3 — else: multiple stores & previous invalid → force re-selection later
+  else {
+    console.log("Multiple or invalid stores → user must reselect.");
+  }
+
+  return { success: true, customers };
 };
 
 export async function getToken() {
@@ -203,5 +269,50 @@ export const generatePdf = async ({
         error: String(error),
       };
     }
+  }
+};
+
+export const getCustomersFromToken = async () => {
+  const token = await getToken();
+
+  if (!token) return;
+
+  const decoded = jwt.decode(token) as JwtPayload & {
+    customers?: number[];
+  };
+
+  if (decoded.customers && decoded.customers.length > 1) {
+    return decoded.customers;
+  }
+};
+
+export const setCustomerCode = async (formData: FormData) => {
+  const token = await getToken();
+
+  if (!token) return;
+
+  const secret = process.env.SECRET_KEY!;
+  const decoded = jwt.verify(token, secret) as JwtPayload & {
+    customers?: number[];
+  };
+
+  const { customers } = decoded;
+
+  const code = Number(formData.get("code"));
+
+  if (customers?.includes(code)) {
+    const cookieStore = await cookies();
+
+    cookieStore.set("store-code", String(code), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60, // 1 hour
+      sameSite: "strict",
+      path: "/",
+    });
+
+    redirect("/");
+  } else {
+    throw new Error("Invalid store code");
   }
 };

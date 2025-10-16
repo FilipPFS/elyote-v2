@@ -146,3 +146,23 @@ export const templateFormSchemaValidation = z.object({
   subject: z.string().min(1, "Le sujet est obligatoire."),
   content: z.string().min(1, "Le contenu est obligatoire."),
 });
+
+export const mailSchema = z.object({
+  subject: z.string().min(2, "Le sujet est obligatoire."),
+  content: z.string().min(2, "Le contenu est obligatoire."),
+  firstName: z.string().min(2, "Le prénom est obligatoire."),
+  lastName: z.string().min(2, "Le nom est obligatoire."),
+  email: z.string().email("Email invalide."),
+});
+
+export const smsSchema = z.object({
+  content: z.string().min(2, "Le contenu est obligatoire."),
+  firstName: z.string().min(2, "Le prénom est obligatoire."),
+  lastName: z.string().min(2, "Le nom est obligatoire."),
+  phone: z.string().min(6, "Le numéro de téléphone est obligatoire"),
+});
+
+export const signInSchema = z.object({
+  username: z.string().min(2, "L'identifiant est obligatoire"),
+  password: z.string().min(2, "Le mot de passe est obligatoire."),
+});

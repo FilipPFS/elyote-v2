@@ -255,8 +255,6 @@ export const getCredentialsFromQuery = async (query: string) => {
       }
     );
 
-    console.log("status", res.status);
-
     if (res.status === 200) {
       return res.data;
     } else if (res.status === 404) {

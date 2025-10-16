@@ -265,3 +265,22 @@ export type TemplateType = {
   customer_id: number;
   customer_type: string;
 };
+
+export type MailData = {
+  templateId: string;
+  subject: string;
+  content: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  operator: string;
+};
+
+export type SmsData = {
+  templateId: string;
+  phone: string;
+  content: string;
+  firstName: string;
+  lastName: string;
+  operator: string;
+};

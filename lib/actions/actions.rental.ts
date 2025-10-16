@@ -25,6 +25,8 @@ export const getRentals = async () => {
       },
     });
 
+    console.log("RES DATA", res.data);
+
     if (res.status === 200) {
       return res.data.rentals.filter(
         (item: RentalData) => item.deleted_at === null

@@ -85,7 +85,7 @@
   },
   "signInForm": {
     "title": "Connexion",
-    "usernamePlaceholder": "Identifiant",
+    "usernamePlaceholder": "Email",
     "storeCodePlaceholder": "Code magasin",
     "passwordPlaceholder": "Mot de passe",
     "submitBtn": "Se connecter",

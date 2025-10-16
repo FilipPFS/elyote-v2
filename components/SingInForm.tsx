@@ -7,7 +7,6 @@ import { signIn } from "@/lib/actions/actions.global";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { FiUser } from "react-icons/fi";
-import { MdStorefront } from "react-icons/md";
 import { IoMdKey } from "react-icons/io";
 import { useTranslations } from "next-intl";
 import { useUserSettings } from "@/context/UserSettingsContext";
@@ -29,26 +28,14 @@ const SingInForm = () => {
 
   useEffect(() => {
     const loadSettings = async () => {
-      if (state.success && state.customerData) {
-        // Sauvegarde les infos utilisateur
-        Object.entries(state.customerData).forEach(([key, value]) => {
-          localStorage.setItem(key, value);
-        });
-
-        if (state.printerOptions) {
-          document.cookie = `printer_options=${encodeURIComponent(
-            JSON.stringify(state.printerOptions)
-          )}; path=/; max-age=${60 * 60 * 24 * 7}`;
-        }
-
+      if (state.success) {
         try {
           const menu = await getUserMenu(95);
           const settings = await getUserSettings(95);
 
           console.log("settings", settings);
 
-          // ⚡ attendre que initializeSettings soit appliqué
-          await initializeSettings(
+          initializeSettings(
             settings || {
               darkMode: false,
               weightMode: false,
@@ -60,8 +47,12 @@ const SingInForm = () => {
               : navItems.map((item) => item.labelKey)
           );
 
-          toast.success("Connexion réussie.");
-          router.push("/");
+          if (state.customers && state.customers.length > 1) {
+            router.push("/stores");
+          } else {
+            router.push("/");
+            toast.success("Connexion réussie.");
+          }
         } catch (err) {
           console.error("Failed to load settings:", err);
         }
@@ -69,6 +60,18 @@ const SingInForm = () => {
 
       if (state.error) {
         toast.error(`${state.error.toString()}`);
+      }
+      if (state.errors) {
+        for (const key in state.errors) {
+          const messages = state.errors[key];
+          if (Array.isArray(messages)) {
+            messages.forEach((msg) =>
+              toast.error(msg, {
+                className: "bg-amber-700 text-white",
+              })
+            );
+          }
+        }
       }
     };
 
@@ -82,12 +85,6 @@ const SingInForm = () => {
         placeholder={t("usernamePlaceholder")}
         name="username"
         icon={<FiUser />}
-      />
-      <ElInput
-        type="text"
-        placeholder={t("storeCodePlaceholder")}
-        name="user_id"
-        icon={<MdStorefront />}
       />
       <ElInput
         type="password"

@@ -11,6 +11,9 @@ import { CgTemplate } from "react-icons/cg";
 import { useEffect, useState } from "react";
 import { FiUser } from "react-icons/fi";
 import { MdOutlineMail, MdOutlinePhone } from "react-icons/md";
+import { toast } from "react-toastify";
+import { sendMail } from "@/lib/actions/communication.actions";
+import CustomSpinner from "../custom/Spinner";
 
 type Props = {
   mails: TemplateType[];
@@ -26,6 +29,7 @@ const MailForm = ({ mails }: Props) => {
     email: "",
     operator: "",
   }));
+  const [isPending, setIsPending] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -52,8 +56,46 @@ const MailForm = ({ mails }: Props) => {
     }
   }, [formData.templateId, mails]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsPending(true);
+
+    try {
+      const result = await sendMail(formData);
+      if (result.success) {
+        toast.success(`Envoyé avec succès.`);
+        setFormData({
+          templateId: "",
+          subject: "",
+          content: "",
+          firstName: "",
+          lastName: "",
+          email: "",
+          operator: "",
+        });
+      } else if (result.errors) {
+        for (const key in result.errors) {
+          const messages = result.errors[key];
+          if (Array.isArray(messages)) {
+            messages.forEach((msg) =>
+              toast.error(msg, {
+                className: "bg-amber-700 text-white",
+              })
+            );
+          }
+        }
+      } else if (result.error) {
+        toast.error(result.error.toString(), {
+          className: "bg-amber-700 text-white",
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Une erreur est survenue.");
+    } finally {
+      setIsPending(false);
+    }
+
     console.log("submitted", formData);
   };
 
@@ -145,8 +187,8 @@ const MailForm = ({ mails }: Props) => {
             label={"Envoyer"}
             type="submit"
             classNames="self-center w-2/3 lg:w-1/4"
-            // disabled={isPending}
-            // icon={isPending ? <CustomSpinner /> : undefined}
+            disabled={isPending}
+            icon={isPending ? <CustomSpinner /> : undefined}
           />
         </div>
       </div>
