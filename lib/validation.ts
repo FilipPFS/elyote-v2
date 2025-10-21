@@ -166,3 +166,16 @@ export const signInSchema = z.object({
   username: z.string().min(2, "L'identifiant est obligatoire"),
   password: z.string().min(2, "Le mot de passe est obligatoire."),
 });
+
+export const profileSchema = z.object({
+  first_name: z.string().min(2, "Le prénom est obligatoire."),
+  last_name: z.string().min(2, "Le nom est obligatoire."),
+  email: z
+    .string()
+    .email("L'adresse e-mail n'est pas valide.")
+    .min(1, "L'adresse e-mail est obligatoire."),
+  phone_number: z.string().min(6, "Le numéro de téléphone est obligatoire."),
+  mobile_device: z
+    .string()
+    .min(2, "Le nom de l'appareil mobile est obligatoire."),
+});

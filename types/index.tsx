@@ -284,3 +284,26 @@ export type SmsData = {
   lastName: string;
   operator: string;
 };
+
+export type User = {
+  id: number;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string;
+  mobile_device: string;
+  role: "user" | "admin";
+  created_at: string;
+  last_login: string;
+  last_update_pw: string;
+  force_reset_pw: number; // 0 or 1
+};
+
+export type UserEditFormData = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string;
+  mobile_device: string;
+};

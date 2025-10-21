@@ -14,6 +14,12 @@ export interface PostResponse {
   message?: string;
 }
 
+export interface ApiResponse {
+  success?: boolean;
+  errors?: Record<string, string[] | undefined>;
+  error?: string;
+}
+
 export const addNewCredential = async (
   state: PostResponse,
   formData: FormData

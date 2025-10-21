@@ -172,7 +172,7 @@ export const accountLinks = [
     key: "statistics",
   },
   {
-    link: "/profile/reglages/interface",
+    link: "/profile",
     key: "profileSettings",
   },
   {

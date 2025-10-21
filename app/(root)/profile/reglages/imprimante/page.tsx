@@ -50,11 +50,11 @@ const ParametresImprimantes = async () => {
                       <TableCell>
                         <div className="truncate w-28">{item.printer_name}</div>
                       </TableCell>
-                      <TableCell>
+                      {/* <TableCell>
                         <div className="truncate w-28">
                           {t(`frKeys.${item.module}`)}
                         </div>
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell>
                         <a
                           className="text-gray-500 transition-all duration-300 hover:text-gray-700 hover:underline"
