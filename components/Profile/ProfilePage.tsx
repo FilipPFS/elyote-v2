@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ElButton from "../custom/ElButton";
 import ElInput from "../custom/ElInput";
 import { User } from "@/types";
@@ -8,20 +8,35 @@ import { updateUserProfile } from "@/lib/actions/actions.user";
 import { toast } from "react-toastify";
 import CustomSpinner from "../custom/Spinner";
 
-type Props = {
-  user: User;
-};
-
-const ProfilePage = ({ user }: Props) => {
+const ProfilePage = () => {
+  const [user, setUser] = useState<User | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [isPending, setIsPending] = useState(false);
+
   const [formData, setFormData] = useState({
-    first_name: user.first_name,
-    last_name: user.last_name,
-    email: user.email,
-    phone_number: user.phone_number,
-    mobile_device: user.mobile_device,
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
+    mobile_device: "",
   });
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsedUser: User = JSON.parse(storedUser);
+      setUser(parsedUser);
+      setFormData({
+        first_name: parsedUser.first_name,
+        last_name: parsedUser.last_name,
+        email: parsedUser.email,
+        phone_number: parsedUser.phone_number,
+        mobile_device: parsedUser.mobile_device,
+      });
+    }
+  }, []);
+
+  if (!user) return <p>Loading...</p>;
 
   const handleChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -33,14 +48,14 @@ const ProfilePage = ({ user }: Props) => {
 
     try {
       const result = await updateUserProfile({
-        id: "3",
-        customerId: "1",
-        formData: formData,
+        id: String(user.id),
+        customerId: "3",
+        formData,
       });
+
       if (result.success) {
         toast.success(`Envoyé avec succès.`);
         setEditMode(false);
-        setIsPending(false);
       } else if (result.errors) {
         for (const key in result.errors) {
           const messages = result.errors[key];
@@ -52,7 +67,6 @@ const ProfilePage = ({ user }: Props) => {
             );
           }
         }
-
         setFormData({
           first_name: user.first_name,
           last_name: user.last_name,
@@ -66,7 +80,7 @@ const ProfilePage = ({ user }: Props) => {
         });
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error("Une erreur est survenue.");
     } finally {
       setIsPending(false);

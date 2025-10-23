@@ -1,0 +1,11 @@
+{
+  "seeDetails": "View details",
+  "headers": {
+    "id": "Id",
+    "username": "Username",
+    "role": "Role",
+    "email": "Email",
+    "action": "Action"
+  },
+  "noData": "No data available."
+}

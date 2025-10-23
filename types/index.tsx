@@ -300,6 +300,18 @@ export type User = {
   force_reset_pw: number; // 0 or 1
 };
 
+export type UserFormCreate = {
+  username: string;
+  first_name: string;
+  password: string;
+  last_name: string;
+  email: string;
+  phone_number: string;
+  mobile_device: string;
+  role: string;
+  customers_id: number[];
+};
+
 export type UserEditFormData = {
   first_name: string;
   last_name: string;
@@ -307,3 +319,26 @@ export type UserEditFormData = {
   phone_number: string;
   mobile_device: string;
 };
+
+export interface Customer {
+  id: number;
+  client_group: number;
+  language: string;
+  elyote_customer_id: number;
+  address: string;
+  postal_code: string;
+  city: string;
+  company_name: string;
+  email: string;
+  backup_email: string;
+  billing_email: string;
+  sender_name: string;
+  sender_email: string;
+  phone: string;
+  activation_new_pickcollect: string;
+  token: string;
+  created_at: string;
+  subscription: string;
+  status: "active" | "inactive" | string;
+  soft_delete: 0 | 1;
+}

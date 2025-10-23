@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useActionState, useEffect } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import ElInput from "./custom/ElInput";
 import ElButton from "./custom/ElButton";
 import { signIn } from "@/lib/actions/actions.global";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { FiUser } from "react-icons/fi";
-import { IoMdKey } from "react-icons/io";
+import { IoMdEye, IoMdEyeOff, IoMdKey } from "react-icons/io";
 import { useTranslations } from "next-intl";
 import { useUserSettings } from "@/context/UserSettingsContext";
 import {
@@ -22,6 +22,8 @@ const SingInForm = () => {
     error: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const t = useTranslations("global.signInForm");
   const router = useRouter();
   const { initializeSettings } = useUserSettings();
@@ -29,11 +31,14 @@ const SingInForm = () => {
   useEffect(() => {
     const loadSettings = async () => {
       if (state.success) {
+        if (state.user && state.customerList) {
+          localStorage.setItem("user", JSON.stringify(state.user));
+          localStorage.setItem("customers", JSON.stringify(state.customerList));
+        }
+
         try {
           const menu = await getUserMenu(95);
           const settings = await getUserSettings(95);
-
-          console.log("settings", settings);
 
           initializeSettings(
             settings || {
@@ -86,12 +91,21 @@ const SingInForm = () => {
         name="username"
         icon={<FiUser />}
       />
-      <ElInput
-        type="password"
-        placeholder={t("passwordPlaceholder")}
-        name="password"
-        icon={<IoMdKey />}
-      />
+      <div className="flex relative">
+        <ElInput
+          type={showPassword ? "text" : "password"}
+          placeholder={t("passwordPlaceholder")}
+          name="password"
+          icon={<IoMdKey />}
+        />
+        <div
+          className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+          role="button"
+          onClick={() => setShowPassword((prev) => !prev)}
+        >
+          {showPassword ? <IoMdEye size={20} /> : <IoMdEyeOff size={20} />}
+        </div>
+      </div>
       <ElButton label={t("submitBtn")} type="submit" disabled={isPending} />
     </form>
   );

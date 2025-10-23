@@ -179,3 +179,43 @@ export const profileSchema = z.object({
     .string()
     .min(2, "Le nom de l'appareil mobile est obligatoire."),
 });
+
+export const userCreateSchema = z.object({
+  username: z
+    .string()
+    .min(3, "Le nom d'utilisateur doit contenir au moins 3 caractères.")
+    .max(30, "Le nom d'utilisateur ne peut pas dépasser 30 caractères."),
+
+  first_name: z.string().min(2, "Le prénom est obligatoire."),
+
+  last_name: z.string().min(2, "Le nom est obligatoire."),
+
+  password: z.string().min(2, "Le mot de passe est obligatoire."),
+
+  email: z
+    .string()
+    .email("L'adresse e-mail n'est pas valide.")
+    .min(1, "L'adresse e-mail est obligatoire."),
+
+  phone_number: z
+    .string()
+    .min(6, "Le numéro de téléphone est obligatoire.")
+    .regex(
+      /^(\+?\d{6,15})$/,
+      "Le numéro de téléphone doit contenir uniquement des chiffres et peut commencer par +."
+    ),
+
+  mobile_device: z
+    .string()
+    .min(2, "Le nom de l'appareil mobile est obligatoire."),
+
+  role: z.enum(["user", "manager", "director", "superadmin"], {
+    errorMap: () => ({ message: "Le rôle doit être 'user' ou 'manager'." }),
+  }),
+
+  customers_id: z
+    .array(
+      z.number().int().positive("L'identifiant du client doit être positif.")
+    )
+    .min(1, "Au moins un client doit être sélectionné."),
+});

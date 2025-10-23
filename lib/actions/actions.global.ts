@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { apiClient } from "../axios";
 import axios from "axios";
-import { PdfType } from "@/types";
+import { Customer, PdfType, User } from "@/types";
 import { signInSchema } from "../validation";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { redirect } from "next/navigation";
@@ -18,6 +18,8 @@ export type ApiResponse = {
   errors?: Record<string, string[] | undefined>;
   error?: string;
   customers?: number[];
+  user?: User;
+  customerList?: Customer[];
 };
 
 export async function handleError(error: unknown): Promise<ErrorResponse> {
@@ -68,6 +70,8 @@ export const signIn = async (
     const res = await apiClient.post("/api/auth/login", result.data);
 
     if (res.status === 200) {
+      console.log("RES DATA", res.data);
+
       const accessToken = res.data.access_token;
 
       const cookieStore = await cookies();
@@ -81,12 +85,22 @@ export const signIn = async (
 
       const decoded = jwt.verify(accessToken, secret) as JwtPayload & {
         customers?: number[];
+        role?: string;
       };
 
       const { customers } = decoded;
+      const { role } = decoded;
 
       if (customers && customers.length > 0 && customers.length < 2) {
         cookieStore.set("store-code", String(customers[0]), {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          maxAge: 60 * 60, // 1 hour
+          sameSite: "strict",
+          path: "/",
+        });
+      } else if (customers?.length === 0 && role === "superadmin") {
+        cookieStore.set("store-code", "1", {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           maxAge: 60 * 60, // 1 hour
@@ -98,6 +112,8 @@ export const signIn = async (
       return {
         success: true,
         customers: decoded.customers,
+        customerList: res.data.customers,
+        user: res.data.user,
       };
     } else {
       return { success: false, error: "Invalid response status" };
@@ -178,6 +194,17 @@ export async function getToken() {
     const cookieStore = await cookies();
     const token = cookieStore.get("token");
     return token?.value ?? null;
+  } catch (error) {
+    console.error("Error retrieving token from cookies:", error);
+    return null;
+  }
+}
+
+export async function getStoreCode() {
+  try {
+    const cookieStore = await cookies();
+    const storeCode = cookieStore.get("store-code");
+    return storeCode?.value ?? null;
   } catch (error) {
     console.error("Error retrieving token from cookies:", error);
     return null;
@@ -281,7 +308,7 @@ export const getCustomersFromToken = async () => {
     customers?: number[];
   };
 
-  if (decoded.customers && decoded.customers.length > 1) {
+  if (decoded.customers && decoded.customers.length > 0) {
     return decoded.customers;
   }
 };

@@ -8,6 +8,8 @@ export const getUserSettings = async (id: number) => {
   try {
     const token = await getToken();
 
+    console.log("TOKEN", token);
+
     if (!token) {
       console.log("Unauthorized.");
       return null;

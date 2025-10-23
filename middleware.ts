@@ -2,29 +2,33 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
 const SECRET_KEY = process.env.SECRET_KEY;
-if (!SECRET_KEY) {
-  throw new Error("SECRET_KEY is not defined");
-}
-
+if (!SECRET_KEY) throw new Error("SECRET_KEY is not defined");
 const SECRET = new TextEncoder().encode(SECRET_KEY);
 
 const publicPaths = ["/sign-in", "/sign-up"];
 
+const roleHierarchy = ["user", "manager", "director", "superadmin"] as const;
+type Role = (typeof roleHierarchy)[number];
+
 export default async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
+  const token = req.cookies.get("token")?.value;
+  const storeCode = req.cookies.get("store-code")?.value;
+
+  // 1️⃣ Pages publiques
   const isPublicPath = publicPaths.some(
     (path) => pathname.startsWith(path) || pathname === path
   );
 
-  const token = req.cookies.get("token")?.value;
-  const storeCode = req.cookies.get("store-code")?.value;
-
-  // 🧱 1️⃣ Public pages
   if (isPublicPath) {
     if (token) {
       try {
         await jwtVerify(token, SECRET);
-        return NextResponse.redirect(new URL("/", req.url));
+
+        // ✅ Only redirect if this isn't a form submission or fetch
+        if (req.method === "GET") {
+          return NextResponse.redirect(new URL("/", req.url));
+        }
       } catch {
         return NextResponse.next();
       }
@@ -32,7 +36,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // 🧱 2️⃣ Require token
+  // 2️⃣ Redirige si pas de token
   if (!token) {
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
@@ -40,31 +44,42 @@ export default async function middleware(req: NextRequest) {
   try {
     const { payload } = await jwtVerify(token, SECRET);
     const customers = payload.customers as number[] | undefined;
+    const role = payload.role as Role | undefined;
 
-    // If payload doesn’t contain customers → force re-login
-    if (!customers || customers.length === 0) {
+    if (!customers || customers.length === 0 || !role) {
       return NextResponse.redirect(new URL("/sign-in", req.url));
     }
 
     const isOnStoresPage = pathname.startsWith("/stores");
 
-    // 🧱 3️⃣ If no store cookie → redirect to /stores (except when already there)
+    // 3️⃣ Vérification du store
     if (!storeCode && !isOnStoresPage) {
       return NextResponse.redirect(new URL("/stores", req.url));
     }
 
-    // 🧱 4️⃣ If store cookie exists but is invalid → redirect to /stores
     if (storeCode) {
       const storeCodeNumber = Number(storeCode);
       const isValidStore = customers.includes(storeCodeNumber);
-
       if (!isValidStore && !isOnStoresPage) {
         console.warn(`⚠️ Invalid store code detected: ${storeCode}`);
         return NextResponse.redirect(new URL("/stores", req.url));
       }
     }
 
-    // ✅ 5️⃣ Everything valid → allow request
+    if (
+      pathname === "/profile/manager" ||
+      pathname.startsWith("/profile/manager/")
+    ) {
+      const userLevel = roleHierarchy.indexOf(role);
+      const requiredLevel = roleHierarchy.indexOf("manager");
+
+      if (userLevel < requiredLevel) {
+        console.warn(`🚫 Access denied: ${role} tried to access ${pathname}`);
+        return NextResponse.redirect(new URL("/profile", req.url));
+      }
+    }
+
+    // ✅ Tout est bon → autorise la requête
     return NextResponse.next();
   } catch (error: any) {
     console.error("Token verification failed:", error.message);
@@ -72,6 +87,7 @@ export default async function middleware(req: NextRequest) {
   }
 }
 
+// 5️⃣ Configuration du middleware
 export const config = {
   matcher: ["/", "/((?!api|trpc|_next|_vercel|.*\\..*).*)"],
 };

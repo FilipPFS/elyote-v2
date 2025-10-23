@@ -85,7 +85,7 @@
   },
   "signInForm": {
     "title": "Sign In",
-    "usernamePlaceholder": "Email",
+    "usernamePlaceholder": "Username",
     "storeCodePlaceholder": "Store Code",
     "passwordPlaceholder": "Password",
     "submitBtn": "Log In",

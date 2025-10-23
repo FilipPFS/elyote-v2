@@ -237,6 +237,14 @@ export const passwordTableHeaders: tableHeader[] = [
   { label: "action", icon: <FiSearch /> }, // Align right for Action
 ];
 
+export const usersTableHeaders: tableHeader[] = [
+  { label: "id", icon: <FaBarcode /> },
+  { label: "username", icon: <FiUser /> },
+  { label: "role", icon: <MdOutlineLock /> },
+  { label: "email", icon: <MdOutlineLock /> },
+  { label: "action", icon: <FiSearch /> }, // Align right for Action
+];
+
 export const packageTableHeaders: tableHeader[] = [
   {
     label: "packageId",
