@@ -15,8 +15,10 @@ import {
   getUserSettings,
 } from "@/lib/actions/userSettings.actions";
 import { navItems } from "@/constants";
+import CustomSpinner from "./custom/Spinner";
 
 const SingInForm = () => {
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [state, action, isPending] = useActionState(signIn, {
     success: false,
     error: "",
@@ -31,14 +33,21 @@ const SingInForm = () => {
   useEffect(() => {
     const loadSettings = async () => {
       if (state.success) {
-        if (state.user && state.customerList) {
-          localStorage.setItem("user", JSON.stringify(state.user));
-          localStorage.setItem("customers", JSON.stringify(state.customerList));
-        }
+        setIsTransitioning(true); // Active le loader
 
         try {
-          const menu = await getUserMenu(95);
-          const settings = await getUserSettings(95);
+          if (state.user && state.customerList) {
+            localStorage.setItem("user", JSON.stringify(state.user));
+            localStorage.setItem(
+              "customers",
+              JSON.stringify(state.customerList)
+            );
+          }
+
+          const [menu, settings] = await Promise.all([
+            getUserMenu(95),
+            getUserSettings(95),
+          ]);
 
           initializeSettings(
             settings || {
@@ -52,17 +61,22 @@ const SingInForm = () => {
               : navItems.map((item) => item.labelKey)
           );
 
+          // Redirection finale
           if (state.customers && state.customers.length > 1) {
             router.push("/stores");
           } else {
             router.push("/");
-            toast.success("Connexion réussie.");
           }
+          toast.success("Connexion réussie.");
         } catch (err) {
           console.error("Failed to load settings:", err);
+          toast.error("Erreur lors du chargement des paramètres.");
+        } finally {
+          setIsTransitioning(false); // Désactive le loader
         }
       }
 
+      // Gestion des erreurs (inchangée)
       if (state.error) {
         toast.error(`${state.error.toString()}`);
       }
@@ -84,30 +98,44 @@ const SingInForm = () => {
   }, [state, router, initializeSettings]);
 
   return (
-    <form action={action} className="flex flex-col gap-3 w-full">
-      <ElInput
-        type="text"
-        placeholder={t("usernamePlaceholder")}
-        name="username"
-        icon={<FiUser />}
-      />
-      <div className="flex relative">
-        <ElInput
-          type={showPassword ? "text" : "password"}
-          placeholder={t("passwordPlaceholder")}
-          name="password"
-          icon={<IoMdKey />}
-        />
-        <div
-          className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
-          role="button"
-          onClick={() => setShowPassword((prev) => !prev)}
-        >
-          {showPassword ? <IoMdEye size={20} /> : <IoMdEyeOff size={20} />}
+    <>
+      {isTransitioning && (
+        <div className="flex justify-center items-center h-full py-10">
+          <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-blue-500" />
         </div>
-      </div>
-      <ElButton label={t("submitBtn")} type="submit" disabled={isPending} />
-    </form>
+      )}
+      {!isTransitioning && (
+        <form action={action} className="flex flex-col gap-3 w-full">
+          <ElInput
+            type="text"
+            placeholder={t("usernamePlaceholder")}
+            name="username"
+            icon={<FiUser />}
+          />
+          <div className="flex relative">
+            <ElInput
+              type={showPassword ? "text" : "password"}
+              placeholder={t("passwordPlaceholder")}
+              name="password"
+              icon={<IoMdKey />}
+            />
+            <div
+              className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+              role="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? <IoMdEye size={20} /> : <IoMdEyeOff size={20} />}
+            </div>
+          </div>
+          <ElButton
+            label={t("submitBtn")}
+            type="submit"
+            disabled={isPending}
+            icon={isPending ? <CustomSpinner /> : undefined}
+          />
+        </form>
+      )}
+    </>
   );
 };
 

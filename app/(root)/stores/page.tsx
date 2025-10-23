@@ -31,7 +31,7 @@ export default function Stores() {
           Sélectionnez votre magasin :
         </h1>
 
-        <div className="flex flex-col gap-4 md:flex-wrap md:gap-10 justify-center">
+        <div className="flex flex-col gap-4 md:flex-wrap md:flex-row md:gap-10 justify-center">
           {customers.map((customer) => (
             <form key={customer.id} action={setCustomerCode}>
               <input type="hidden" name="code" defaultValue={customer.id} />
