@@ -73,9 +73,18 @@ export const signIn = async (
       console.log("RES DATA", res.data);
 
       const accessToken = res.data.access_token;
+      const refreshToken = res.data.refresh_token;
 
       const cookieStore = await cookies();
       cookieStore.set("token", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60, // 1 hour
+        sameSite: "strict",
+        path: "/",
+      });
+
+      cookieStore.set("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 60 * 60, // 1 hour
@@ -133,18 +142,34 @@ export const signIn = async (
 export const setRefreshToken = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
+  const refreshToken = cookieStore.get("refreshToken")?.value;
   const secret = process.env.SECRET_KEY!;
 
   if (!token || !secret) return { success: false };
 
-  const res = await apiClient.post("/api/auth/refresh-token", {
-    access_token: token,
-  });
+  const res = await apiClient.post(
+    "/api/auth/refresh-token",
+    { refresh_token: refreshToken },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
   if (res.status !== 200) return { success: false, error: "Invalid status" };
 
   const accessToken = res.data.access_token;
+  const newRefreshToken = res.data.refresh_token;
+
   cookieStore.set("token", accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60, // 1 hour
+    sameSite: "strict",
+    path: "/",
+  });
+  cookieStore.set("refreshToken", newRefreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 60, // 1 hour
@@ -215,10 +240,14 @@ export async function signOut() {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.delete("token");
+    cookieStore.delete("store-code");
+    cookieStore.delete("refreshToken");
+
+    console.log("TOK", token);
 
     if (token) {
       return {
-        succes: true,
+        success: true,
       };
     }
   } catch (error) {

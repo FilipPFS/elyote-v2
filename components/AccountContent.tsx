@@ -18,7 +18,7 @@ const AccountContent = ({ setOpen }: Props) => {
   const handleLogOut = async () => {
     const res = await signOut();
 
-    if (res?.succes) {
+    if (res?.success) {
       router.push("/sign-in");
     }
   };
