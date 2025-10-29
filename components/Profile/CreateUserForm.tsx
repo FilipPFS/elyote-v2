@@ -8,6 +8,7 @@ import { createUser } from "@/lib/actions/actions.user";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import ElButton from "../custom/ElButton";
+import CustomSpinner from "../custom/Spinner";
 
 type Props = {
   role: string; // rôle de l'utilisateur connecté
@@ -38,6 +39,7 @@ const CreateUserForm = ({ role }: Props) => {
     mobile_device: "",
     role: "user",
   });
+  const [isPending, setIsPending] = useState(false);
 
   const [availableCustomers, setAvailableCustomers] = useState<Customer[]>([]);
 
@@ -97,12 +99,15 @@ const CreateUserForm = ({ role }: Props) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setIsPending(true);
+
     try {
       console.log(formData);
 
       const res = await createUser({ formData: formData });
 
       if (res.success) {
+        setIsPending(false);
         router.push("/profile/manager/utilisateurs");
         toast.success("Ajouté avec succès.");
       }
@@ -110,6 +115,7 @@ const CreateUserForm = ({ role }: Props) => {
         toast.error(`${res.error.toString()}`, {
           className: "bg-amber-700 text-white",
         });
+        setIsPending(false);
       }
       if (res.errors) {
         for (const key in res.errors) {
@@ -122,6 +128,7 @@ const CreateUserForm = ({ role }: Props) => {
             );
           }
         }
+        setIsPending(false);
       }
 
       setFormData({
@@ -135,6 +142,7 @@ const CreateUserForm = ({ role }: Props) => {
         mobile_device: "",
         role: "user",
       });
+      setIsPending(false);
     } catch (err) {
       console.log(err);
     }
@@ -282,7 +290,12 @@ const CreateUserForm = ({ role }: Props) => {
         </div>
       </div>
 
-      <ElButton type="submit" label="Créer l’utilisateur" />
+      <ElButton
+        type="submit"
+        label="Créer l’utilisateur"
+        disabled={isPending}
+        icon={isPending ? <CustomSpinner /> : undefined}
+      />
     </form>
   );
 };

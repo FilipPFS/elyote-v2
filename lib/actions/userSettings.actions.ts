@@ -15,6 +15,8 @@ export const getUserSettings = async (id: number) => {
       return null;
     }
 
+    console.log("ID TO PASS", id);
+
     const res = await apiClient.get(`/api/style/read-one/127/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });

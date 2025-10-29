@@ -20,6 +20,7 @@ export type ApiResponse = {
   customers?: number[];
   user?: User;
   customerList?: Customer[];
+  id?: number;
 };
 
 export async function handleError(error: unknown): Promise<ErrorResponse> {
@@ -123,6 +124,7 @@ export const signIn = async (
         customers: decoded.customers,
         customerList: res.data.customers,
         user: res.data.user,
+        id: res.data.user.id,
       };
     } else {
       return { success: false, error: "Invalid response status" };

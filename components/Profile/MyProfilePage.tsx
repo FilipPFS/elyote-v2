@@ -3,15 +3,17 @@
 import React, { useEffect, useState } from "react";
 import ElButton from "../custom/ElButton";
 import ElInput from "../custom/ElInput";
-import { User } from "@/types";
-import { updateUserProfile } from "@/lib/actions/actions.user";
+import { Customer, User } from "@/types";
+import { updateMyUserProfile } from "@/lib/actions/actions.user";
 import { toast } from "react-toastify";
 import CustomSpinner from "../custom/Spinner";
+import { ImCheckboxChecked } from "react-icons/im";
 
-const ProfilePage = () => {
+const MyProfilePage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [myCustomers, setMyCustomers] = useState<Customer[]>([]);
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -22,6 +24,12 @@ const ProfilePage = () => {
   });
 
   useEffect(() => {
+    const storedCustomers = localStorage.getItem("customers");
+    if (storedCustomers) {
+      const parsed: Customer[] = JSON.parse(storedCustomers);
+      setMyCustomers(parsed);
+    }
+
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const parsedUser: User = JSON.parse(storedUser);
@@ -47,14 +55,19 @@ const ProfilePage = () => {
     setIsPending(true);
 
     try {
-      const result = await updateUserProfile({
-        id: String(user.id),
-        customerId: "3",
+      const result = await updateMyUserProfile({
         formData,
       });
 
       if (result.success) {
-        toast.success(`Envoyé avec succès.`);
+        toast.success(`Modifié avec succès.`);
+
+        if (result.data) {
+          const newUser = { ...user, ...result.data };
+          setUser(newUser);
+          localStorage.setItem("user", JSON.stringify(newUser));
+        }
+
         setEditMode(false);
       } else if (result.errors) {
         for (const key in result.errors) {
@@ -142,6 +155,33 @@ const ProfilePage = () => {
           </p>
         </div>
 
+        <div className="mt-6">
+          <h2 className="text-lg font-semibold mb-2">Magasins liés</h2>
+          <div className="flex flex-col gap-2">
+            {myCustomers.length > 0 ? (
+              myCustomers.map((customer) => {
+                return (
+                  <label
+                    key={customer.id}
+                    className={"flex items-center gap-2"}
+                  >
+                    <ImCheckboxChecked />
+                    <div className="flex items-center gap-1">
+                      <span className="font-semibold">{customer.id}</span>
+                      <span>{customer.city}</span>
+                      <span>{customer.company_name}</span>
+                    </div>
+                  </label>
+                );
+              })
+            ) : (
+              <p className="text-gray-500 text-sm">
+                Aucun client trouvé dans le localStorage.
+              </p>
+            )}
+          </div>
+        </div>
+
         {/* Save Button */}
         {editMode && (
           <ElButton
@@ -157,4 +197,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default MyProfilePage;

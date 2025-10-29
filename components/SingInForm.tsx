@@ -44,23 +44,30 @@ const SingInForm = () => {
             );
           }
 
-          const [menu, settings] = await Promise.all([
-            getUserMenu(95),
-            getUserSettings(95),
-          ]);
+          if (state.id) {
+            const [menu, settings] = await Promise.all([
+              getUserMenu(state.id),
+              getUserSettings(state.id),
+            ]);
 
-          initializeSettings(
-            settings || {
-              darkMode: false,
-              weightMode: false,
-              sizeMode: "normal",
-              font: "poppins",
-            },
-            menu && menu.length > 0
-              ? menu
-              : navItems.map((item) => item.labelKey)
-          );
+            console.log("ID", state.id);
 
+            console.log("MENU", menu);
+
+            console.log("SETTINGS", settings);
+
+            initializeSettings(
+              settings || {
+                darkMode: false,
+                weightMode: false,
+                sizeMode: "normal",
+                font: "poppins",
+              },
+              menu && menu.length > 0
+                ? menu
+                : navItems.map((item) => item.labelKey)
+            );
+          }
           // Redirection finale
           if (state.customers && state.customers.length > 1) {
             router.push("/stores");

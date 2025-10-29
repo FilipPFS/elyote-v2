@@ -1,8 +1,8 @@
-import ProfilePage from "@/components/Profile/ProfilePage";
+import MyProfilePage from "@/components/Profile/MyProfilePage";
 import React from "react";
 
 const Profile = async () => {
-  return <div>{<ProfilePage />}</div>;
+  return <div>{<MyProfilePage />}</div>;
 };
 
 export default Profile;
