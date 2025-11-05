@@ -235,6 +235,10 @@ export const updateUserProfile = async ({
       ...result.data,
     };
 
+    console.log("postdata", postData);
+    console.log("id", id);
+    console.log("store code", storeCode);
+
     const res = await apiClient.post(
       `/api/user/update/${storeCode}/${id}`,
       postData,

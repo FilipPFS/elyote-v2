@@ -28,7 +28,7 @@ export default function ToggleSwitches() {
 
   const handleSave = async () => {
     setLoading(true);
-    const res = await addUserSettings(95, modes);
+    const res = await addUserSettings(modes);
 
     if (res?.success) {
       setLoading(false);
@@ -38,7 +38,7 @@ export default function ToggleSwitches() {
 
   const resetStyles = async () => {
     setResetPending(true);
-    const res = await addUserSettings(95, defaultModes);
+    const res = await addUserSettings(defaultModes);
 
     if (res?.success) {
       setResetPending(false);

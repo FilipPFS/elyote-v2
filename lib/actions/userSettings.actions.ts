@@ -3,6 +3,7 @@
 import { Modes } from "@/components/Interface/ToggleModes";
 import { apiClient } from "../axios";
 import { getToken } from "./actions.global";
+import { MenuKeys, UserMenuSettings } from "@/types";
 
 export const getUserSettings = async (id: number) => {
   try {
@@ -33,7 +34,7 @@ export const getUserSettings = async (id: number) => {
   }
 };
 
-export const addUserSettings = async (id: number, settings: Modes) => {
+export const addUserSettings = async (settings: Modes) => {
   try {
     const token = await getToken();
     if (!token) {
@@ -43,7 +44,7 @@ export const addUserSettings = async (id: number, settings: Modes) => {
 
     let res;
     try {
-      res = await apiClient.get(`/api/style/read-one/127/${id}`, {
+      res = await apiClient.get(`/api/users_settings/read`, {
         headers: { Authorization: `Bearer ${token}` },
       });
     } catch (err: unknown) {
@@ -63,15 +64,24 @@ export const addUserSettings = async (id: number, settings: Modes) => {
       name: "style",
       type: "custom_interface",
       value: JSON.stringify(settings),
-      id_user: id,
       client_type: "bv",
     };
+
+    if (res) {
+      const style = res.data.user_settings.find(
+        (item: UserMenuSettings) => item.type === "custom_interface"
+      );
+
+      if (!style) {
+        res = null;
+      }
+    }
 
     if (!res) {
       // create because settings don't exist
       const response = await apiClient.post(
-        `/api/style/create/127/${id}`,
-        { data: postData },
+        `/api/users_settings/create`,
+        postData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -82,10 +92,15 @@ export const addUserSettings = async (id: number, settings: Modes) => {
       }
     } else {
       // update existing
-      const updateData = { ...postData, id: res.data.id };
+      const style = res.data.user_settings.find(
+        (item: UserMenuSettings) => item.type === "custom_interface"
+      );
+
+      console.log("STYLE ID", style.id);
+
       const response = await apiClient.post(
-        `/api/style/update/127/${res.data.id}`,
-        updateData,
+        `/api/users_settings/update/${style.id}`,
+        postData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -158,7 +173,7 @@ export const getUserMenu = async (id: number) => {
   }
 };
 
-export const addUserMenu = async (id: number, settings: string[]) => {
+export const addUserMenu = async (menuSettings: Record<MenuKeys, boolean>) => {
   try {
     const token = await getToken();
     if (!token) {
@@ -168,7 +183,7 @@ export const addUserMenu = async (id: number, settings: string[]) => {
 
     let res;
     try {
-      res = await apiClient.get(`/api/module/read-one/127/${id}`, {
+      res = await apiClient.get(`/api/users_settings/read`, {
         headers: { Authorization: `Bearer ${token}` },
       });
     } catch (err: unknown) {
@@ -187,18 +202,25 @@ export const addUserMenu = async (id: number, settings: string[]) => {
     const postData = {
       name: "module",
       type: "custom_module",
-      value: JSON.stringify(settings),
-      id_user: id,
+      value: JSON.stringify(menuSettings),
       client_type: "bv",
     };
 
-    console.log("RES DATA", res?.data);
+    if (res) {
+      const style = res.data.user_settings.find(
+        (item: UserMenuSettings) => item.type === "custom_module"
+      );
+
+      if (!style) {
+        res = null;
+      }
+    }
 
     if (!res) {
       // create because settings don't exist
       const response = await apiClient.post(
-        `/api/module/create/127/${id}`,
-        { data: postData },
+        `/api/users_settings/create`,
+        postData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -209,13 +231,15 @@ export const addUserMenu = async (id: number, settings: string[]) => {
       }
     } else {
       // update existing
-      const updateData = { ...postData, id: res.data.id };
+      const style = res.data.user_settings.find(
+        (item: UserMenuSettings) => item.type === "custom_module"
+      );
 
-      console.log("UPDATE DATA", updateData);
+      console.log("STYLE ID", style.id);
 
       const response = await apiClient.post(
-        `/api/module/update/127/${res.data.id}`,
-        updateData,
+        `/api/users_settings/update/${style.id}`,
+        postData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 

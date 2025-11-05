@@ -7,6 +7,7 @@ import { Customer, PdfType, User } from "@/types";
 import { signInSchema } from "../validation";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { redirect } from "next/navigation";
+import { Modes } from "@/components/Interface/ToggleModes";
 
 type ErrorResponse = {
   success: false;
@@ -21,6 +22,8 @@ export type ApiResponse = {
   user?: User;
   customerList?: Customer[];
   id?: number;
+  settings?: Modes;
+  menu?: Record<string, boolean>;
 };
 
 export async function handleError(error: unknown): Promise<ErrorResponse> {
@@ -119,11 +122,23 @@ export const signIn = async (
         });
       }
 
+      const interfaceSettings = res.data.user.user_settings.find(
+        (item) => item.type === "custom_interface"
+      );
+
+      const menuSettings = res.data.user.user_settings.find(
+        (item) => item.type === "custom_module"
+      );
+
       return {
         success: true,
         customers: decoded.customers,
         customerList: res.data.customers,
         user: res.data.user,
+        settings: interfaceSettings
+          ? JSON.parse(interfaceSettings.value)
+          : undefined,
+        menu: menuSettings ? JSON.parse(menuSettings.value) : undefined,
         id: res.data.user.id,
       };
     } else {

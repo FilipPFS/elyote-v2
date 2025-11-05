@@ -342,3 +342,26 @@ export interface Customer {
   status: "active" | "inactive" | string;
   soft_delete: 0 | 1;
 }
+
+export type UserMenuSettings = {
+  id: number;
+  name: string;
+  type: string;
+  value: string;
+  user_id: number;
+  client_type: string;
+};
+
+export type MenuKeys =
+  | "balisage"
+  | "communication"
+  | "identifiants"
+  | "repertoire"
+  | "sav"
+  | "parcMateriel"
+  | "locations"
+  | "commandes"
+  | "outils"
+  | "bmi"
+  | "cartesCopies"
+  | "dashboard";

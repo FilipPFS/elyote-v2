@@ -4,73 +4,85 @@ import ElButton from "@/components/custom/ElButton";
 import Switch from "@/components/Global/Switch";
 import MainPage from "@/components/Mobile/MainPage";
 import { navItems } from "@/constants";
-import { useUserSettings } from "@/context/UserSettingsContext";
+import { defaultMenu, useUserSettings } from "@/context/UserSettingsContext";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import ToggleModes from "@/components/Interface/ToggleModes";
 import { addUserMenu } from "@/lib/actions/userSettings.actions";
-import CustomSpinner from "@/components/custom/Spinner";
+import CustomSpinner from "@/components/custom/Spinner"; // 👈 ensure defaultMenu is exported from types or constants
+import { MenuKeys } from "@/types";
 
-const ReglgagesInterface = () => {
+const ReglagesInterface = () => {
   const tGlobal = useTranslations("global");
   const tUi = useTranslations("ui");
-  const { allowedIds, setAllowedIds } = useUserSettings();
-  const { saveMenuSettings } = useUserSettings();
-  const [stateIds, setStateIds] = useState<string[]>([]);
+
+  const { allowedIds, setAllowedIds, saveMenuSettings } = useUserSettings();
+
+  const [stateIds, setStateIds] =
+    useState<Record<MenuKeys, boolean>>(defaultMenu);
   const [pending, setPending] = useState(false);
   const [resetPending, setResetPending] = useState(false);
-  const navigation = navItems.map((item) => item.labelKey);
 
   useEffect(() => {
-    setStateIds(allowedIds);
+    if (allowedIds) setStateIds(allowedIds as Record<MenuKeys, boolean>);
   }, [allowedIds]);
 
-  const handleToggle = (key: string) => {
-    setStateIds((prev) =>
-      prev.includes(key)
-        ? prev.filter((allowedId) => allowedId !== key)
-        : [...prev, key]
-    );
+  // ✅ Toggle a single menu item
+  const handleToggle = (key: MenuKeys) => {
+    setStateIds((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
   };
 
+  // ✅ Save the menu to backend + context + localStorage
   const handleSave = async () => {
-    setAllowedIds(stateIds);
+    if (!stateIds) return;
+
+    console.log("state ids", stateIds);
+
     setPending(true);
-    const res = await addUserMenu(95, stateIds);
+    setAllowedIds(stateIds);
+    const res = await addUserMenu(stateIds);
 
     if (res?.success) {
       saveMenuSettings(stateIds);
-      setPending(false);
       toast.success("Mis à jour avec succès.");
     } else {
       toast.error("Une erreur est survenue.");
     }
+
+    setPending(false);
   };
 
+  // ✅ Reset everything to default (all true)
   const resetMenu = async () => {
     setResetPending(true);
-    const res = await addUserMenu(95, navigation);
+    setAllowedIds(defaultMenu);
+    setStateIds(defaultMenu);
+    saveMenuSettings(defaultMenu);
+
+    const res = await addUserMenu(defaultMenu);
 
     if (res?.success) {
-      setResetPending(false);
-      setAllowedIds(navigation);
-      setStateIds(navigation);
-      saveMenuSettings(navigation);
-      toast.success("Mis à jour avec succès.");
+      toast.success("Réinitialisé avec succès.");
     } else {
       toast.error("Une erreur est survenue.");
     }
+
+    setResetPending(false);
   };
 
   return (
     <MainPage title={tUi("title")}>
       <div className="flex md:flex-row flex-col gap-10 md:justify-between md:pr-12">
+        {/* ---- LEFT: Menu switches ---- */}
         <div className="flex flex-col gap-4 w-full md:w-1/3">
           <h2 className="text-lg font-bold">{tUi("menuTitle")}</h2>
           <div className="flex flex-col gap-3 w-full">
             {navItems.map((item) => {
-              const isEnabled = stateIds.includes(item.labelKey);
+              const isEnabled = stateIds?.[item.labelKey as MenuKeys];
               return (
                 <div
                   key={item.labelKey}
@@ -82,7 +94,7 @@ const ReglgagesInterface = () => {
                   <Switch
                     label="Switch"
                     enabled={isEnabled}
-                    onToggle={() => handleToggle(item.labelKey)}
+                    onToggle={() => handleToggle(item.labelKey as MenuKeys)}
                   />
                 </div>
               );
@@ -101,6 +113,8 @@ const ReglgagesInterface = () => {
             />
           </div>
         </div>
+
+        {/* ---- RIGHT: UI Settings ---- */}
         <div className="flex flex-col gap-4 w-full md:w-1/3">
           <h2 className="text-lg font-bold">{tUi("uiTitle")}</h2>
           <ToggleModes />
@@ -110,4 +124,4 @@ const ReglgagesInterface = () => {
   );
 };
 
-export default ReglgagesInterface;
+export default ReglagesInterface;

@@ -1,5 +1,6 @@
 "use client";
 
+import { MenuKeys } from "@/types";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 type Modes = {
@@ -16,16 +17,33 @@ export const defaultModes: Modes = {
   font: "poppins",
 };
 
+export const defaultMenu: Record<MenuKeys, boolean> = {
+  balisage: true,
+  communication: true,
+  identifiants: true,
+  repertoire: true,
+  sav: true,
+  parcMateriel: true,
+  locations: true,
+  commandes: true,
+  outils: true,
+  bmi: true,
+  cartesCopies: true,
+  dashboard: true,
+};
+
 type UserSettingsContextType = {
-  allowedIds: string[];
-  setAllowedIds: React.Dispatch<React.SetStateAction<string[]>>;
+  allowedIds: Record<MenuKeys, boolean>;
+  setAllowedIds: React.Dispatch<
+    React.SetStateAction<Record<MenuKeys, boolean>>
+  >;
   modes: Modes;
   toggleMode: (key: keyof Omit<Modes, "font" | "sizeMode">) => void;
   changeFont: (font: Modes["font"]) => void;
   changeSize: (size: Modes["sizeMode"]) => void;
-  initializeSettings: (settings: Modes, ids: string[]) => void; // 👈 ajout
+  initializeSettings: (settings: Modes, menu: Record<string, boolean>) => void;
   saveStyleSettings: (settings: Modes) => void;
-  saveMenuSettings: (ids: string[]) => void; // 👈 ajout
+  saveMenuSettings: (menu: Record<string, boolean>) => void;
 };
 
 const UserSettingsContext = createContext<UserSettingsContextType | undefined>(
@@ -37,13 +55,13 @@ export const UserSettingsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [allowedIds, setAllowedIds] = useState<string[]>([]);
+  const [allowedIds, setAllowedIds] = useState(defaultMenu);
   const [modes, setModes] = useState<Modes>(defaultModes);
 
   // Charger depuis localStorage au démarrage (pas d’appel API !)
   useEffect(() => {
     const storedModes = localStorage.getItem("appModes");
-    const storedIds = localStorage.getItem("allowedIds");
+    const storedIds = localStorage.getItem("menu");
 
     if (storedModes) {
       const parsedModes: Modes = JSON.parse(storedModes);
@@ -98,13 +116,16 @@ export const UserSettingsProvider = ({
   };
 
   // 👇 appelée uniquement après le login
-  const initializeSettings = (settings: Modes, ids: string[]) => {
+  const initializeSettings = (
+    settings: Modes,
+    menu: Record<MenuKeys, boolean>
+  ) => {
     setModes(settings);
     applyModes(settings);
-    setAllowedIds(ids);
+    setAllowedIds(menu);
 
     localStorage.setItem("appModes", JSON.stringify(settings));
-    localStorage.setItem("allowedIds", JSON.stringify(ids));
+    localStorage.setItem("menu", JSON.stringify(menu));
   };
 
   const saveStyleSettings = (settings: Modes) => {
@@ -114,9 +135,9 @@ export const UserSettingsProvider = ({
     localStorage.setItem("appModes", JSON.stringify(settings));
   };
 
-  const saveMenuSettings = (ids: string[]) => {
-    setAllowedIds(ids);
-    localStorage.setItem("allowedIds", JSON.stringify(ids));
+  const saveMenuSettings = (menu: Record<MenuKeys, boolean>) => {
+    setAllowedIds(menu);
+    localStorage.setItem("menu", JSON.stringify(menu));
   };
 
   return (

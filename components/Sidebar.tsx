@@ -15,8 +15,12 @@ const Sidebar = () => {
 
   const { allowedIds } = useUserSettings();
 
+  const allowedKeys = Object.entries(allowedIds)
+    .filter(([, value]) => value)
+    .map(([key]) => key);
+
   const filteredNavItems = navItems.filter((item) =>
-    allowedIds.includes(item.labelKey)
+    allowedKeys.includes(item.labelKey)
   );
 
   return (

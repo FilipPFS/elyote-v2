@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useEffect, useState } from "react";
+import React, { useActionState, useEffect, useRef, useState } from "react";
 import ElInput from "./custom/ElInput";
 import ElButton from "./custom/ElButton";
 import { signIn } from "@/lib/actions/actions.global";
@@ -9,12 +9,11 @@ import { useRouter } from "next/navigation";
 import { FiUser } from "react-icons/fi";
 import { IoMdEye, IoMdEyeOff, IoMdKey } from "react-icons/io";
 import { useTranslations } from "next-intl";
-import { useUserSettings } from "@/context/UserSettingsContext";
 import {
-  getUserMenu,
-  getUserSettings,
-} from "@/lib/actions/userSettings.actions";
-import { navItems } from "@/constants";
+  defaultMenu,
+  defaultModes,
+  useUserSettings,
+} from "@/context/UserSettingsContext";
 import CustomSpinner from "./custom/Spinner";
 
 const SingInForm = () => {
@@ -30,10 +29,13 @@ const SingInForm = () => {
   const router = useRouter();
   const { initializeSettings } = useUserSettings();
 
+  const hasShownSuccess = useRef(false);
+
   useEffect(() => {
     const loadSettings = async () => {
-      if (state.success) {
-        setIsTransitioning(true); // Active le loader
+      if (state.success && !hasShownSuccess.current) {
+        hasShownSuccess.current = true;
+        setIsTransitioning(true);
 
         try {
           if (state.user && state.customerList) {
@@ -44,57 +46,36 @@ const SingInForm = () => {
             );
           }
 
-          if (state.id) {
-            const [menu, settings] = await Promise.all([
-              getUserMenu(state.id),
-              getUserSettings(state.id),
-            ]);
+          initializeSettings(
+            state.settings ?? defaultModes,
+            state.menu ?? defaultMenu
+          );
 
-            console.log("ID", state.id);
-
-            console.log("MENU", menu);
-
-            console.log("SETTINGS", settings);
-
-            initializeSettings(
-              settings || {
-                darkMode: false,
-                weightMode: false,
-                sizeMode: "normal",
-                font: "poppins",
-              },
-              menu && menu.length > 0
-                ? menu
-                : navItems.map((item) => item.labelKey)
-            );
-          }
-          // Redirection finale
           if (state.customers && state.customers.length > 1) {
             router.push("/stores");
           } else {
             router.push("/");
           }
+
           toast.success("Connexion réussie.");
         } catch (err) {
           console.error("Failed to load settings:", err);
           toast.error("Erreur lors du chargement des paramètres.");
         } finally {
-          setIsTransitioning(false); // Désactive le loader
+          setIsTransitioning(false);
         }
       }
 
-      // Gestion des erreurs (inchangée)
       if (state.error) {
-        toast.error(`${state.error.toString()}`);
+        toast.error(state.error.toString());
       }
+
       if (state.errors) {
         for (const key in state.errors) {
           const messages = state.errors[key];
           if (Array.isArray(messages)) {
             messages.forEach((msg) =>
-              toast.error(msg, {
-                className: "bg-amber-700 text-white",
-              })
+              toast.error(msg, { className: "bg-amber-700 text-white" })
             );
           }
         }
