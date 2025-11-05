@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { apiClient } from "../axios";
 import axios from "axios";
-import { Customer, PdfType, User } from "@/types";
+import { Customer, PdfType, User, UserMenuSettings } from "@/types";
 import { signInSchema } from "../validation";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { redirect } from "next/navigation";
@@ -123,11 +123,11 @@ export const signIn = async (
       }
 
       const interfaceSettings = res.data.user.user_settings.find(
-        (item) => item.type === "custom_interface"
+        (item: UserMenuSettings) => item.type === "custom_interface"
       );
 
       const menuSettings = res.data.user.user_settings.find(
-        (item) => item.type === "custom_module"
+        (item: UserMenuSettings) => item.type === "custom_module"
       );
 
       return {
