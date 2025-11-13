@@ -48,6 +48,36 @@ export const getUserDataById = async (id: string) => {
   }
 };
 
+export const getUserRoleById = async (id: string) => {
+  try {
+    const token = await getToken();
+    const storeCode = await getStoreCode();
+
+    if (!token) {
+      console.log("Token expiré.");
+      return;
+    }
+
+    const res = await apiClient.get(`/api/user/read-one/${storeCode}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (res.status === 200) {
+      return {
+        user: res.data.user,
+        customers: res.data.customers,
+      };
+    } else {
+      console.log("Unexpected status:", res.status);
+      return null;
+    }
+  } catch (error: unknown) {
+    console.error("Unexpected error:", error);
+    return null;
+  }
+};
+
 export const getAllUsers = async () => {
   try {
     const token = await getToken();
@@ -299,5 +329,250 @@ export const extractIdFromToken = async () => {
   } catch (error) {
     console.error("❌ extractRole error:", error);
     return null;
+  }
+};
+
+export const extractUsernameFromToken = async () => {
+  try {
+    const token = await getToken();
+    if (!token) return null;
+
+    const { payload } = await jwtVerify(token, SECRET);
+    const username = payload.username as string;
+
+    return username ?? null;
+  } catch (error) {
+    console.error("❌ extractRole error:", error);
+    return null;
+  }
+};
+
+export const changeUserPassword = async ({
+  password,
+  username,
+}: {
+  password: string;
+  username: string;
+}): Promise<UserApiResponse> => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      return {
+        success: false,
+        error: "Unauthorized.",
+      };
+    }
+
+    const postData = {
+      username,
+      newPassword: password,
+    };
+
+    const res = await apiClient.post(`/api/user/update_password`, postData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("RES", res);
+
+    if (res.status === 200) {
+      return {
+        success: true,
+      };
+    } else {
+      return {
+        success: false,
+        error: "Une erreur s'est reproduit.",
+      };
+    }
+  } catch (error: unknown) {
+    console.error("Unexpected error:", error);
+    return {
+      success: false,
+      error: "Une erreur s'est reproduit.",
+    };
+  }
+};
+
+export const resetMyPassword = async ({
+  oldPassword,
+  newPassword,
+  username,
+}: {
+  newPassword: string;
+  oldPassword: string;
+  username: string;
+}): Promise<UserApiResponse> => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      return {
+        success: false,
+        error: "Unauthorized.",
+      };
+    }
+
+    const postData = {
+      username,
+      newPassword,
+      oldPassword,
+    };
+
+    console.log("postdata", postData);
+
+    const res = await apiClient.post(`/api/user/update_password`, postData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("RES DATA", res.data);
+
+    if (res.status === 200) {
+      return {
+        success: true,
+      };
+    } else {
+      return {
+        success: false,
+        error: "Une erreur s'est reproduit.",
+      };
+    }
+  } catch (error: unknown) {
+    console.error("Unexpected error:", error);
+    return {
+      success: false,
+      error: "Une erreur s'est reproduit.",
+    };
+  }
+};
+
+export const forgotPassword = async ({
+  username,
+}: {
+  username: string;
+}): Promise<UserApiResponse> => {
+  try {
+    const postData = {
+      username,
+    };
+
+    const res = await apiClient.post(`/api/auth/forgot-password`, postData);
+
+    if (res.status === 200) {
+      return {
+        success: true,
+      };
+    } else {
+      return {
+        success: false,
+        error: "Une erreur s'est reproduit.",
+      };
+    }
+  } catch (error: unknown) {
+    console.error("Unexpected error:", error);
+    return {
+      success: false,
+      error: "Une erreur s'est reproduit.",
+    };
+  }
+};
+
+export const forgotPasswordConfirm = async ({
+  username,
+  confirmationCode,
+  newPassword,
+}: {
+  username: string;
+  confirmationCode: string;
+  newPassword: string;
+}): Promise<UserApiResponse> => {
+  try {
+    const postData = {
+      username,
+      confirmationCode,
+      newPassword,
+    };
+
+    const res = await apiClient.post(
+      `/api/auth/confirm-forgot-password`,
+      postData
+    );
+
+    if (res.status === 200) {
+      return {
+        success: true,
+      };
+    } else {
+      return {
+        success: false,
+        error: "Une erreur s'est reproduit.",
+      };
+    }
+  } catch (error: unknown) {
+    console.error("Unexpected error:", error);
+    return {
+      success: false,
+      error: "Une erreur s'est reproduit.",
+    };
+  }
+};
+
+export const confirmNewPassword = async ({
+  confirmationCode,
+  newPassword,
+  username,
+}: {
+  newPassword: string;
+  confirmationCode: string;
+  username: string;
+}): Promise<UserApiResponse> => {
+  try {
+    const token = await getToken();
+
+    if (!token) {
+      return {
+        success: false,
+        error: "Unauthorized.",
+      };
+    }
+
+    const postData = {
+      username,
+      newPassword,
+      confirmationCode,
+    };
+
+    const res = await apiClient.post(
+      `/api/auth/confirm-forgot-password`,
+      postData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("RES", res);
+
+    if (res.status === 200) {
+      return {
+        success: res.data.success,
+      };
+    } else {
+      return {
+        success: false,
+        error: "Une erreur s'est reproduit.",
+      };
+    }
+  } catch (error: unknown) {
+    console.error("Unexpected error:", error);
+    return {
+      success: false,
+      error: "Une erreur s'est reproduit.",
+    };
   }
 };

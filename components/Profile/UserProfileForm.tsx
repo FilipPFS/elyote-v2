@@ -8,6 +8,7 @@ import CustomSpinner from "../custom/Spinner";
 import { toast } from "react-toastify";
 import { Customer, User } from "@/types";
 import { updateUserProfile } from "@/lib/actions/actions.user";
+import Link from "next/link";
 
 type Props = {
   initialUser: User;
@@ -180,10 +181,17 @@ const UserProfilePage = ({
         <div className="flex justify-between items-center border-b pb-4">
           <h1 className="text-2xl font-semibold">Profil utilisateur</h1>
           {canEdit && (
-            <ElButton
-              label={editMode ? "Annuler" : "Modifier"}
-              onClick={() => setEditMode(!editMode)}
-            />
+            <div className="flex items-center gap-2">
+              <ElButton
+                label={editMode ? "Annuler" : "Modifier"}
+                onClick={() => setEditMode(!editMode)}
+              />
+              <Link
+                href={`/profile/manager/utilisateurs/${userId}/reset-password`}
+              >
+                <ElButton label={"Changer le mot de passe"} />
+              </Link>
+            </div>
           )}
         </div>
         <div className="flex flex-col gap-1">

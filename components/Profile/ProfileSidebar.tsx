@@ -10,6 +10,10 @@ const userLinks = [
   { label: "Interface", href: "/profile/reglages/interface" },
   { label: "Imprimante", href: "/profile/reglages/imprimante" },
   { label: "SAV", href: "/profile/reglages/sav" },
+  {
+    label: "Réinitilisation du mot de passe",
+    href: "/profile/reglages/reset-password",
+  },
 ];
 
 const ProfileSidebar = () => {

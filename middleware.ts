@@ -5,7 +5,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 if (!SECRET_KEY) throw new Error("SECRET_KEY is not defined");
 const SECRET = new TextEncoder().encode(SECRET_KEY);
 
-const publicPaths = ["/sign-in", "/sign-up"];
+const publicPaths = ["/sign-in", "/sign-up", "/forgot-password"];
 
 const roleHierarchy = ["user", "manager", "director", "superadmin"] as const;
 type Role = (typeof roleHierarchy)[number];
