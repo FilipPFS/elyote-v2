@@ -11,6 +11,10 @@ const ForgotPasswordForm = () => {
   const [username, setUsername] = useState("");
   const [success, setSuccess] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [sendOptions, setSendOptions] = useState({
+    deliveryMedium: "",
+    destination: "",
+  });
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +25,11 @@ const ForgotPasswordForm = () => {
       username,
     });
 
-    if (res.success) {
+    if (res.success && res.deliveryOptions) {
+      setSendOptions({
+        deliveryMedium: res.deliveryOptions.deliveryMedium,
+        destination: res.deliveryOptions.destination,
+      });
       setSuccess(true);
       setIsPending(false);
     } else {
@@ -50,7 +58,7 @@ const ForgotPasswordForm = () => {
           />
         </form>
       ) : (
-        <OtpModal username={username} />
+        <OtpModal username={username} deliveryOptions={sendOptions} />
       )}
     </>
   );

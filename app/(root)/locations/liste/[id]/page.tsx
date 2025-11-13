@@ -5,7 +5,6 @@ import {
   getPrintersList,
   getSinglePrinter,
 } from "@/lib/actions/printer.actions";
-import { Computer, MaterialData, RentalData } from "@/types";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import React from "react";
@@ -17,26 +16,29 @@ type Props = {
 const SingleRentalPage = async ({ params }: Props) => {
   const { id } = await params;
   const tRental = await getTranslations("rentals");
-  const printFetch = await getSinglePrinter("document");
-  const printModule = printFetch?.data;
-  const printerList: Computer[] = await getPrintersList();
-  const singleRental: RentalData = await getRentalById(id);
+
+  // Parallel fetching (now optimized for Next.js 15)
+  const [singleRental, printerList, printFetch] = await Promise.all([
+    getRentalById(id),
+    getPrintersList(),
+    getSinglePrinter("document"),
+  ]);
 
   if (!singleRental) {
     return (
-      <div>
+      <div className="p-6">
         <h2>{tRental("updatePage.idNotFound")}</h2>
         <p>{tRental("updatePage.idDeleted")}</p>
-
         <Link href="/locations/liste">{tRental("updatePage.backToList")}</Link>
       </div>
     );
   }
 
-  const materialUsed: MaterialData = await getMaterialById(
-    String(singleRental.id_material)
-  );
+  const materialUsed = await getMaterialById(String(singleRental.id_material));
 
+  if (!materialUsed) {
+    return <div>Materiel n'existe pas.</div>;
+  }
   const templateId = process.env.PDF_RENTAL_TEMPLATE_ID;
 
   return (
@@ -45,7 +47,7 @@ const SingleRentalPage = async ({ params }: Props) => {
         singleRental={singleRental}
         materialData={{ name: materialUsed.name, id: materialUsed.id }}
         templateId={String(templateId)}
-        pdfModule={printModule}
+        pdfModule={printFetch?.data}
         printerList={printerList}
       />
     </div>

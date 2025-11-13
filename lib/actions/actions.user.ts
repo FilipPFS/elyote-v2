@@ -1,6 +1,6 @@
 "use server";
 
-import { UserEditFormData, UserFormCreate } from "@/types";
+import { DeliveryOptions, UserEditFormData, UserFormCreate } from "@/types";
 import { apiClient } from "../axios";
 import { getStoreCode, getToken } from "./actions.global";
 import { profileSchema, userCreateSchema, userEditSchema } from "../validation";
@@ -16,6 +16,7 @@ interface UserApiResponse {
   errors?: Record<string, string[] | undefined>;
   error?: string;
   data?: UserEditFormData;
+  deliveryOptions?: DeliveryOptions;
 }
 
 export const getUserDataById = async (id: string) => {
@@ -28,11 +29,14 @@ export const getUserDataById = async (id: string) => {
       return;
     }
 
-    const res = await apiClient.get(`/api/user/read-one/${storeCode}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.get(
+      `/api/users/${id}?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (res.status === 200) {
       return {
         user: res.data.user,
@@ -94,7 +98,7 @@ export const getAllUsers = async () => {
       return;
     }
 
-    const res = await apiClient.get(`/api/user/read/${storeCode}`, {
+    const res = await apiClient.get(`/api/v1/users?customer_id=${storeCode}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -143,7 +147,7 @@ export const createUser = async ({
 
     console.log("POSTDATA", postData);
 
-    const res = await apiClient.post(`/api/user/create`, postData, {
+    const res = await apiClient.post(`/api/users`, postData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -265,12 +269,8 @@ export const updateUserProfile = async ({
       ...result.data,
     };
 
-    console.log("postdata", postData);
-    console.log("id", id);
-    console.log("store code", storeCode);
-
-    const res = await apiClient.post(
-      `/api/user/update/${storeCode}/${id}`,
+    const res = await apiClient.patch(
+      `/api/users/${id}?customer_id=${storeCode}`,
       postData,
       {
         headers: {
@@ -278,8 +278,6 @@ export const updateUserProfile = async ({
         },
       }
     );
-
-    console.log("RES", res);
 
     if (res.status === 200) {
       revalidatePath(`/profile/manager/utilisateurs/${id}`);
@@ -356,8 +354,9 @@ export const changeUserPassword = async ({
 }): Promise<UserApiResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       return {
         success: false,
         error: "Unauthorized.",
@@ -369,11 +368,15 @@ export const changeUserPassword = async ({
       newPassword: password,
     };
 
-    const res = await apiClient.post(`/api/user/update_password`, postData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.patch(
+      `/api/users/password?customer_id=${storeCode}`,
+      postData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     console.log("RES", res);
 
@@ -407,8 +410,9 @@ export const resetMyPassword = async ({
 }): Promise<UserApiResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       return {
         success: false,
         error: "Unauthorized.",
@@ -423,11 +427,15 @@ export const resetMyPassword = async ({
 
     console.log("postdata", postData);
 
-    const res = await apiClient.post(`/api/user/update_password`, postData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.patch(
+      `/api/users/password?customer_id=${storeCode}`,
+      postData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     console.log("RES DATA", res.data);
 
@@ -465,6 +473,10 @@ export const forgotPassword = async ({
     if (res.status === 200) {
       return {
         success: true,
+        deliveryOptions: {
+          deliveryMedium: res.data.codeDelivery.deliveryMedium,
+          destination: res.data.codeDelivery.destination,
+        },
       };
     } else {
       return {

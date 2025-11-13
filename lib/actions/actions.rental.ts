@@ -2,7 +2,7 @@
 
 import { RentalFormData } from "@/components/RentalFormAdd";
 import { apiClient } from "../axios";
-import { getToken } from "./actions.global";
+import { getStoreCode, getToken } from "./actions.global";
 import { revalidatePath } from "next/cache";
 import axios from "axios";
 import { RentalData } from "@/types";
@@ -10,27 +10,51 @@ import { PostResponse } from "./actions.credentials";
 import { createRentalUpdateFormValidation } from "../validation";
 import { getTranslations } from "next-intl/server";
 
-export const getRentals = async () => {
+export const getRentals = async ({
+  limit = 8,
+  page,
+}: {
+  limit: number;
+  page: number;
+}) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Token expiré.");
       return;
     }
 
-    const res = await apiClient.get("/api/rentals/read/126", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const offset = (page - 1) * limit;
+
+    const response = await apiClient.get(
+      `/api/rentals?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const res = await apiClient.get(
+      `/api/rentals?customer_id=${storeCode}&offset=${offset}&number_per_page=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     console.log("RES DATA", res.data);
 
     if (res.status === 200) {
-      return res.data.rentals.filter(
-        (item: RentalData) => item.deleted_at === null
-      );
+      return {
+        data: res.data.rentals.filter(
+          (item: RentalData) => item.deleted_at === null
+        ),
+        pagesNumber: Math.ceil(response.data.rentals.length / limit),
+      };
     } else {
       console.log("Unexpected status:", res.status);
       return null;
@@ -44,18 +68,22 @@ export const getRentals = async () => {
 export const getRentalById = async (id: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !token) {
       console.log("Token expiré.");
       return;
     }
 
-    const res = await apiClient.get(`/api/rental/read-one/126/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      validateStatus: (status) => status >= 200 && status < 500,
-    });
+    const res = await apiClient.get(
+      `/api/rentals/${id}?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => status >= 200 && status < 500,
+      }
+    );
     if (res.status === 200) {
       return res.data;
     } else if (res.status === 404) {
@@ -73,6 +101,7 @@ export const getRentalById = async (id: string) => {
 export const addNewRental = async (formData: RentalFormData) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token)
       return {
@@ -90,7 +119,7 @@ export const addNewRental = async (formData: RentalFormData) => {
     console.log("to post", postData);
 
     const res = await apiClient.post(
-      `/api/rental/create/126`,
+      `/api/materials?customer_id=${storeCode}`,
       { data: postData },
       {
         headers: {
@@ -206,11 +235,12 @@ export const updateRental = async (
 ): Promise<PostResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
     const id = formData.get("id") as string;
     const t = await getTranslations("rentals");
     const rentalUpdatedFormSchema = createRentalUpdateFormValidation(t);
 
-    if (!token)
+    if (!token || !storeCode)
       return {
         success: false,
         error: "Vous devez être authentifié.",
@@ -242,8 +272,8 @@ export const updateRental = async (
       ...result.data,
     };
 
-    const res = await apiClient.post(
-      `/api/rental/update/126/${id}`,
+    const res = await apiClient.patch(
+      `/api/v1/rentals/${id}?customer_id=${storeCode}`,
       updatedRentalFromDb,
       {
         headers: {

@@ -23,12 +23,14 @@ import CustomSpinner from "../custom/Spinner";
 import { forgotPasswordConfirm } from "@/lib/actions/actions.user";
 import { toast } from "react-toastify";
 import ElInput from "../custom/ElInput";
+import { DeliveryOptions } from "@/types";
 
 type Props = {
   username: string;
+  deliveryOptions: DeliveryOptions;
 };
 
-const OtpModal = ({ username }: Props) => {
+const OtpModal = ({ username, deliveryOptions }: Props) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
   const [password, setPassword] = useState("");
@@ -94,6 +96,8 @@ const OtpModal = ({ username }: Props) => {
 
   console.log("password", password);
 
+  console.log("options", deliveryOptions);
+
   return (
     <>
       {password.length < 6 ? (
@@ -101,14 +105,18 @@ const OtpModal = ({ username }: Props) => {
           <AlertDialogContent className="dark:bg-gray-900 dark:text-white">
             <AlertDialogHeader className="relative flex justify-center">
               <AlertDialogTitle className="h2 text-center">
-                Enter your OTP
+                Enter votre code
                 <FaXmark
                   onClick={() => setIsOpen(false)}
                   className="absolute top-0 right-0 cursor-pointer"
                 />
               </AlertDialogTitle>
               <AlertDialogDescription className="subtitle-2 text-center text-light-100">
-                We've sent an OTP code to{" "}
+                Un cdoe vous a été envoyé{" "}
+                <span className="lowercase">
+                  {deliveryOptions.deliveryMedium} :{" "}
+                  {deliveryOptions.destination}
+                </span>
                 {/* <span className="pl-1 text-blue-800">{email}</span> */}
               </AlertDialogDescription>
             </AlertDialogHeader>

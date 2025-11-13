@@ -365,3 +365,8 @@ export type MenuKeys =
   | "bmi"
   | "cartesCopies"
   | "dashboard";
+
+export type DeliveryOptions = {
+  deliveryMedium: string;
+  destination: string;
+};

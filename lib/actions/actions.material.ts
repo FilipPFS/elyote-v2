@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { apiClient } from "../axios";
 import { PostResponse } from "./actions.credentials";
-import { getToken } from "./actions.global";
+import { getStoreCode, getToken } from "./actions.global";
 import axios from "axios";
 import { getTranslations } from "next-intl/server";
 import { createNewMaterialValidation } from "../validation";
@@ -118,9 +118,10 @@ export const getMaterials = async () => {
 export const getRentMaterials = async () => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
     const t = await getTranslations("rentals.addPage.form.materials");
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Token expiré.");
       return;
     }
@@ -142,7 +143,7 @@ export const getRentMaterials = async () => {
 
     const requests = types.map((type) =>
       apiClient.get(
-        `/api/materials/rent/condition?customer_id=126&rent=1&state=1&type=${type.value}`,
+        `/api/v1/materials/lend/condition?customer_id=${storeCode}&lend=1&state=1&type=${type.value}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -173,18 +174,22 @@ export const getRentMaterials = async () => {
 export const getMaterialById = async (id: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Token expiré.");
       return;
     }
 
-    const res = await apiClient.get(`/api/material/read-one/126/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      validateStatus: (status) => status >= 200 && status < 500,
-    });
+    const res = await apiClient.get(
+      `/api/materials/${id}?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => status >= 200 && status < 500,
+      }
+    );
     if (res.status === 200) {
       return res.data;
     } else if (res.status === 404) {
