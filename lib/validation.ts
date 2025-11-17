@@ -64,6 +64,7 @@ export const createNewMaterialValidation = (t: (key: string) => string) =>
         .nonnegative(t("zodValidation.rentMsg"))
     ),
     deposit: z.string().min(1, t("zodValidation.depositMsg")),
+    daily_rate: z.string().min(1, t("zodValidation.depositMsg")),
   });
 
 export const rentalFormFirstPartSchema = z.object({

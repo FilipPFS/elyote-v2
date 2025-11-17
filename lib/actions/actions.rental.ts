@@ -57,11 +57,17 @@ export const getRentals = async ({
       };
     } else {
       console.log("Unexpected status:", res.status);
-      return null;
+      return {
+        data: [],
+        pagesNumber: 1,
+      };
     }
   } catch (error: unknown) {
     console.error("Unexpected error:", error);
-    return null;
+    return {
+      data: [],
+      pagesNumber: 1,
+    };
   }
 };
 
@@ -112,15 +118,14 @@ export const addNewRental = async (formData: RentalFormData) => {
       ...formData,
       deposit: 0,
       status: 1,
-      customer_id: "126",
       client_type: "bv",
     };
 
     console.log("to post", postData);
 
     const res = await apiClient.post(
-      `/api/materials?customer_id=${storeCode}`,
-      { data: postData },
+      `/api/rentals?customer_id=${storeCode}`,
+      postData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -165,8 +170,9 @@ export const addNewRental = async (formData: RentalFormData) => {
 export const changeStatusOfRental = async (id: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token || !id)
+    if (!token || !id || !storeCode)
       return {
         success: false,
         error: "Vous devez être authentifié.",
@@ -183,8 +189,8 @@ export const changeStatusOfRental = async (id: string) => {
 
     const newRentalFromDb = { ...rentalFromDb, status: 0 };
 
-    const res = await apiClient.post(
-      `/api/rental/update/126/${id}`,
+    const res = await apiClient.patch(
+      `/api/rentals/${id}?customer_id=${storeCode}`,
       newRentalFromDb,
       {
         headers: {
@@ -273,7 +279,7 @@ export const updateRental = async (
     };
 
     const res = await apiClient.patch(
-      `/api/v1/rentals/${id}?customer_id=${storeCode}`,
+      `/api/rentals/${id}?customer_id=${storeCode}`,
       updatedRentalFromDb,
       {
         headers: {
@@ -320,18 +326,22 @@ export const updateRental = async (
 export const deleteRental = async (id: string): Promise<PostResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token)
+    if (!token || !storeCode)
       return {
         success: false,
         error: "Vous devez être authentifié.",
       };
 
-    const res = await apiClient.post(`/api/rental/delete/126/${id}`, "", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.delete(
+      `api/rentals/${id}?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (res.status === 200) {
       revalidatePath("/locations/liste");

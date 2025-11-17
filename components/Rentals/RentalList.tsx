@@ -18,15 +18,17 @@ const RentalList = async ({ page }: { page: number }) => {
     getTranslations("rentals"),
     getTranslations("credentials"),
     getFormatter(),
-    getRentals({ page, limit: 1 }),
+    getRentals({ page, limit: 4 }),
   ]);
+
+  console.log("RENTALS", rentalsObject);
 
   if (!rentalsObject) {
     throw new Error("Error while fetching rentals.");
   }
 
-  const rentals: RentalData[] = rentalsObject?.data;
-  totalPages = rentalsObject?.pagesNumber;
+  const rentals: RentalData[] = rentalsObject.data;
+  totalPages = rentalsObject.pagesNumber;
 
   return (
     <>

@@ -15,10 +15,11 @@ export const addMaterial = async (
 ): Promise<PostResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
     const t = await getTranslations("material");
     const materialFormSchema = createNewMaterialValidation(t);
 
-    if (!token)
+    if (!token || !storeCode)
       return {
         success: false,
         error: "Une erreur est survenue. Ressayez plus tard.",
@@ -36,17 +37,23 @@ export const addMaterial = async (
       };
     }
 
+    const booleanData = {
+      ...result.data,
+      lend: result.data.lend === 1,
+      rent: result.data.rent === 1,
+    };
+
     const postData = {
-      ...data,
-      customer_id: "126",
+      ...booleanData,
+      state: data.state === "1",
       client_type: "bv",
     };
 
     console.log("post", postData);
 
     const res = await apiClient.post(
-      "/api/material/create/126",
-      { data: postData },
+      `/api/materials?customer_id=${storeCode}`,
+      postData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -91,13 +98,14 @@ export const addMaterial = async (
 export const getMaterials = async () => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Token expiré.");
       return;
     }
 
-    const res = await apiClient.get("/api/materials/read/126", {
+    const res = await apiClient.get(`/api/materials?customer_id=${storeCode}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -246,15 +254,17 @@ export const updateMaterial = async (
 ): Promise<PostResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
     const t = await getTranslations("material");
     const materialFormSchema = createNewMaterialValidation(t);
 
-    if (!token)
+    if (!token || !storeCode)
       return {
         success: false,
         error: "Une erreur est survenue. Ressayez plus tard.",
       };
 
+    const id = Number(formData.get("id"));
     const data = Object.fromEntries(formData);
     const result = materialFormSchema.safeParse(data);
 
@@ -269,21 +279,22 @@ export const updateMaterial = async (
 
     const postData = {
       ...data,
-      id: Number(formData.get("id")),
       lend: Number(data.lend),
       rent: Number(data.rent),
       state: Number(data.state),
-      customer_id: "126",
-      client_type: "bv",
     };
 
     console.log("postdata", postData);
 
-    const res = await apiClient.post("/api/material/update/126/129", postData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.patch(
+      `/api/materials/${id}?customer_id=${storeCode}`,
+      postData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (res.status === 200) {
       revalidatePath("/parc-materiel/liste");
