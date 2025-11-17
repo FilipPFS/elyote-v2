@@ -46,9 +46,9 @@ const PasswordForm = ({
           defaultValue={passwordData?.access_level}
           icon={<GoShieldLock className="text-blue-700" />}
         >
-          <option value={0}>{t("select.one")}</option>
-          <option value={1}>{t("select.two")}</option>
-          <option value={2}>{t("select.three")}</option>
+          <option value={"user"}>{t("select.one")}</option>
+          <option value={"manager"}>{t("select.two")}</option>
+          <option value={"director"}>{t("select.three")}</option>
         </ElSelect>
         <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-7">
           <ElInput

@@ -45,7 +45,7 @@ export type PasswordData = {
   url: string;
   login: string;
   password: string | boolean;
-  access_level: number;
+  access_level: string;
   client_type: string;
   additional_data: string;
 };

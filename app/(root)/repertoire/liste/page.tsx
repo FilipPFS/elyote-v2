@@ -35,8 +35,12 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
     }
   } else {
     const data = await getContacts();
-    contacts = data.contacts;
+    if (data) {
+      contacts = data.contacts;
+    }
   }
+
+  console.log("CONTACTS", contacts);
 
   const tCredentials = await getTranslations("credentials");
   const tContacts = await getTranslations("contacts");

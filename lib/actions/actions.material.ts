@@ -215,15 +215,15 @@ export const getMaterialById = async (id: string) => {
 export const deleteSingleMaterial = async (id: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Token expiré.");
       return;
     }
 
-    const res = await apiClient.post(
-      `/api/material/delete/126`,
-      { id },
+    const res = await apiClient.delete(
+      `/api/materials/${id}?customer_id=${storeCode}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -1,6 +1,6 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import { getToken } from "./actions.global";
+import { getStoreCode, getToken } from "./actions.global";
 import axios from "axios";
 import { apiClient } from "../axios";
 import { createNewPasswordValidation } from "../validation";
@@ -27,9 +27,10 @@ export const addNewCredential = async (
   try {
     const t = await getTranslations("credentials.form");
     const token = await getToken();
+    const storeCode = await getStoreCode();
     const newPasswordValidation = createNewPasswordValidation(t);
 
-    if (!token)
+    if (!token || !storeCode)
       return {
         success: false,
         error: "Une erreur est survenue. Ressayez plus tard.",
@@ -49,13 +50,11 @@ export const addNewCredential = async (
 
     const postData = {
       ...result.data,
-      customer_id: "127",
-      client_type: "bv",
     };
 
     const res = await apiClient.post(
-      `/api/password/create/127`,
-      { data: postData },
+      `/api/passwords?customer_id=${storeCode}`,
+      postData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -63,7 +62,9 @@ export const addNewCredential = async (
       }
     );
 
-    if (res.status === 201) {
+    console.log("RES STATUS", res.status);
+
+    if (res.status === 201 || res.status === 200) {
       revalidatePath("/identifiants/liste");
 
       return {
@@ -104,6 +105,7 @@ export const updateCredential = async (
   try {
     const t = await getTranslations("credentials.form");
     const token = await getToken();
+    const storeCode = await getStoreCode();
     const newPasswordValidation = createNewPasswordValidation(t);
 
     if (!token)
@@ -135,9 +137,6 @@ export const updateCredential = async (
 
     const postData = {
       ...result.data,
-      id,
-      customer_id: "127",
-      client_type: "bv",
     };
 
     console.log("POSTDATA", postData);
@@ -146,8 +145,8 @@ export const updateCredential = async (
       `${process.env.base_url}/api/password/update/127/${id}`
     );
 
-    const res = await apiClient.post(
-      `/api/password/update/127/${id}`,
+    const res = await apiClient.patch(
+      `/api/passwords/${id}?customer_id=${storeCode}`,
       postData,
       {
         headers: {
@@ -199,6 +198,7 @@ export const getCredentials = async ({
 }) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Token expiré.");
@@ -208,14 +208,17 @@ export const getCredentials = async ({
     const offset = (page - 1) * limit;
 
     // Count all credentials docs
-    const credentialsDocs = await apiClient.get(`/api/passwords/read/127`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const credentialsDocs = await apiClient.get(
+      `/api/passwords?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     const res = await apiClient.get(
-      `/api/passwords/read/127?offset=${offset}&number_per_page=${limit}`,
+      `/api/passwords?customer_id=${storeCode}&offset=${offset}&number_per_page=${limit}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -245,14 +248,15 @@ export const getCredentials = async ({
 export const getCredentialsFromQuery = async (query: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Token expiré.");
       return;
     }
 
     const res = await apiClient.get(
-      `/api/password/127/search?keywords=${query}`,
+      `/api/passwords/search/${query}?customer_id=${storeCode}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -278,18 +282,22 @@ export const getCredentialsFromQuery = async (query: string) => {
 export const getSingleCredential = async (id: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Token expiré.");
       return null; // Return null or handle as needed
     }
 
-    const res = await apiClient.get(`/api/password/read-one/127/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      validateStatus: (status) => status >= 200 && status < 500,
-    });
+    const res = await apiClient.get(
+      `/api/passwords/${id}?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => status >= 200 && status < 500,
+      }
+    );
 
     console.log("status", res.status);
 

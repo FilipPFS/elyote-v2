@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { apiClient } from "../axios";
 import { PostResponse } from "./actions.credentials";
-import { getToken } from "./actions.global";
+import { getStoreCode, getToken } from "./actions.global";
 import axios from "axios";
 import { getTranslations } from "next-intl/server";
 import { createNewContactValidation } from "../validation";
@@ -15,9 +15,10 @@ export const addNewContact = async (
   try {
     const t = await getTranslations("contacts.form");
     const token = await getToken();
+    const storeCode = await getStoreCode();
     const newContactValidation = createNewContactValidation(t);
 
-    if (!token)
+    if (!token || !storeCode)
       return {
         success: false,
         error: "Une erreur est survenue. Ressayez plus tard.",
@@ -42,8 +43,8 @@ export const addNewContact = async (
     };
 
     const res = await apiClient.post(
-      "/api/contact/create/126",
-      { data: postData },
+      `/api/v1/contacts?customer_id=${storeCode}`,
+      postData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -92,9 +93,10 @@ export const updateContact = async (
   try {
     const t = await getTranslations("contacts.form");
     const token = await getToken();
+    const storeCode = await getStoreCode();
     const newContactValidation = createNewContactValidation(t);
 
-    if (!token)
+    if (!token || !storeCode)
       return {
         success: false,
         error: "Une erreur est survenue. Ressayez plus tard.",
@@ -128,8 +130,8 @@ export const updateContact = async (
       client_type: "bv",
     };
 
-    const res = await apiClient.post(
-      `/api/contact/update/126/${id}`,
+    const res = await apiClient.patch(
+      `/api/v1/contacts/${id}?customer_id=${storeCode}`,
       postData,
       {
         headers: {
@@ -174,18 +176,22 @@ export const updateContact = async (
 
 export const getContacts = async () => {
   try {
+    const storeCode = await getStoreCode();
     const token = await getToken();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Token expiré.");
-      return;
+      return null;
     }
 
-    const res = await apiClient.get("/api/contacts/read/126", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.get(
+      `/api/v1/contacts?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (res.status === 200) {
       return res.data;
@@ -202,6 +208,7 @@ export const getContacts = async () => {
 export const getContactsFromQuery = async (query: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Token expiré.");
@@ -209,7 +216,7 @@ export const getContactsFromQuery = async (query: string) => {
     }
 
     const res = await apiClient.get(
-      `/api/contact/126/search?keywords=${query}`,
+      `/api/v1/contacts/search/${query}?customer_id=${storeCode}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -237,14 +244,15 @@ export const getContactsFromQuery = async (query: string) => {
 export const getContactByFilter = async (category: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Token expiré.");
       return;
     }
 
     const res = await apiClient.get(
-      `/api/contacts/126/filter?filters=${category}`,
+      `/api/contacts/filter/${category}?customer_id=${storeCode}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -272,18 +280,22 @@ export const getContactByFilter = async (category: string) => {
 export const getContactById = async (id: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Token expiré.");
       return null;
     }
 
-    const res = await apiClient.get(`/api/contact/read-one/126/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      validateStatus: (status) => status >= 200 && status < 500,
-    });
+    const res = await apiClient.get(
+      `/api/v1/contacts/${id}?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => status >= 200 && status < 500,
+      }
+    );
     if (res.status === 200) {
       return res.data;
     } else if (res.status === 404) {
@@ -300,16 +312,16 @@ export const getContactById = async (id: string) => {
 
 export const deleteSingleContact = async (id: string) => {
   try {
+    const storeCode = await getStoreCode();
     const token = await getToken();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Token expiré.");
       return;
     }
 
-    const res = await apiClient.post(
-      `/api/contact/delete/126`,
-      { id },
+    const res = await apiClient.delete(
+      `/api/contacts/${id}?customer_id=${storeCode}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

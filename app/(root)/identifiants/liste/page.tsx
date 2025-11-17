@@ -32,12 +32,14 @@ const IdentifiantsListe = async ({ searchParams }: SearchParamProps) => {
     );
     passwords = data?.passwords;
   } else {
-    const passwordData = await getCredentials({ limit: 6, page: page });
+    const passwordData = await getCredentials({ limit: 8, page: page });
     if (passwordData) {
       passwords = passwordData.data.passwords;
       totalPages = passwordData.pagesNumber;
     }
   }
+
+  console.log("PASSWORDS", passwords);
 
   const tCredentials = await getTranslations("credentials");
   const tGlobal = await getTranslations("global");
