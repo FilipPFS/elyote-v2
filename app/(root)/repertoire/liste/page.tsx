@@ -8,7 +8,7 @@ import {
   getContacts,
   getContactsFromQuery,
 } from "@/lib/actions/actions.contacts";
-import { accessLevel } from "@/lib/utils";
+import { accessLevelViaNumber } from "@/lib/utils";
 import { ContactData, SearchParamProps } from "@/types";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
@@ -84,7 +84,7 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
                     <TableCell>{item.lastname}</TableCell>
                     <TableCell>
                       {tCredentials(
-                        `accessLevel.${accessLevel(item.access_level)}`
+                        `accessLevel.${accessLevelViaNumber(item.access_level)}`
                       )}
                     </TableCell>
                     <TableCell>
@@ -125,7 +125,9 @@ const RepertoireListe = async ({ searchParams }: SearchParamProps) => {
                       {tCredentials("access")}:{" "}
                       <span className="font-semibold">
                         {tCredentials(
-                          `accessLevel.${accessLevel(item.access_level)}`
+                          `accessLevel.${accessLevelViaNumber(
+                            item.access_level
+                          )}`
                         )}
                       </span>
                     </span>

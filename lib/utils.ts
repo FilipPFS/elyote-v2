@@ -60,6 +60,17 @@ export const accessLevel = (level: string): string => {
   return key;
 };
 
+export const accessLevelViaNumber = (level: number): string => {
+  let key = "";
+
+  if (level === 0) key = "public";
+  else if (level === 1) key = "manager";
+  else if (level === 2) key = "director";
+  else key = "Inconnu";
+
+  return key;
+};
+
 export const formatType = (type: string): string => {
   let key = "";
 
