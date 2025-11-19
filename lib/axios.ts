@@ -10,6 +10,8 @@ interface ProxyConfig {
   };
 }
 
+const local = false;
+
 interface AxiosConfig {
   baseURL: string;
   headers: {
@@ -68,7 +70,9 @@ function createJsonAxiosInstance(): AxiosInstance {
   validateEnvVars();
 
   const axiosConfig: AxiosConfig = {
-    baseURL: process.env.API_ELYOTE_BASE_URL!, // e.g., 'https://api.example.com'
+    baseURL: local
+      ? process.env.API_ELYOTE_DEV_URL!
+      : process.env.API_ELYOTE_BASE_URL!, // e.g., 'https://api.example.com'
     headers: {
       "Content-Type": "application/json",
       "api-key": process.env.API_ELYOTE_KEY!,
@@ -85,7 +89,9 @@ function createMultipartAxiosInstance(): AxiosInstance {
   validateEnvVars();
 
   const axiosConfig: AxiosConfig = {
-    baseURL: process.env.API_ELYOTE_BASE_URL!, // e.g., 'https://api.example.com'
+    baseURL: local
+      ? process.env.API_ELYOTE_DEV_URL!
+      : process.env.API_ELYOTE_BASE_URL!, // e.g., 'https://api.example.com'
     headers: {
       "Content-Type": "multipart/form-data",
       "api-key": process.env.API_ELYOTE_KEY!,
@@ -101,7 +107,9 @@ function createAutoContentAxiosInstance(): AxiosInstance {
   validateEnvVars();
 
   const axiosConfig: AxiosConfig = {
-    baseURL: process.env.API_ELYOTE_BASE_URL!, // e.g., 'https://api.example.com'
+    baseURL: local
+      ? process.env.API_ELYOTE_DEV_URL!
+      : process.env.API_ELYOTE_BASE_URL!, // e.g., 'https://api.example.com'
     headers: {
       // "Content-Type": "multipart/form-data", // détection automatique (utile pour l'envoi des fichiers)
       "api-key": process.env.API_ELYOTE_KEY!,

@@ -39,14 +39,19 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
     const savData: { savs: SavData[] } = await getSavsByQuery(query);
     savs = savData?.savs;
   } else if (supplier || status) {
-    const filteredData: { sav: SavData[] } = await getSavsByFilter({
+    const filteredData = await getSavsByFilter({
       supplier,
       status,
+      page,
+      limit: 10,
     });
 
-    savs = filteredData?.sav;
+    if (filteredData) {
+      savs = filteredData.data.sav;
+      totalPages = filteredData.pagesNumber;
+    }
   } else {
-    const savData = await getSavs({ limit: 3, page: page });
+    const savData = await getSavs({ limit: 10, page: page });
     if (savData) {
       savs = savData.data.sav;
       totalPages = savData.pagesNumber;
@@ -81,9 +86,9 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
             {savs && savs.length > 0 ? (
               <>
                 {savs.map((item) => {
-                  const customStatus = customStatuses.find(
-                    (el) => el.id === Number(item.status)
-                  );
+                  const customStatus =
+                    customStatuses &&
+                    customStatuses.find((el) => el.id === Number(item.status));
 
                   return (
                     <TableRowCustom
@@ -144,9 +149,9 @@ const Sav = async ({ searchParams }: SearchParamProps) => {
         {savs && savs.length > 0 ? (
           <>
             {savs.map((item) => {
-              const customStatus = customStatuses.find(
-                (el) => el.id === Number(item.status)
-              );
+              const customStatus =
+                customStatuses &&
+                customStatuses.find((el) => el.id === Number(item.status));
 
               return (
                 <MobileCard key={item.id}>

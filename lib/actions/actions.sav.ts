@@ -6,7 +6,7 @@ import {
   contentDetectApiClient,
   multipartApiClient,
 } from "../axios";
-import { getToken } from "./actions.global";
+import { getStoreCode, getToken } from "./actions.global";
 import axios from "axios";
 import { SavFormData } from "@/components/SavFormAdd";
 import { PostResponse } from "./actions.credentials";
@@ -15,6 +15,7 @@ import {
   savUpdateFormSchemaValidation,
 } from "../validation";
 import { CustomSavStatus, SavData } from "@/types";
+import { extractIdFromToken } from "./actions.user";
 
 export interface SavEvolutionResponse {
   success?: boolean;
@@ -30,8 +31,9 @@ export const getSavs = async ({
 }) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Unauthorized.");
       return;
     }
@@ -39,15 +41,18 @@ export const getSavs = async ({
     const offset = (page - 1) * limit;
 
     // Count all SAV docs
-    const savDocs = await apiClient.get(`/api/sav/read/127/`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const savDocs = await apiClient.get(
+      `/api/v1/sav?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     // SAV docs based on query
     const res = await apiClient.get(
-      `/api/sav/read/127/?offset=${offset}&number_per_page=${limit}`,
+      `/api/sav?customer_id=${storeCode}&offset=${offset}&number_per_page=${limit}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -73,18 +78,22 @@ export const getSavs = async ({
 export const getSavById = async (id: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Unauthorized.");
       return null;
     }
 
-    const res = await apiClient.get(`/api/sav/read-one/127/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      validateStatus: (status) => status >= 200 && status < 500,
-    });
+    const res = await apiClient.get(
+      `/api/v1/sav/${id}?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => status >= 200 && status < 500,
+      }
+    );
     if (res.status === 200) {
       return res.data;
     } else if (res.status === 404) {
@@ -102,17 +111,21 @@ export const getSavById = async (id: string) => {
 export const getSavsByQuery = async (query: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Unauthorized.");
       return null;
     }
 
-    const res = await apiClient.get(`/api/sav/127/search?keywords=${query}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.get(
+      `/api/sav/search/${query}?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (res.status === 200) {
       return res.data;
@@ -185,8 +198,10 @@ export const uploadFile = async (attachments: File[]) => {
 export const addNewSav = async (formData: SavFormData, attachment: File[]) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
+    const userId = await extractIdFromToken();
 
-    if (!token)
+    if (!token || !storeCode)
       return {
         success: false,
       };
@@ -197,9 +212,9 @@ export const addNewSav = async (formData: SavFormData, attachment: File[]) => {
         ...formData,
         deadline: Number(formData.deadline),
         status: "0",
-        customer_id: "127",
+        customer_id: storeCode,
         code_sav: "45BZEHG6",
-        user_id: "17",
+        user_id: userId,
       },
       bucket: "default",
       directory_name: "sav/",
@@ -218,7 +233,7 @@ export const addNewSav = async (formData: SavFormData, attachment: File[]) => {
     console.log("formSend", formDataToSend);
 
     const res = await contentDetectApiClient.post(
-      `/api/sav/create/127`,
+      `/api/sav?customer_id=${storeCode}`,
       formDataToSend,
       {
         headers: {
@@ -267,9 +282,11 @@ export const updateSav = async (
 ): Promise<PostResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
     const id = formData.get("id") as string;
+    const userId = await extractIdFromToken();
 
-    if (!token)
+    if (!token || !storeCode)
       return {
         success: false,
         error: "Vous devez être authentifié.",
@@ -314,8 +331,8 @@ export const updateSav = async (
     const postData = {
       data: {
         id: Number(savFromDb.id),
-        customer_id: savFromDb.customer_id,
-        user_id: savFromDb.user_id,
+        customer_id: storeCode,
+        user_id: userId,
         code_sav: savFromDb.code_sav,
         ...result.data,
       },
@@ -339,7 +356,7 @@ export const updateSav = async (
     console.log("formSend", formDataToSend);
 
     const res = await contentDetectApiClient.post(
-      `/api/sav/update/127/${id}`,
+      `/api/sav/${id}?customer_id=502`,
       formDataToSend,
       {
         headers: {
@@ -386,17 +403,21 @@ export const updateSav = async (
 export const getSavEvolutionById = async (id: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Unauthorized.");
       return null;
     }
 
-    const res = await apiClient.get(`/api/sav_evolution/read/127/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.get(
+      `/api/v1/sav_evolutions/${id}?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (res.status === 200) {
       return res.data;
@@ -413,13 +434,14 @@ export const getSavEvolutionById = async (id: string) => {
 export const getSavSuppliers = async () => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Unauthorized.");
       return;
     }
 
-    const res = await apiClient.get("/api/sav/read/127", {
+    const res = await apiClient.get(`/api/sav?customer_id=${storeCode}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -449,6 +471,8 @@ export const updateSavStatus = async (
 ): Promise<SavEvolutionResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
+    const userId = await extractIdFromToken();
 
     if (!token) {
       console.log("Unauthorized.");
@@ -466,13 +490,13 @@ export const updateSavStatus = async (
       details: formData.get("details"),
       status: formData.get("status"),
       sav_id: id,
-      customer_id: "127",
-      user_id: "15",
+      customer_id: storeCode,
+      user_id: userId,
     };
 
     const res = await apiClient.post(
-      `/api/sav_evolution/create/127`,
-      { data: postData },
+      `/api/sav_evolutions?customer_id=${storeCode}`,
+      postData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -502,20 +526,25 @@ export const updateSavStatus = async (
 export const getSavsByFilter = async ({
   supplier,
   status,
+  page,
+  limit,
 }: {
   supplier: string;
   status: string;
+  page: number;
+  limit: number;
 }) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Token expiré.");
       return;
     }
 
-    const res = await apiClient.get(
-      `/api/sav/filter/127?supplier=${supplier}&status=${status}`,
+    const savDocs = await apiClient.get(
+      `/api/sav/filter?customer_id=${storeCode}&supplier=${supplier}&status=${status}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -524,10 +553,21 @@ export const getSavsByFilter = async ({
       }
     );
 
-    console.log("status", res.status);
+    const res = await apiClient.get(
+      `/api/sav/filter?customer_id=${storeCode}&page=${page}&supplier=${supplier}&status=${status}&number_per_page=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        validateStatus: (status) => status >= 200 && status < 500,
+      }
+    );
 
     if (res.status === 200) {
-      return res.data;
+      return {
+        data: res.data as { sav: SavData[] },
+        pagesNumber: Math.ceil(savDocs.data.sav.length / limit),
+      };
     } else if (res.status === 404) {
       console.log("Query not found");
     } else {
@@ -543,17 +583,21 @@ export const getSavsByFilter = async ({
 export const getCustomStatuses = async (allowAll: boolean) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Unauthorized.");
       return null;
     }
 
-    const res = await apiClient.get(`/api/sav_status/read/126`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.get(
+      `/api/sav_status?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (res.status === 200) {
       if (allowAll) {
@@ -586,6 +630,7 @@ export const addNewCustomStatus = async ({
 }): Promise<PostResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token)
       return {
@@ -596,16 +641,19 @@ export const addNewCustomStatus = async ({
       statut,
       color_background: colorBackground,
       color_font: colorFont,
-      customer_id: 126,
     };
 
     console.log("to post", postData);
 
-    const res = await apiClient.post(`/api/sav_status/create/126`, postData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.post(
+      `/api/sav_status?customer_id=${storeCode}`,
+      postData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (res.status === 201) {
       revalidatePath("/profile/reglages/sav");
@@ -654,24 +702,28 @@ export const updateCustomStatus = async ({
 }): Promise<PostResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token)
+    if (!token || !storeCode)
       return {
         success: false,
       };
 
     const postData = {
       statut,
-      id,
       color_font: colorFont,
       color_background: colorBackground,
     };
 
-    const res = await apiClient.post(`/api/sav_status/update/126`, postData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.patch(
+      `/api/sav_status/${id}?customer_id=${storeCode}`,
+      postData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (res.status === 200) {
       revalidatePath("/profile/reglages/sav");
@@ -710,15 +762,15 @@ export const updateCustomStatus = async ({
 export const deleteCustomStatus = async (id: number): Promise<PostResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token)
+    if (!token || !storeCode)
       return {
         success: false,
       };
 
-    const res = await apiClient.post(
-      `/api/sav_status/delete/126`,
-      { id },
+    const res = await apiClient.delete(
+      `/api/sav_status/${id}?customer_id=${storeCode}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

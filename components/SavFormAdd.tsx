@@ -236,7 +236,7 @@ const SavFormAdd = ({ materials }: Props) => {
                   <ElInput
                     placeholder="Date d'achat"
                     type="text"
-                    name={t("addPage.secondStep.purchaseDate")}
+                    name={"date_purchase"}
                     onFocus={(e) => (e.target.type = "date")}
                     onBlur={(e) => (e.target.type = "text")}
                     icon={<BsCalendarCheck className="text-blue-700" />}

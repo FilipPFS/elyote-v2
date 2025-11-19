@@ -53,11 +53,15 @@ const SavUpdateStatus = ({ id, customStatuses }: Props) => {
             ))}
           </optgroup>
           <optgroup label="Statuts personnalisé">
-            {customStatuses.map((item) => (
-              <option key={item.id} value={String(item.id)}>
-                {item.statut}
-              </option>
-            ))}
+            {customStatuses && customStatuses.length > 0 ? (
+              customStatuses.map((item) => (
+                <option key={item.id} value={String(item.id)}>
+                  {item.statut}
+                </option>
+              ))
+            ) : (
+              <option disabled>Aucun statut disponible</option>
+            )}
           </optgroup>
         </ElSelect>
         <ElInput
