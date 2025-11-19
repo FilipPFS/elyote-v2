@@ -1,7 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { ApiResponse, getToken, handleError } from "./actions.global";
+import {
+  ApiResponse,
+  getStoreCode,
+  getToken,
+  handleError,
+} from "./actions.global";
 import { apiClient } from "../axios";
 import { templateFormSchemaValidation } from "../validation";
 import { TemplateType } from "@/types";
@@ -18,31 +23,48 @@ export const getTemplates = async (): Promise<{
 }> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Unauthorized.");
-      return { mail: [], sms: [] }; // 👈 fallback
+      return { mail: [], sms: [] };
     }
 
-    const resSms = await apiClient.get(`/api/communication_templates/sms`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    let mail: TemplateType[] = [];
+    let sms: TemplateType[] = [];
 
-    const resMail = await apiClient.get(`/api/communication_templates/mail`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    // GET SMS
+    try {
+      const resSms = await apiClient.get(
+        `/api/communication_templates/type/sms?customer_id=${storeCode}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      sms = resSms.data;
+    } catch (e) {
+      // no sms templates or server error → fallback to []
+      console.log(e);
 
-    if (resSms.status === 200 && resMail.status === 200) {
-      return {
-        mail: resMail.data as TemplateType[],
-        sms: resSms.data as TemplateType[],
-      };
-    } else {
-      return { mail: [], sms: [] }; // 👈 fallback on failure
+      sms = [];
     }
+
+    // GET MAIL
+    try {
+      const resMail = await apiClient.get(
+        `/api/communication_templates/type/mail?customer_id=${storeCode}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      mail = resMail.data;
+    } catch (e) {
+      // no mail templates → fallback to []
+      console.log(e);
+
+      mail = [];
+    }
+
+    return { mail, sms };
   } catch (error) {
     handleError(error);
-    return { mail: [], sms: [] }; // 👈 fallback on error
+    return { mail: [], sms: [] };
   }
 };
 
@@ -51,15 +73,19 @@ export const getMailTemplates = async (): Promise<{
 }> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Unauthorized.");
       return { mail: [] }; // 👈 fallback
     }
 
-    const resMail = await apiClient.get(`/api/communication_templates/mail`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const resMail = await apiClient.get(
+      `/api/communication_templates/type/mail?customer_id=${storeCode}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
     if (resMail.status === 200) {
       return {
@@ -105,15 +131,19 @@ export const getSmsTemplates = async (): Promise<{
 export const getTemplateById = async (id: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Unauthorized.");
       return null;
     }
 
-    const res = await apiClient.get(`/api/communication_template/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await apiClient.get(
+      `/api/communication_templates/${id}?customer_id=${storeCode}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
     if (res.status === 200) {
       return res.data;
@@ -132,6 +162,7 @@ export const createTemplate = async (
 ): Promise<ApiResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Unauthorized.");
@@ -150,7 +181,7 @@ export const createTemplate = async (
     }
 
     const res = await apiClient.post(
-      `/api/communication_template/create`,
+      `/api/communication_templates?customer_id=${storeCode}`,
       result.data,
       {
         headers: {
@@ -182,8 +213,9 @@ export const updateTemplate = async (
 ): Promise<ApiResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Unauthorized.");
       return { success: false, error: "Vous n'êtes pas autorisé." };
     }
@@ -204,8 +236,8 @@ export const updateTemplate = async (
       content: result.data.content,
     };
 
-    const res = await apiClient.post(
-      `/api/communication_template/update/${id}`,
+    const res = await apiClient.patch(
+      `/api/v1/communication_templates/${id}?customer_id=${storeCode}`,
       editData,
       {
         headers: {
@@ -234,15 +266,15 @@ export const updateTemplate = async (
 export const deleteTemplate = async (id: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Unauthorized.");
       return { success: false, error: "Vous n'êtes pas autorisé." };
     }
 
-    const res = await apiClient.post(
-      `/api/communication_template/delete`,
-      { id },
+    const res = await apiClient.delete(
+      `/api/v1/communication_templates/${id}?customer_id=${storeCode}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

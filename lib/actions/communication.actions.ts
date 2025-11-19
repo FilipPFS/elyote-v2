@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { contentDetectApiClient } from "../axios";
-import { ApiResponse, getToken } from "./actions.global";
+import { ApiResponse, getStoreCode, getToken } from "./actions.global";
 import axios from "axios";
 import { MailData, SmsData } from "@/types";
 import { mailSchema, smsSchema } from "../validation";
@@ -10,8 +10,9 @@ import { mailSchema, smsSchema } from "../validation";
 export const sendMail = async (formData: MailData): Promise<ApiResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token)
+    if (!token || !storeCode)
       return {
         success: false,
       };
@@ -58,11 +59,15 @@ export const sendMail = async (formData: MailData): Promise<ApiResponse> => {
 
     formDataToSend.append("json", JSON.stringify(postData));
 
-    const res = await contentDetectApiClient.post(`/api/mail`, formDataToSend, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await contentDetectApiClient.post(
+      `/api/mail?customer_id=${storeCode}`,
+      formDataToSend,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (res.status === 200) {
       revalidatePath("/communication/liste");
@@ -100,8 +105,9 @@ export const sendMail = async (formData: MailData): Promise<ApiResponse> => {
 export const sendSms = async (formData: SmsData): Promise<ApiResponse> => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token)
+    if (!token || !storeCode)
       return {
         success: false,
       };
@@ -136,11 +142,15 @@ export const sendSms = async (formData: SmsData): Promise<ApiResponse> => {
 
     console.log("POSTDATA", postData);
 
-    const res = await contentDetectApiClient.post(`/api/sms`, postData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await contentDetectApiClient.post(
+      `/api/sms?customer_id=${storeCode}`,
+      postData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (res.status === 200) {
       revalidatePath("/communication/liste");
