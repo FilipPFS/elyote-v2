@@ -21,7 +21,7 @@ interface AxiosConfig {
   proxy?: ProxyConfig;
 }
 
-// Shared function to validate environment variables
+// Validate environment variables
 function validateEnvVars() {
   if (!process.env.API_ELYOTE_BASE_URL) {
     throw new Error("API_ELYOTE_BASE_URL environment variable is not set");
@@ -31,7 +31,7 @@ function validateEnvVars() {
   }
 }
 
-// Shared function to get proxy config for production
+// Proxy config for production
 function getProxyConfig(): ProxyConfig | undefined {
   if (process.env.NODE_ENV !== "production") {
     return undefined;
@@ -51,77 +51,81 @@ function getProxyConfig(): ProxyConfig | undefined {
     }
 
     return {
-      protocol: fixieUrl.protocol.replace(":", ""), // 'http' or 'https'
+      protocol: fixieUrl.protocol.replace(":", ""),
       host: fixieUrl.hostname,
-      port: fixieUrl.port ? parseInt(fixieUrl.port, 10) : 80, // Default to 80 if no port
-      auth: {
-        username,
-        password,
-      },
+      port: fixieUrl.port ? parseInt(fixieUrl.port, 10) : 80,
+      auth: { username, password },
     };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    throw new Error(`Invalid FIXIE_URL in production: ${errorMessage}`);
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Invalid FIXIE_URL in production: ${message}`);
   }
 }
 
-// Create JSON Axios instance
-function createJsonAxiosInstance(): AxiosInstance {
+/* ----------------------------------------------------
+   GENERIC CLIENT FACTORY
+---------------------------------------------------- */
+function createAxiosInstance(
+  apiKey: string,
+  baseURL: string,
+  contentType?: string
+): AxiosInstance {
   validateEnvVars();
 
   const axiosConfig: AxiosConfig = {
-    baseURL: local
-      ? process.env.API_ELYOTE_DEV_URL!
-      : process.env.API_ELYOTE_BASE_URL!, // e.g., 'https://api.example.com'
+    baseURL,
     headers: {
-      "Content-Type": "application/json",
-      "api-key": process.env.API_ELYOTE_KEY!,
+      "api-key": apiKey,
+      ...(contentType ? { "Content-Type": contentType } : {}),
     },
     proxy: getProxyConfig(),
   };
 
-  const instance = axios.create(axiosConfig);
-  return instance;
+  return axios.create(axiosConfig);
 }
 
-// Create Multipart Axios instance
-function createMultipartAxiosInstance(): AxiosInstance {
-  validateEnvVars();
+/* ----------------------------------------------------
+   BASE URL
+---------------------------------------------------- */
+const baseURL = local
+  ? process.env.API_ELYOTE_DEV_URL!
+  : process.env.API_ELYOTE_BASE_URL!;
 
-  const axiosConfig: AxiosConfig = {
-    baseURL: local
-      ? process.env.API_ELYOTE_DEV_URL!
-      : process.env.API_ELYOTE_BASE_URL!, // e.g., 'https://api.example.com'
-    headers: {
-      "Content-Type": "multipart/form-data",
-      "api-key": process.env.API_ELYOTE_KEY!,
-    },
-    proxy: getProxyConfig(),
-  };
+/* ----------------------------------------------------
+   CLIENTS
+---------------------------------------------------- */
 
-  const instance = axios.create(axiosConfig);
-  return instance;
-}
+// JSON client
+export const apiClient = createAxiosInstance(
+  process.env.API_ELYOTE_KEY!,
+  baseURL,
+  "application/json"
+);
 
-function createAutoContentAxiosInstance(): AxiosInstance {
-  validateEnvVars();
+export const apiParcelClient = createAxiosInstance(
+  process.env.API_BV_ELYOTE_KEY!,
+  baseURL,
+  "application/json"
+);
 
-  const axiosConfig: AxiosConfig = {
-    baseURL: local
-      ? process.env.API_ELYOTE_DEV_URL!
-      : process.env.API_ELYOTE_BASE_URL!, // e.g., 'https://api.example.com'
-    headers: {
-      // "Content-Type": "multipart/form-data", // détection automatique (utile pour l'envoi des fichiers)
-      "api-key": process.env.API_ELYOTE_KEY!,
-    },
-    proxy: getProxyConfig(),
-  };
+// Multipart client
+export const multipartApiClient = createAxiosInstance(
+  process.env.API_ELYOTE_KEY!,
+  baseURL,
+  "multipart/form-data"
+);
 
-  const instance = axios.create(axiosConfig);
-  return instance;
-}
+// Auto-detect content type client
+export const contentDetectApiClient = createAxiosInstance(
+  process.env.API_ELYOTE_KEY!,
+  baseURL
+);
 
-// Export both singleton instances
-export const apiClient = createJsonAxiosInstance();
-export const multipartApiClient = createMultipartAxiosInstance();
-export const contentDetectApiClient = createAutoContentAxiosInstance();
+/* ----------------------------------------------------
+   EXAMPLE: second API with a different key
+---------------------------------------------------- */
+// export const otherServiceClient = createAxiosInstance(
+//   process.env.OTHER_API_KEY!,
+//   process.env.OTHER_API_URL!,
+//   "application/json"
+// );

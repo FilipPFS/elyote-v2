@@ -255,3 +255,56 @@ export const userEditSchema = z.object({
     )
     .min(1, "Au moins un client doit être sélectionné."),
 });
+
+export const shipParcelSchema = z.object({
+  clientType: z
+    .string()
+    .min(1, "Le type de client est obligatoire.")
+    .refine(
+      (val) => ["individual", "company"].includes(val),
+      "Le type de client est invalide."
+    ),
+
+  companyName: z.string().optional(),
+
+  lastName: z.string().min(2, "Le nom est obligatoire."),
+
+  firstName: z.string().min(2, "Le prénom est obligatoire."),
+
+  phone: z.string().min(6, "Le numéro de téléphone est obligatoire."),
+
+  email: z
+    .string()
+    .email("L'adresse e-mail n'est pas valide.")
+    .min(1, "L'adresse e-mail est obligatoire."),
+
+  country: z.string().min(1, "Le pays est obligatoire."),
+
+  address: z.string().min(2, "L'adresse est obligatoire."),
+
+  postalCode: z.string().min(4, "Le code postal est obligatoire."),
+
+  city: z.string().min(2, "La ville est obligatoire."),
+
+  parcelCount: z
+    .string()
+    .min(1, "Le nombre de colis est obligatoire.")
+    .refine(
+      (val) => Number(val) > 0,
+      "Le nombre de colis doit être supérieur à 0."
+    ),
+
+  parcelWeight: z
+    .string()
+    .min(1, "Le poids du colis est obligatoire.")
+    .refine(
+      (val) => Number(val) > 0,
+      "Le poids du colis doit être supérieur à 0."
+    ),
+
+  vehicleType: z.string().min(1, "Le type de véhicule est obligatoire."),
+
+  parcelValue: z.string().optional(),
+
+  recipientRef: z.string().optional(),
+});

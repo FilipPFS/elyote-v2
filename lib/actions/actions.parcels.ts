@@ -2,24 +2,30 @@
 
 import axios from "axios";
 import { apiClient } from "../axios";
-import { getToken } from "./actions.global";
+import { getStoreCode, getToken } from "./actions.global";
 import { PackageData } from "@/types";
 import { revalidatePath } from "next/cache";
+import { ShopopopFormData } from "@/components/Parcels/ShipForm";
+import { shipParcelSchema } from "../validation";
 
 export const getStorageZone = async () => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Token expiré.");
       return;
     }
 
-    const res = await apiClient.get(`/api/storage_zone/read/666`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.get(
+      `/api/storage_zones/?customer_id=${storeCode}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (res.status === 200) {
       return res.data;
@@ -50,6 +56,7 @@ export const getParcels = async ({
 }) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Token expiré.");
@@ -59,16 +66,16 @@ export const getParcels = async ({
     const offset = (page - 1) * limit;
 
     const response = await apiClient.get(
-      `/api/parcel/read/126${status ? `&statut=${status}` : ""}${
-        type ? `&type=${type}` : ""
-      }`,
+      `/api/parcels?customer_id=${storeCode}${
+        status ? `&statut=${status}` : ""
+      }${type ? `&type=${type}` : ""}`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
 
     const res = await apiClient.get(
-      `/api/parcel/read/126?offset=${offset}&number_per_page=${limit}${
+      `/api/parcels?customer_id=${storeCode}&offset=${offset}&number_per_page=${limit}${
         status ? `&statut=${status}` : ""
       }${type ? `&type=${type}` : ""}`,
       {
@@ -110,15 +117,19 @@ export const getParcels = async ({
 export const getParcelById = async (id: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Token expiré.");
       return;
     }
 
-    const res = await apiClient.get(`/api/parcel/read_one/126/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await apiClient.get(
+      `/api/parcels/${id}?customer_id=${storeCode}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
     if (res.status === 200) {
       return res.data;
@@ -147,6 +158,7 @@ export const createParcel = async ({
 }) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Token expiré.");
@@ -164,11 +176,15 @@ export const createParcel = async ({
 
     console.log("DATA SEND", dataToSend);
 
-    const res = await apiClient.post(`/api/parcel/create/126`, dataToSend, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.post(
+      `/api/parcels?customer_id=${storeCode}`,
+      dataToSend,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (res.status === 201) {
       revalidatePath("/cmd/colis");
@@ -196,6 +212,7 @@ export const createParcel = async ({
 export const updateParcel = async (id: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Token expiré.");
@@ -213,8 +230,8 @@ export const updateParcel = async (id: string) => {
       entrepot_id: parcel.entrepot_id,
     };
 
-    const res = await apiClient.post(
-      `/api/parcel/update/126/${id}`,
+    const res = await apiClient.patch(
+      `/api/parcels/${id}?customer_id=${storeCode}`,
       dataToSend,
       {
         headers: {
@@ -254,6 +271,7 @@ export const updateParcelEmplacement = async ({
 }) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Token expiré.");
@@ -273,8 +291,8 @@ export const updateParcelEmplacement = async ({
 
     console.log("data", dataToSend);
 
-    const res = await apiClient.post(
-      `/api/parcel/update/126/${id}`,
+    const res = await apiClient.patch(
+      `/api/parcels/${id}?customer_id=${storeCode}`,
       dataToSend,
       {
         headers: {
@@ -309,19 +327,15 @@ export const updateParcelEmplacement = async ({
 export const deleteParcelById = async (id: string) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
     if (!token) {
       console.log("Token expiré.");
       return;
     }
 
-    const dataToSend = {
-      id: Number(id),
-    };
-
-    const res = await apiClient.post(
-      `/api/parcel/delete/126/${id}`,
-      dataToSend,
+    const res = await apiClient.delete(
+      `/api/v1/parcels/${id}?customer_id=${storeCode}`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -340,5 +354,22 @@ export const deleteParcelById = async (id: string) => {
     } else {
       console.error("Unknown error:", error);
     }
+  }
+};
+
+export const shipParcel = async (formData: ShopopopFormData) => {
+  try {
+    const result = shipParcelSchema.safeParse(formData);
+
+    if (!result.success) {
+      console.log(result.error.formErrors.fieldErrors);
+
+      return {
+        success: false,
+        errors: result.error.formErrors.fieldErrors,
+      };
+    }
+  } catch (error) {
+    console.log(error);
   }
 };

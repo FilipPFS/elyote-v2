@@ -40,6 +40,9 @@ const ParcelCard = ({ parcel, listeEntrepots }: Props) => {
       setUpdating(false);
       setStatus(1);
       toast.success(t("cardPage.notifications.delivered"));
+    } else {
+      toast.error("Une erreur est survenue.");
+      setUpdating(false);
     }
   };
 
@@ -54,6 +57,9 @@ const ParcelCard = ({ parcel, listeEntrepots }: Props) => {
       setUpdatingEmplacement(false);
       toast.success("L'emplacement a été mis à jour.");
       router.push("/cmd/colis");
+    } else {
+      toast.error("Une erreur est survenue.");
+      setUpdatingEmplacement(false);
     }
   };
 
@@ -65,6 +71,9 @@ const ParcelCard = ({ parcel, listeEntrepots }: Props) => {
       setDeleting(false);
       router.push("/cmd/colis");
       toast.success(t("cardPage.notifications.deleted"));
+    } else {
+      toast.error("Une erreur est survenue.");
+      setDeleting(false);
     }
   };
 
@@ -154,6 +163,7 @@ const ParcelCard = ({ parcel, listeEntrepots }: Props) => {
         )}
       >
         <ElButton
+          link={`/cmd/colis/${parcel.id}/select-ship`}
           label={t("cardPage.buttons.ship")}
           type="submit"
           //   disabled={isPending}
