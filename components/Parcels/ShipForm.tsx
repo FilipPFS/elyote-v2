@@ -5,7 +5,7 @@ import ElInput from "../custom/ElInput";
 import ElSelect from "../custom/ElSelect";
 import TimePicker from "./TimePicker";
 import ElButton from "../custom/ElButton";
-import { toISOWithTZ } from "@/lib/utils";
+// import { toISOWithTZ } from "@/lib/utils";
 
 export type ShopopopFormData = {
   clientType: string;
@@ -85,8 +85,8 @@ const ShipmentForm: React.FC = () => {
     }));
   };
 
-  const dropoff_start = toISOWithTZ(selectedDate, timeRange[0]);
-  const dropoff_end = toISOWithTZ(selectedDate, timeRange[1]);
+  // const dropoff_start = toISOWithTZ(selectedDate, timeRange[0]);
+  // const dropoff_end = toISOWithTZ(selectedDate, timeRange[1]);
 
   // const handleSubmit = async (e: React.FormEvent) => {
   //   try {
