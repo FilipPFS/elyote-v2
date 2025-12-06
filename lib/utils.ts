@@ -139,3 +139,16 @@ export const customDateFormat = (theDate: string) => {
     return;
   }
 };
+
+export function toISOWithTZ(date: Date, minutes: number, tz = "+02:00") {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+
+  return `${year}-${month}-${day}T${h.toString().padStart(2, "0")}:${m
+    .toString()
+    .padStart(2, "0")}:00${tz}`;
+}

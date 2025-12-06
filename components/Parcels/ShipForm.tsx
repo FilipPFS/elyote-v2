@@ -5,6 +5,7 @@ import ElInput from "../custom/ElInput";
 import ElSelect from "../custom/ElSelect";
 import TimePicker from "./TimePicker";
 import ElButton from "../custom/ElButton";
+import { toISOWithTZ } from "@/lib/utils";
 
 export type ShopopopFormData = {
   clientType: string;
@@ -41,19 +42,6 @@ const dates = Array.from({ length: 17 }, (_, i) => {
   d.setDate(d.getDate() + i);
   return d;
 });
-
-// function toISOWithTZ(date: Date, minutes: number, tz = "+02:00") {
-//   const h = Math.floor(minutes / 60);
-//   const m = minutes % 60;
-
-//   const year = date.getFullYear();
-//   const month = (date.getMonth() + 1).toString().padStart(2, "0");
-//   const day = date.getDate().toString().padStart(2, "0");
-
-//   return `${year}-${month}-${day}T${h.toString().padStart(2, "0")}:${m
-//     .toString()
-//     .padStart(2, "0")}:00${tz}`;
-// }
 
 const ShipmentForm: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -97,8 +85,8 @@ const ShipmentForm: React.FC = () => {
     }));
   };
 
-  // const dropoff_start = toISOWithTZ(selectedDate, timeRange[0]);
-  // const dropoff_end = toISOWithTZ(selectedDate, timeRange[1]);
+  const dropoff_start = toISOWithTZ(selectedDate, timeRange[0]);
+  const dropoff_end = toISOWithTZ(selectedDate, timeRange[1]);
 
   // const handleSubmit = async (e: React.FormEvent) => {
   //   try {
