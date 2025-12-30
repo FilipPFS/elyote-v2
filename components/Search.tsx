@@ -1,48 +1,75 @@
 "use client";
 
-import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
-import clsx from "clsx";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState, ChangeEvent } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaSearch } from "react-icons/fa";
+import clsx from "clsx";
 
 type Props = {
-  component?: string;
   placeholder: string;
+  component?: string;
   classNames?: string;
 };
 
 const Search = ({ placeholder, component, classNames }: Props) => {
-  const [query, setQuery] = useState("");
-
-  const searchParams = useSearchParams();
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
+  const [search, setSearch] = useState<string>("");
+
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Initialisation au montage + sync quand l'URL change de l'extérieur
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      let newUrl = "";
-      if (query && query.length > 1) {
-        newUrl = formUrlQuery({
-          params: searchParams.toString(),
-          key: "query",
-          value: query,
-        });
-      } else {
-        newUrl = removeKeysFromQuery({
-          params: searchParams.toString(),
-          keysToRemove: ["query"],
-        });
-      }
+    const queryFromUrl = searchParams.get("query") ?? "";
+    setSearch(queryFromUrl);
+  }, [searchParams]);
 
-      router.push(newUrl, { scroll: false });
+  const updateUrl = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (value.trim() && value.length > 1) {
+      params.set("query", value.trim());
+    } else {
+      params.delete("query");
+    }
+
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+
+    // Clear timer précédent
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    // Debounce 800ms
+    timeoutRef.current = setTimeout(() => {
+      updateUrl(value);
     }, 800);
+  };
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [query, searchParams, router]);
+  const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    updateUrl(search);
+  };
+
+  // Cleanup timer au unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   return (
     <form
+      onSubmit={handleSubmit}
       className={clsx(
         "flex items-center gap-2 h-10",
         component === "contact_client" && "w-full",
@@ -54,15 +81,15 @@ const Search = ({ placeholder, component, classNames }: Props) => {
         <input
           type="text"
           placeholder={placeholder}
-          className="focus:outline-none focus:ring-0  w-full"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          className="focus:outline-none focus:ring-0 w-full bg-transparent"
+          value={search} // ← Contrôlé !
+          onChange={handleChange}
         />
       </div>
       <button
-        disabled={!query}
         type="submit"
-        className="h-[39px] disabled:bg-gray-500 bg-blue-600 w-10 flex justify-center items-center rounded-lg cursor-pointer transition-all duration-500 hover:bg-blue-800 accent-violet-950"
+        disabled={!search || search.length <= 1}
+        className="h-[39px] disabled:bg-gray-500 bg-blue-600 w-10 flex justify-center items-center rounded-lg cursor-pointer transition-all duration-500 hover:bg-blue-800"
       >
         <FaSearch className="text-white" />
       </button>

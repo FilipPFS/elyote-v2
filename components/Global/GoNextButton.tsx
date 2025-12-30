@@ -12,11 +12,11 @@ const GoNextButton = ({
   icon?: JSX.Element;
 }) => {
   return (
-    <Link href={link}>
+    <Link href={link} className="w-full md:w-fit">
       <ElButton
         label={label}
         icon={icon}
-        classNames="px-4 !h-9 w-full md:w-fit"
+        classNames="px-4 !h-8 w-full md:w-fit"
       />
     </Link>
   );

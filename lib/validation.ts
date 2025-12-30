@@ -308,3 +308,76 @@ export const shipParcelSchema = z.object({
 
   recipientRef: z.string().optional(),
 });
+
+export const clientSchema = z.object({
+  societe: z.string().optional(),
+  nom: z.string().min(2, "Le nom est obligatoire."),
+  prenom: z.string().optional(),
+  email: z.string().email("Email invalide").optional().or(z.literal("")),
+  telephone: z.string().optional(),
+  commentaire: z.string().optional(),
+  code_contact: z.coerce
+    .number({
+      invalid_type_error: "Le code contact doit être un nombre valide.",
+      required_error: "Le code contact est obligatoire.",
+    })
+    .optional()
+    .or(z.literal("")),
+});
+
+export const serviceCardCreateSchema = z.object({
+  quantite: z.coerce
+    .number({
+      required_error: "La quantité est obligatoire.",
+      invalid_type_error: "La quantité doit être un nombre valide.",
+    })
+    .min(1, "La quantité doit être supérieure à 0."),
+
+  type: z.coerce
+    .number({
+      required_error: "Le type est obligatoire.",
+      invalid_type_error: "Le type doit être un nombre valide.",
+    })
+    .min(1, "Le type doit est obligatoire."),
+
+  accompagnement: z
+    .string({
+      required_error: "L’accompagnement est obligatoire.",
+    })
+    .min(1, "L’accompagnement est obligatoire."),
+});
+
+export const serviceContactValidationSchema = z.object({
+  operateur: z.string().min(1, "L’opérateur est obligatoire."),
+  contactId: z
+    .string()
+    .optional() // allows undefined
+    .nullable() // also allows null
+    .transform((val) => {
+      // null / undefined / empty string → undefined
+      if (val == null || val === "") return undefined;
+      const num = Number(val);
+      return Number.isNaN(num) ? undefined : num;
+    })
+    .refine((val) => val === undefined || typeof val === "number", {
+      message: "Le contact doit être un nombre valide.",
+    }),
+  codeConfirmed: z.preprocess(
+    // Coerce common form/JSON values before real parsing
+    (val) => {
+      if (val === null || val === undefined) return undefined;
+      if (typeof val === "string") {
+        const lower = val.toLowerCase().trim();
+        return lower === "on" || lower === "true" || lower === "1";
+      }
+      return !!val; // boolean or number(1)/0 etc.
+    },
+    // Now we only get boolean | undefined
+    z
+      .boolean()
+      .optional()
+      .refine((val) => val !== false, {
+        message: "Vous devez confirmer le code.",
+      })
+  ),
+});

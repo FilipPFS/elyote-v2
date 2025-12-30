@@ -1,13 +1,21 @@
 "use client";
 
+import { ServiceClient } from "@/app/(root)/cartes-copies/liste/page";
 import ClientForm from "@/components/ServiceCards/ClientForm";
-import { addNewClient } from "@/lib/actions/services/actions.clients";
+import { updateClient } from "@/lib/actions/services/actions.clients";
 import { useRouter } from "next/navigation";
 import React, { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-const CarteCopiesAjout = () => {
-  const [state, action, isPending] = useActionState(addNewClient, {});
+type Props = {
+  id: string;
+  clientData: ServiceClient;
+};
+
+const ServiceClientData = ({ clientData, id }: Props) => {
+  const updateClientWithId = updateClient.bind(null, id);
+
+  const [state, action, isPending] = useActionState(updateClientWithId, {});
   const router = useRouter();
 
   useEffect(() => {
@@ -37,10 +45,13 @@ const CarteCopiesAjout = () => {
   }, [state, router]);
 
   return (
-    <div className="flex-grow max-sm:p-5 p-14 flex justify-center">
-      <ClientForm isPending={isPending} action={action} updatePage={false} />
-    </div>
+    <ClientForm
+      isPending={isPending}
+      action={action}
+      updatePage={true}
+      customerData={clientData}
+    />
   );
 };
 
-export default CarteCopiesAjout;
+export default ServiceClientData;
