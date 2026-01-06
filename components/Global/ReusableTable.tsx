@@ -24,7 +24,7 @@ export default function ReusableTable<T>({
 }: TableProps<T>) {
   if (data.length === 0) {
     return (
-      <p className="text-center py-8 text-gray-500 dark:text-gray-400">
+      <p className="text-center hidden md:block py-8 text-gray-500 dark:text-gray-400">
         Aucune donnée
       </p>
     );
@@ -52,10 +52,13 @@ export default function ReusableTable<T>({
               {columns.map((column) => (
                 <td
                   key={String(column.key)}
-                  className="px-6 py-4 whitespace-nowrap text-sm transition-all hover:underline text-gray-900 dark:text-gray-100"
+                  className="px-6 py-4 whitespace-nowrap text-sm transition-all text-gray-900 dark:text-gray-100"
                 >
                   {rowId && link ? (
-                    <Link href={`/${link}/${rowId(row)}`}>
+                    <Link
+                      href={`/${link}/${rowId(row)}`}
+                      className="hover:underline"
+                    >
                       {column.render
                         ? column.render(row[column.key], row)
                         : (row[column.key] as React.ReactNode)}

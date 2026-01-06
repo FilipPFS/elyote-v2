@@ -1,5 +1,6 @@
 import GoNextButton from "@/components/Global/GoNextButton";
 import MobileTableCard from "@/components/Global/MobileTableCard";
+import Pagination from "@/components/Global/Pagination";
 import ReusableTable, { Column } from "@/components/Global/ReusableTable";
 import MainPage from "@/components/Mobile/MainPage";
 import Search from "@/components/Search";
@@ -44,12 +45,21 @@ export type ServiceContact = {
 
 export type ServiceClientHistory = {
   id: number;
-  type_action: string;
+  type_action:
+    | string
+    | {
+        modifier_client: {
+          old_data: Record<string, string | number | null>;
+          new_data: Record<string, string | number | null>;
+        };
+      };
   carte_type_id: number | null;
+  carte_type: string | null;
   accompagnement: string | null;
   quantite: number | null;
   client_id: number;
   contact_id: number;
+  contact_nom: string | null;
   bv_id_user: number;
   date_creation: string; // ISO-like datetime from backend
 };
@@ -73,18 +83,26 @@ const columns: Column<ServiceClient>[] = [
 const CarteCopiesListe = async ({ searchParams }: SearchParamProps) => {
   const awaitedSearchParams = await searchParams;
   let serviceClients: ServiceClient[] = [];
-  // const page = Number(awaitedSearchParams.page) || 1;
+  const page = Number(awaitedSearchParams.page) || 1;
 
   const query = (awaitedSearchParams.query as string) || "";
+  const filterBy = (awaitedSearchParams.filterby as string) || "";
 
-  const data = await getServiceClientsFromQuery(query);
-  serviceClients = data?.records ?? [];
+  const clients = await getServiceClientsFromQuery({
+    query: query,
+    page: page,
+    limit: 20,
+    filterBy: filterBy,
+  });
+
+  serviceClients = clients?.data ?? [];
+  const totalPages = clients?.pagesNumber ?? 1;
 
   return (
     <MainPage
       title="Gestion de cartes copies"
       headerElement={
-        <div className="flex items-center gap-2">
+        <div className="flex md:flex-row flex-col md:w-fit w-full items-center gap-2">
           <GoNextButton link="/cartes-copies/ajout" label="Ajouter un client" />
           <GoNextButton
             link="/cartes-copies/reglages"
@@ -107,6 +125,7 @@ const CarteCopiesListe = async ({ searchParams }: SearchParamProps) => {
         rowId={(row) => row.id}
         href="/cartes-copies/liste"
       />
+      <Pagination page={page} totalPages={totalPages} />
     </MainPage>
   );
 };

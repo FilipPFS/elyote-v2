@@ -17,8 +17,8 @@ function MobileTableCard<T extends ServiceClient>({
 }: Props<T>) {
   if (!data.length) {
     return (
-      <div className="text-center text-xs text-gray-500 dark:text-gray-400 py-4">
-        Aucun historique disponible
+      <div className="text-center block md:hidden text-xs text-gray-500 dark:text-gray-400 py-4">
+        Aucune donnée
       </div>
     );
   }

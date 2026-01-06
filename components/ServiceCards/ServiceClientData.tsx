@@ -22,7 +22,6 @@ const ServiceClientData = ({ clientData, id }: Props) => {
     const { errors } = state;
 
     if (state.success) {
-      router.push("/cartes-copies/liste");
       toast.success("Success.");
     }
     if (state.error) {

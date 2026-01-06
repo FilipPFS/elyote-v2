@@ -152,3 +152,31 @@ export function toISOWithTZ(date: Date, minutes: number, tz = "+02:00") {
     .toString()
     .padStart(2, "0")}:00${tz}`;
 }
+
+export const buildParams = ({
+  storeCode,
+  offset,
+  limit,
+  query,
+  filterBy,
+}: {
+  storeCode: string;
+  offset: number;
+  limit: number;
+  query?: string;
+  filterBy?: string;
+}) => {
+  const params = new URLSearchParams({
+    customer_id: storeCode.toString(),
+    offset: offset.toString(),
+    number_per_page: limit.toString(),
+  });
+
+  if (query) {
+    params.append("search", query);
+  } else if (filterBy) {
+    params.append("filterBy", filterBy);
+  }
+
+  return params.toString();
+};

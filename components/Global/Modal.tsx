@@ -47,6 +47,24 @@ const Modal = ({ visible, setVisible, children }: Props) => {
           aria-modal="true"
           aria-labelledby="modal-title"
         >
+          <button
+            onClick={() => setVisible(false)}
+            aria-label="Fermer"
+            className="
+            absolute top-3 right-5 cursor-pointer
+            flex items-center justify-center
+             h-6 w-6 rounded-full
+            border border-blue-200 dark:border-blue-800
+           text-blue-600 dark:text-blue-400
+           bg-blue-50 dark:bg-blue-900/30
+           hover:bg-blue-100 dark:hover:bg-blue-900/50
+           hover:text-blue-700 dark:hover:text-blue-300
+           transition-colors
+            "
+          >
+            ✕
+          </button>
+
           {children}
         </div>
       )}

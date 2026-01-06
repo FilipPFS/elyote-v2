@@ -10,6 +10,7 @@ import { ApiResponse, PostResponse } from "../actions.credentials";
 import { getStoreCode, getToken } from "../actions.global";
 import { revalidatePath } from "next/cache";
 import axios from "axios";
+import { buildParams } from "@/lib/utils";
 
 export type ServiceCardType = {
   id: number;
@@ -26,37 +27,55 @@ export type GroupedServiceCards = {
   personal: ServiceCardType[];
 };
 
-export const getServiceClientsFromQuery = async (query: string) => {
+export const getServiceClientsFromQuery = async ({
+  limit = 8,
+  page,
+  query,
+  filterBy,
+}: {
+  limit: number;
+  page: number;
+  query?: string;
+  filterBy?: string;
+}) => {
   try {
     const token = await getToken();
     const storeCode = await getStoreCode();
 
-    if (!token || !storeCode) {
-      console.log("Token expiré.");
-      return;
-    }
+    if (!token || !storeCode) return;
 
-    const res = await apiClient.get(
-      `/api/service_area?customer_id=${storeCode}&search=${query}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        validateStatus: (status) => status >= 200 && status < 500,
-      }
-    );
+    const offset = (page - 1) * limit;
+
+    // 🔹 DATA request
+    const dataParams = buildParams({
+      storeCode,
+      offset,
+      limit,
+      query,
+      filterBy,
+    });
+
+    const res = await apiClient.get(`/api/service_area?${dataParams}`, {
+      headers: { Authorization: `Bearer ${token}` },
+      validateStatus: (status) => status >= 200 && status < 500,
+    });
 
     if (res.status === 200) {
-      return res.data;
-    } else if (res.status === 404) {
-      console.log("Query not found");
-    } else {
-      console.log("Unexpected status:", res.status);
-      return null;
+      return {
+        data: res.data.records,
+        pagesNumber: Math.ceil(res.data.total / limit),
+      };
     }
   } catch (error: unknown) {
-    console.error("Unexpected error:", error);
-    return null;
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+    } else {
+      console.error("Unknown error:", error);
+    }
   }
 };
 
@@ -419,7 +438,12 @@ export const updateClient = async (
 
     const postData = {
       ...result.data,
+      code_contact: result.data.code_contact?.trim()
+        ? Number(result.data.code_contact.trim())
+        : null,
     };
+
+    console.log("POSTDATA", postData);
 
     const res = await apiClient.patch(
       `/api/v1/service_area/${id}?customer_id=${storeCode}`,
@@ -436,10 +460,16 @@ export const updateClient = async (
     if (res.status === 201 || res.status === 200) {
       revalidatePath("/cartes-copies/liste");
 
-      return {
-        success: true,
-        message: "Votre identifiant a été ajouté avec succès.",
-      };
+      if (res.data.updated) {
+        return {
+          success: true,
+        };
+      } else {
+        return {
+          success: false,
+          error: "Aucun changement détécté.",
+        };
+      }
     } else {
       return {
         success: false,

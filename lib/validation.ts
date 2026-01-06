@@ -316,13 +316,7 @@ export const clientSchema = z.object({
   email: z.string().email("Email invalide").optional().or(z.literal("")),
   telephone: z.string().optional(),
   commentaire: z.string().optional(),
-  code_contact: z.coerce
-    .number({
-      invalid_type_error: "Le code contact doit être un nombre valide.",
-      required_error: "Le code contact est obligatoire.",
-    })
-    .optional()
-    .or(z.literal("")),
+  code_contact: z.string().optional(),
 });
 
 export const serviceCardCreateSchema = z.object({
