@@ -2,7 +2,10 @@
 
 import { ServiceClient } from "@/app/(root)/cartes-copies/liste/page";
 import ClientForm from "@/components/ServiceCards/ClientForm";
-import { updateClient } from "@/lib/actions/services/actions.clients";
+import {
+  ClientFormState,
+  updateClient,
+} from "@/lib/actions/services/actions.clients";
 import { useRouter } from "next/navigation";
 import React, { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
@@ -15,7 +18,22 @@ type Props = {
 const ServiceClientData = ({ clientData, id }: Props) => {
   const updateClientWithId = updateClient.bind(null, id);
 
-  const [state, action, isPending] = useActionState(updateClientWithId, {});
+  const initialState: ClientFormState = {
+    data: {
+      societe: clientData.societe,
+      nom: clientData.nom,
+      prenom: clientData.prenom,
+      email: clientData.email,
+      telephone: clientData.telephone,
+      commentaire: clientData.commentaire,
+      code_contact: clientData.code_contact ?? "",
+    },
+  };
+
+  const [state, action, isPending] = useActionState(
+    updateClientWithId,
+    initialState
+  );
   const router = useRouter();
 
   useEffect(() => {
@@ -49,6 +67,7 @@ const ServiceClientData = ({ clientData, id }: Props) => {
       action={action}
       updatePage={true}
       customerData={clientData}
+      state={state}
     />
   );
 };

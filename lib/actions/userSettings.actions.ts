@@ -2,28 +2,34 @@
 
 import { Modes } from "@/components/Interface/ToggleModes";
 import { apiClient } from "../axios";
-import { getToken } from "./actions.global";
+import { getStoreCode, getToken } from "./actions.global";
 import { MenuKeys, UserMenuSettings } from "@/types";
 
-export const getUserSettings = async (id: number) => {
+export const getUserSettings = async () => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    console.log("TOKEN", token);
-
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Unauthorized.");
       return null;
     }
 
-    console.log("ID TO PASS", id);
-
-    const res = await apiClient.get(`/api/style/read-one/127/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await apiClient.get(
+      `/api/v1/users_settings?customer_id=${storeCode}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
     if (res.status === 200) {
-      return JSON.parse(res.data.value);
+      const style: UserMenuSettings = res.data.user_settings.find(
+        (item: UserMenuSettings) => item.type === "custom_interface"
+      );
+
+      if (style) {
+        return JSON.parse(style.value);
+      }
     } else {
       return null;
     }
@@ -37,6 +43,7 @@ export const getUserSettings = async (id: number) => {
 export const addUserSettings = async (settings: Modes) => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
     if (!token) {
       console.log("Unauthorized.");
       return null;
@@ -44,9 +51,12 @@ export const addUserSettings = async (settings: Modes) => {
 
     let res;
     try {
-      res = await apiClient.get(`/api/users_settings/read`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      res = await apiClient.get(
+        `/api/v1/users_settings?customer_id=${storeCode}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
     } catch (err: unknown) {
       if (err && typeof err === "object" && "response" in err) {
         const axiosErr = err as { response?: { status?: number } };
@@ -80,7 +90,7 @@ export const addUserSettings = async (settings: Modes) => {
     if (!res) {
       // create because settings don't exist
       const response = await apiClient.post(
-        `/api/users_settings/create`,
+        `/api/v1/users_settings?customer_id=${storeCode}`,
         postData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -98,8 +108,8 @@ export const addUserSettings = async (settings: Modes) => {
 
       console.log("STYLE ID", style.id);
 
-      const response = await apiClient.post(
-        `/api/users_settings/update/${style.id}`,
+      const response = await apiClient.patch(
+        `/api/v1/users_settings/${style.id}?customer_id=${storeCode}`,
         postData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -118,7 +128,7 @@ export const addUserSettings = async (settings: Modes) => {
   }
 };
 
-export const deleteUserSettings = async (userId: number) => {
+export const deleteUserSettings = async () => {
   try {
     const token = await getToken();
 
@@ -127,7 +137,7 @@ export const deleteUserSettings = async (userId: number) => {
       return null;
     }
 
-    const userSettings = await getUserSettings(userId);
+    const userSettings = await getUserSettings();
 
     if (!userSettings) return null;
 
@@ -147,22 +157,31 @@ export const deleteUserSettings = async (userId: number) => {
   }
 };
 
-export const getUserMenu = async (id: number) => {
+export const getUserMenu = async () => {
   try {
     const token = await getToken();
+    const storeCode = await getStoreCode();
 
-    if (!token) {
+    if (!token || !storeCode) {
       console.log("Unauthorized.");
       return null;
     }
 
-    const res = await apiClient.get(`/api/module/read-one/127/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await apiClient.get(
+      `/api/v1/users_settings?customer_id=${storeCode}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
     if (res.status === 200) {
-      console.log("MENU", JSON.parse(res.data.value));
-      return JSON.parse(res.data.value);
+      const menu: UserMenuSettings = res.data.user_settings.find(
+        (item: UserMenuSettings) => item.type === "custom_module"
+      );
+
+      if (menu) {
+        return JSON.parse(menu.value);
+      }
     } else {
       return null;
     }
@@ -176,16 +195,20 @@ export const getUserMenu = async (id: number) => {
 export const addUserMenu = async (menuSettings: Record<MenuKeys, boolean>) => {
   try {
     const token = await getToken();
-    if (!token) {
+    const storeCode = await getStoreCode();
+    if (!token || !storeCode) {
       console.log("Unauthorized.");
       return null;
     }
 
     let res;
     try {
-      res = await apiClient.get(`/api/users_settings/read`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      res = await apiClient.get(
+        `/api/v1/users_settings?customer_id=${storeCode}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
     } catch (err: unknown) {
       if (err && typeof err === "object" && "response" in err) {
         const axiosErr = err as { response?: { status?: number } };
@@ -207,11 +230,11 @@ export const addUserMenu = async (menuSettings: Record<MenuKeys, boolean>) => {
     };
 
     if (res) {
-      const style = res.data.user_settings.find(
+      const menu = res.data.user_settings.find(
         (item: UserMenuSettings) => item.type === "custom_module"
       );
 
-      if (!style) {
+      if (!menu) {
         res = null;
       }
     }
@@ -219,31 +242,25 @@ export const addUserMenu = async (menuSettings: Record<MenuKeys, boolean>) => {
     if (!res) {
       // create because settings don't exist
       const response = await apiClient.post(
-        `/api/users_settings/create`,
+        `/api/v1/users_settings?customer_id=${storeCode}`,
         postData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      console.log("response", response.status);
 
       if (response.status === 201) {
         return { success: true };
       }
     } else {
       // update existing
-      const style = res.data.user_settings.find(
+      const menu: UserMenuSettings = res.data.user_settings.find(
         (item: UserMenuSettings) => item.type === "custom_module"
       );
 
-      console.log("STYLE ID", style.id);
-
-      const response = await apiClient.post(
-        `/api/users_settings/update/${style.id}`,
+      const response = await apiClient.patch(
+        `/api/v1/users_settings/${menu.id}?customer_id=${storeCode}`,
         postData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      console.log("response", response.status);
 
       if (response.status === 200) {
         console.log("success is true");

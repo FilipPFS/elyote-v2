@@ -1,14 +1,31 @@
 "use client";
 
 import ClientForm from "@/components/ServiceCards/ClientForm";
-import { addNewClient } from "@/lib/actions/services/actions.clients";
+import {
+  addNewClient,
+  ClientFormState,
+} from "@/lib/actions/services/actions.clients";
 import { useRouter } from "next/navigation";
 import React, { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
 
+const initialState: ClientFormState = {
+  data: {
+    societe: "",
+    nom: "",
+    prenom: "",
+    email: "",
+    telephone: "",
+    code_contact: "",
+    commentaire: "",
+  },
+};
+
 const CarteCopiesAjout = () => {
-  const [state, action, isPending] = useActionState(addNewClient, {});
+  const [state, action, isPending] = useActionState(addNewClient, initialState);
   const router = useRouter();
+
+  console.log("state", state);
 
   useEffect(() => {
     const { errors } = state;
@@ -38,7 +55,12 @@ const CarteCopiesAjout = () => {
 
   return (
     <div className="flex-grow max-sm:p-5 p-14 flex justify-center">
-      <ClientForm isPending={isPending} action={action} updatePage={false} />
+      <ClientForm
+        isPending={isPending}
+        action={action}
+        updatePage={false}
+        state={state}
+      />
     </div>
   );
 };

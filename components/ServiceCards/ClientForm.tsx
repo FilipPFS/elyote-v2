@@ -10,6 +10,7 @@ import ElTextarea from "../custom/ElTextarea";
 import ElInput from "../custom/ElInput";
 import clsx from "clsx";
 import { InfoIcon } from "lucide-react";
+import { ClientFormState } from "@/lib/actions/services/actions.clients";
 
 type CustomerData = {
   societe?: string;
@@ -27,15 +28,12 @@ type Props = {
   updatePage: boolean;
   customerData?: CustomerData;
   id?: string;
+  state: ClientFormState;
 };
 
-const ClientForm = ({
-  action,
-  isPending,
-  updatePage,
-  customerData,
-  id,
-}: Props) => {
+const ClientForm = ({ action, isPending, updatePage, id, state }: Props) => {
+  console.log("CLIENT FORM", state);
+
   return (
     <form
       action={action}
@@ -58,7 +56,7 @@ const ClientForm = ({
         <ElInput
           name="societe"
           placeholder="Société"
-          defaultValue={updatePage ? customerData?.societe : ""}
+          defaultValue={state.data?.societe ?? ""}
           icon={<MdOutlineBusiness className="text-blue-700" />}
         />
 
@@ -67,13 +65,13 @@ const ClientForm = ({
           <ElInput
             name="nom"
             placeholder="Nom"
-            defaultValue={updatePage ? customerData?.nom : ""}
+            defaultValue={state.data?.nom ?? ""}
             icon={<GoPerson className="text-blue-700" />}
           />
           <ElInput
             name="prenom"
             placeholder="Prénom"
-            defaultValue={updatePage ? customerData?.prenom : ""}
+            defaultValue={state.data?.prenom ?? ""}
             icon={<GoPerson className="text-blue-700" />}
           />
         </div>
@@ -83,13 +81,13 @@ const ClientForm = ({
           <ElInput
             name="email"
             placeholder="Adresse email"
-            defaultValue={updatePage ? customerData?.email : ""}
+            defaultValue={state.data?.email ?? ""}
             icon={<MdEmail className="text-blue-700" />}
           />
           <ElInput
             name="telephone"
             placeholder="Téléphone"
-            defaultValue={updatePage ? customerData?.telephone : ""}
+            defaultValue={state.data?.telephone ?? ""}
             icon={<MdPhone className="text-blue-700" />}
           />
         </div>
@@ -98,9 +96,7 @@ const ClientForm = ({
         <ElInput
           name="code_contact"
           placeholder="Code contact"
-          defaultValue={
-            updatePage ? String(customerData?.code_contact ?? "") : ""
-          }
+          defaultValue={state.data?.code_contact ?? ""}
           icon={<MdOutlineBusiness className="text-blue-700" />}
         />
 
@@ -108,7 +104,7 @@ const ClientForm = ({
         <ElTextarea
           name="commentaire"
           placeholder="Commentaire"
-          defaultValue={updatePage ? customerData?.commentaire : ""}
+          defaultValue={state.data?.commentaire ?? ""}
           icon={<LuInfo className="text-blue-700" />}
         />
 

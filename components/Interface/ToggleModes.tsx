@@ -33,6 +33,9 @@ export default function ToggleSwitches() {
     if (res?.success) {
       setLoading(false);
       toast.success("Mis à jour avec succès.");
+    } else {
+      setLoading(false);
+      toast.error("Error occured.");
     }
   };
 

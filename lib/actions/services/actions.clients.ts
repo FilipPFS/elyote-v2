@@ -27,6 +27,23 @@ export type GroupedServiceCards = {
   personal: ServiceCardType[];
 };
 
+export type ClientFormStateData = {
+  societe?: string;
+  nom: string;
+  prenom?: string;
+  email?: string;
+  telephone?: string;
+  code_contact?: string | number;
+  commentaire?: string;
+};
+
+export type ClientFormState = {
+  success?: boolean;
+  error?: string;
+  errors?: Record<string, string[]>;
+  data?: ClientFormStateData;
+};
+
 export const getServiceClientsFromQuery = async ({
   limit = 8,
   page,
@@ -334,9 +351,9 @@ export const updateServiceCardType = async (
 };
 
 export const addNewClient = async (
-  state: PostResponse,
+  state: ClientFormState,
   formData: FormData
-): Promise<PostResponse> => {
+): Promise<ClientFormState> => {
   try {
     const token = await getToken();
     const storeCode = await getStoreCode();
@@ -347,15 +364,18 @@ export const addNewClient = async (
         error: "Une erreur est survenue. Ressayez plus tard.",
       };
 
-    const data = Object.fromEntries(formData);
+    const data = Object.fromEntries(formData) as ClientFormStateData;
     const result = clientSchema.safeParse(data);
 
     if (!result.success) {
+      console.log("DATA", data);
+
       console.log(result.error.formErrors.fieldErrors);
 
       return {
         success: false,
         errors: result.error.formErrors.fieldErrors,
+        data: data,
       };
     }
 
@@ -380,7 +400,6 @@ export const addNewClient = async (
 
       return {
         success: true,
-        message: "Votre identifiant a été ajouté avec succès.",
       };
     } else {
       return {
@@ -411,9 +430,9 @@ export const addNewClient = async (
 
 export const updateClient = async (
   id: string,
-  state: PostResponse,
+  state: ClientFormState,
   formData: FormData
-): Promise<PostResponse> => {
+): Promise<ClientFormState> => {
   try {
     const token = await getToken();
     const storeCode = await getStoreCode();
@@ -424,7 +443,7 @@ export const updateClient = async (
         error: "Une erreur est survenue. Ressayez plus tard.",
       };
 
-    const data = Object.fromEntries(formData);
+    const data = Object.fromEntries(formData) as ClientFormStateData;
     const result = clientSchema.safeParse(data);
 
     if (!result.success) {
@@ -463,10 +482,12 @@ export const updateClient = async (
       if (res.data.updated) {
         return {
           success: true,
+          data: data,
         };
       } else {
         return {
           success: false,
+          data: data,
           error: "Aucun changement détécté.",
         };
       }
